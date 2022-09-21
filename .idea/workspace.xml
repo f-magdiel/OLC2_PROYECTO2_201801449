@@ -38,7 +38,7 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "proofread"
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="RunManager">
@@ -78,7 +78,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1663653329420</updated>
-      <workItem from="1663653332654" duration="4510000" />
+      <workItem from="1663653332654" duration="4698000" />
+      <workItem from="1663680956752" duration="545000" />
+      <workItem from="1663681549736" duration="17000" />
+      <workItem from="1663682533652" duration="664000" />
+      <workItem from="1663714378419" duration="2701000" />
+      <workItem from="1663733002419" duration="667000" />
     </task>
     <servers />
   </component>
@@ -97,6 +102,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Generador.coverage" NAME="Generador Coverage Results" MODIFIED="1663657334884" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Generador" />
+    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Generador.coverage" NAME="Generador Coverage Results" MODIFIED="1663718640894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Generador" />
   </component>
 </project>

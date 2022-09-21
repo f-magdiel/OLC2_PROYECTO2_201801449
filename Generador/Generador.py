@@ -48,7 +48,38 @@ class Generador:
     def agregarLabel(self, label):
         self.codigo.append(label + ":")
 
-    def agregarExpresion(self,target, ):
+    def agregarExpresion(self, target, left, right, operador):
+        self.codigo.append(target + " = " + left + " " + operador + " " + right + ";")
+
+    def agregarIf(self, left, right, operador, label):
+        self.codigo.append("if(" + left + " " + operador + " " + right + ") goto" + label + ";")
+
+    def agregarGoto(self, label):
+        self.codigo.append("goto " + label + ";")
+
+    def agregarPrintf(self, tipo, valor):
+        self.codigo.append("printf(\"%" + tipo + "\"," + valor + ");")
+
+    def agregarSaltoLinea(self):
+        self.codigo.append("printf(\"%c\",10;")
+
+    def sigHeap(self, index):
+        self.codigo.append("P = P + " + index + ";")
+
+    def antHeap(self, index):
+        self.codigo.append("P = P - " + index + ";")
+
+    def obtenerValorHeap(self, target, index):
+        self.codigo.append(target + "= HEAP[(int)" + index + "];")
+
+    def agregarValorHeap(self, index, valor):
+        self.codigo.append("HEAP[(int)" + index + "] = " + valor + ";")
+
+    def obtenerValorStack(self, target, index):
+        self.codigo.append(target + " = STACK[(int)" + index + "];")
+
+    def agregarValorStack(self, index, valor):
+        self.codigo.append("STACK[(int)" + index + "] = " + valor + ";")
 
 
 gen = Generador()
