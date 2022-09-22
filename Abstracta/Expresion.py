@@ -3,9 +3,10 @@ from Entorno.Entorno import Entorno
 
 
 class Expresion(ABC):
-    def __init__(self):
+    def __init__(self, fila):
         super().__init__()
-        #self.generador: Generador = None
+        self.fila = fila
+        self.generador = None
         self.isLabel = ""
         self.notLabel = ""
 

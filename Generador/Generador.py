@@ -11,21 +11,24 @@ class Generador:
         return ",".join(self.tempLista)
 
     def obtenerCodigo(self):
-        codigoTemp = '''
-        #include <stdio.h>
-        #include <math.h>
-        double HEAP[10000];
-        double HEAP[10000];
-        double P;
-        double H;
-        '''
+        codigoTemp = ""
+        codigoTemp += "#include <stdio.h>\n"
+        codigoTemp += "#include <math.h>\n"
+        codigoTemp += "double HEAP[10000];\n"
+        codigoTemp += "double HEAP[10000];\n"
+        codigoTemp += "double P;\n"
+        codigoTemp += "double H;\n"
+
+
+
+
 
         if len(self.tempLista) > 0:
             codigoTemp += "double " + self.obtenerUsadoTemp() + ";\n\n"
 
-        codigoTemp += "void main(){"
+        codigoTemp += "void main(){\n"
         codigoTemp += "\n".join(self.codigo)
-        codigoTemp += "\n        return;\n        }\n"
+        codigoTemp += "\nreturn;\n}\n"
 
         return codigoTemp
 
@@ -63,11 +66,11 @@ class Generador:
     def agregarSaltoLinea(self):
         self.codigo.append("printf(\"%c\",10;")
 
-    def sigHeap(self, index):
-        self.codigo.append("P = P + " + index + ";")
+    def sigHeap(self,):
+        self.codigo.append("P = P + " + "1" + ";")
 
-    def antHeap(self, index):
-        self.codigo.append("P = P - " + index + ";")
+    def antHeap(self,):
+        self.codigo.append("P = P - " + "1" + ";")
 
     def obtenerValorHeap(self, target, index):
         self.codigo.append(target + "= HEAP[(int)" + index + "];")
@@ -82,7 +85,4 @@ class Generador:
         self.codigo.append("STACK[(int)" + index + "] = " + valor + ";")
 
 
-gen = Generador()
-for i in range(100):
-    t = gen.nuevoTemp()
-print(gen.obtenerCodigo())
+

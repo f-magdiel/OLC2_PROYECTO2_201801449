@@ -1,5 +1,6 @@
 import ply.lex as lex
-
+from Reporte.TipoError import TIPIN_ERROR
+from Reporte.Contenido import Tabla_Errorres, Errores
 
 reservadas = {
     'i64': 'I64',
@@ -189,11 +190,11 @@ def t_newline(t):
 
 def t_error(t):
     alert = 'Caracter invalido %s' % t.value[0]
-    #Tabla_Errorres.append((Errores(t.lexer.lineno, alert, TIPIN_ERROR.LEXICO)))
+    Tabla_Errorres.append((Errores(t.lexer.lineno, alert, TIPIN_ERROR.LEXICO)))
     t.lexer.skip(1)
 
 
 # def __init__(self, fila, info, tipo):
 
-# ? Construyendo el analizador léxico
+# ?Construyendo el analizador léxico
 lexer = lex.lex()

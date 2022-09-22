@@ -1,0 +1,264 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABS
+    AND
+    AS
+    BARRAS
+    BOOL
+    BREAK
+    CAPACITY
+    CARACTER
+    CHAR
+    CLONE
+    COMA
+    CONTAINS
+    CONTINUE
+    CORDER
+    CORIZQ
+    DECIMAL
+    DIVIDIDO
+    DOSPT
+    ELSE
+    ENTERO
+    F64
+    FALSE
+    FN
+    FOR
+    GUIONB
+    I64
+    ID
+    IF
+    IGUAL
+    IGUALQUE
+    IN
+    INSERT
+    LEN
+    LET
+    LLAVEDER
+    LLAVEIZQ
+    LOOP
+    MAIN
+    MAS
+    MATCH
+    MAYORIQUE
+    MAYORQUE
+    MENORIQUE
+    MENORQUE
+    MENOS
+    MODULO
+    MUT
+    NEW
+    NOIGUALQUE
+    OR
+    POR
+    POW
+    POWF
+    PTO
+    PUSH
+    REMOVE
+    RETURN
+    SIGNOI
+    SQRT
+    STR
+    STRING
+    TOOWNED
+    TOSTRING
+    TRUE
+    USIZE
+    VEC
+    VVEC
+    WHILE
+    WITH_CAPACITY
+
+Grammar
+
+Rule 0     S' -> inicio
+Rule 1     inicio -> instrucciones
+Rule 2     instrucciones -> instruccion
+Rule 3     instruccion -> imprimir
+Rule 4     imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA
+Rule 5     expresion -> CADENA
+
+Terminals, with rules where they appear
+
+ABS                  : 
+AND                  : 
+AS                   : 
+BARRAS               : 
+BOOL                 : 
+BREAK                : 
+CADENA               : 5
+CAPACITY             : 
+CARACTER             : 
+CHAR                 : 
+CLONE                : 
+COMA                 : 
+CONTAINS             : 
+CONTINUE             : 
+CORDER               : 
+CORIZQ               : 
+DECIMAL              : 
+DIVIDIDO             : 
+DOSPT                : 
+ELSE                 : 
+ENTERO               : 
+F64                  : 
+FALSE                : 
+FN                   : 
+FOR                  : 
+GUIONB               : 
+I64                  : 
+ID                   : 
+IF                   : 
+IGUAL                : 
+IGUALQUE             : 
+IN                   : 
+INSERT               : 
+LEN                  : 
+LET                  : 
+LLAVEDER             : 
+LLAVEIZQ             : 
+LOOP                 : 
+MAIN                 : 
+MAS                  : 
+MATCH                : 
+MAYORIQUE            : 
+MAYORQUE             : 
+MENORIQUE            : 
+MENORQUE             : 
+MENOS                : 
+MODULO               : 
+MUT                  : 
+NEW                  : 
+NOIGUALQUE           : 
+NOT                  : 4
+OR                   : 
+PARDER               : 4
+PARIZQ               : 4
+POR                  : 
+POW                  : 
+POWF                 : 
+PRINTLN              : 4
+PTCOMA               : 4
+PTO                  : 
+PUSH                 : 
+REMOVE               : 
+RETURN               : 
+SIGNOI               : 
+SQRT                 : 
+STR                  : 
+STRING               : 
+TOOWNED              : 
+TOSTRING             : 
+TRUE                 : 
+USIZE                : 
+VEC                  : 
+VVEC                 : 
+WHILE                : 
+WITH_CAPACITY        : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+expresion            : 4
+imprimir             : 3
+inicio               : 0
+instruccion          : 2
+instrucciones        : 1
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . inicio
+    (1) inicio -> . instrucciones
+    (2) instrucciones -> . instruccion
+    (3) instruccion -> . imprimir
+    (4) imprimir -> . PRINTLN NOT PARIZQ expresion PARDER PTCOMA
+
+    PRINTLN         shift and go to state 5
+
+    inicio                         shift and go to state 1
+    instrucciones                  shift and go to state 2
+    instruccion                    shift and go to state 3
+    imprimir                       shift and go to state 4
+
+state 1
+
+    (0) S' -> inicio .
+
+
+
+state 2
+
+    (1) inicio -> instrucciones .
+
+    $end            reduce using rule 1 (inicio -> instrucciones .)
+
+
+state 3
+
+    (2) instrucciones -> instruccion .
+
+    $end            reduce using rule 2 (instrucciones -> instruccion .)
+
+
+state 4
+
+    (3) instruccion -> imprimir .
+
+    $end            reduce using rule 3 (instruccion -> imprimir .)
+
+
+state 5
+
+    (4) imprimir -> PRINTLN . NOT PARIZQ expresion PARDER PTCOMA
+
+    NOT             shift and go to state 6
+
+
+state 6
+
+    (4) imprimir -> PRINTLN NOT . PARIZQ expresion PARDER PTCOMA
+
+    PARIZQ          shift and go to state 7
+
+
+state 7
+
+    (4) imprimir -> PRINTLN NOT PARIZQ . expresion PARDER PTCOMA
+    (5) expresion -> . CADENA
+
+    CADENA          shift and go to state 9
+
+    expresion                      shift and go to state 8
+
+state 8
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresion . PARDER PTCOMA
+
+    PARDER          shift and go to state 10
+
+
+state 9
+
+    (5) expresion -> CADENA .
+
+    PARDER          reduce using rule 5 (expresion -> CADENA .)
+
+
+state 10
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresion PARDER . PTCOMA
+
+    PTCOMA          shift and go to state 11
+
+
+state 11
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA .
+
+    $end            reduce using rule 4 (imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA .)
+

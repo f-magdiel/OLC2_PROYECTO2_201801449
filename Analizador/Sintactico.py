@@ -1,5 +1,6 @@
 import ply.yacc as yacc
-# from Analizador.Lexico import tokens
+from Analizador.Lexico import tokens
+from Enum.TipoPrimitivo import TipoPrimitivo
 # from Instrucciones.Arreglo import Arreglo
 # from Instrucciones.Declaracion import DeclaracionVariable
 # from Instrucciones.Imprimir import Imprimir
@@ -42,23 +43,30 @@ import ply.yacc as yacc
 # from Expresiones.Casteos import Casteos
 # from Expresiones.FuncionesNativas import FuncionesNativas
 # from Enumeradas.Nativas import NATIVAS
-# from Reportes.TipoError import TIPIN_ERROR
-# from Reportes.Contenido import Tabla_Errorres, Errores
+from Reporte.TipoError import TIPIN_ERROR
+from Reporte.Contenido import Tabla_Errorres, Errores
+from Instrucciones.Imprimir import Imprimir
+from Expresiones.Cadena import Cadena
+from Generador.Generador import Generador
+from Entorno.Entorno import Entorno
 
-# ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
-precedence = (
-    ('left', 'OR'),
-    ('left', 'AND'),
-    ('left', 'IGUALQUE', 'NOIGUALQUE', 'MENORQUE', 'MENORIQUE', 'MAYORQUE', 'MAYORIQUE'),
-    ('left', 'MAS', 'MENOS'),
-    ('left', 'DIVIDIDO', 'POR', 'MODULO'),
-    ('left', 'AS'),
-    ('right', 'UMENOS', 'NOT'),
-    ('nonassoc', 'PTO'),
 
-)
-
-# ?--------------------------------------------PRODUCCIONES------------------------------------------------------------
+#
+# # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
+# precedence = (
+#     ('left', 'OR'),
+#     ('left', 'AND'),
+#     ('left', 'IGUALQUE', 'NOIGUALQUE', 'MENORQUE', 'MENORIQUE', 'MAYORQUE', 'MAYORIQUE'),
+#     ('left', 'MAS', 'MENOS'),
+#     ('left', 'DIVIDIDO', 'POR', 'MODULO'),
+#     ('left', 'AS'),
+#     ('right', 'UMENOS', 'NOT'),
+#     ('nonassoc', 'PTO'),
+#
+# )
+#
+#
+# # ?--------------------------------------------PRODUCCIONES------------------------------------------------------------
 # def p_inicio_inicio(t):
 #     'inicio : instrucciones main instrucciones'
 #     ins = t[3]
@@ -67,7 +75,7 @@ precedence = (
 #     t[1].append(t[2])
 #     t[0] = t[1]
 #
-# 
+#
 # def p_inicio1(t):
 #     'inicio : instrucciones main'
 #     t.lexer.lineno = 1
@@ -100,30 +108,47 @@ precedence = (
 #     t[0] = t[1]
 #
 #
-# def p_instrucciones2(t):
-#     'instrucciones : instruccion'
-#     t[0] = [t[1]]
+
+def p_inicio(t):
+    'inicio : instrucciones'
+    generadorGlob = Generador()
+    entornoGlob = Entorno(None)
+    for instru in t[1]:
+        if instru:
+            instru.generador = generadorGlob
+            instru.ejecutar(entornoGlob)
+
+    t[0] = generadorGlob.obtenerCodigo()
+
+
+def p_instrucciones2(t):
+    'instrucciones : instruccion'
+    t[0] = [t[1]]
+
+
 #
 #
-# def p_instrucion(t):
-#     '''instruccion : declaracion
-#                     | imprimir
-#                     | asignacion
-#                     | if
-#                     | match
-#                     | loop
-#                     | while
-#                     | break
-#                     | return
-#                     | continue
-#                     | funciones
-#                     | llamada_funciones PTCOMA
-#                     | declaracion_arreglos
-#                     | declaracion_vector
-#                     | forin
-#                     | nativas_vector
-#     '''
-#     t[0] = t[1]
+def p_instrucion(t):
+    '''instruccion : imprimir'''
+    #                     | declaracion
+    #                     | asignacion
+    #                     | if
+    #                     | match
+    #                     | loop
+    #                     | while
+    #                     | break
+    #                     | return
+    #                     | continue
+    #                     | funciones
+    #                     | llamada_funciones PTCOMA
+    #                     | declaracion_arreglos
+    #                     | declaracion_vector
+    #                     | forin
+    #                     | nativas_vector
+    #     '''
+    t[0] = t[1]
+
+
 #
 #
 # # !-------------------------------------VECTORES-----------------------------------------------------------------
@@ -317,9 +342,11 @@ precedence = (
 #     t[0] = Imprimir(t.lineno(2), t[4], t[6])
 #
 #
-# def p_imprimir2(t):
-#     'imprimir : PRINTLN NOT PARIZQ expresion PARDER PTCOMA'
-#     t[0] = Imprimir(t.lineno(2), t[4], None)
+def p_imprimir2(t):
+    'imprimir : PRINTLN NOT PARIZQ expresion PARDER PTCOMA'
+    t[0] = Imprimir(t.lineno(2), t[4])
+
+
 #
 #
 # # !--------------------------------------------DECLARACION-------------------------------------------------------------
@@ -608,9 +635,9 @@ precedence = (
 #     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.STR, t[1])
 #
 #
-# def p_expresion_cadena1(t):
-#     'expresion : CADENA'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.STR, str(t[1]))
+def p_expresion_cadena1(t):
+    'expresion : CADENA'
+    t[0] = Cadena(t.lineno(1), TipoPrimitivo.STR, str(t[1]))
 #
 #
 # def p_expresion_caracter(t):
@@ -910,7 +937,15 @@ precedence = (
 #
 # def report(self):
 #     return self.errors
-
-
-# !---------------------------------------Se ejecuta el parser---------------------------------------------------------
+#
+#
+# # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
+entrada = r'''
+println!("hola");
+'''
+print("Inicia analizador...")
+instruc = parser.parse(entrada)
+print(instruc)
+
+print("Finaliza analizador...")
