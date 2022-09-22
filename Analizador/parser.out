@@ -12,7 +12,6 @@ Unused terminals:
     CARACTER
     CHAR
     CLONE
-    COMA
     CONTAINS
     CONTINUE
     CORDER
@@ -21,7 +20,6 @@ Unused terminals:
     DIVIDIDO
     DOSPT
     ELSE
-    ENTERO
     F64
     FALSE
     FN
@@ -78,8 +76,11 @@ Rule 0     S' -> inicio
 Rule 1     inicio -> instrucciones
 Rule 2     instrucciones -> instruccion
 Rule 3     instruccion -> imprimir
-Rule 4     imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA
-Rule 5     expresion -> CADENA
+Rule 4     imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
+Rule 5     expresiones -> expresiones COMA expresion
+Rule 6     expresiones -> expresion
+Rule 7     expresion -> ENTERO
+Rule 8     expresion -> CADENA
 
 Terminals, with rules where they appear
 
@@ -89,12 +90,12 @@ AS                   :
 BARRAS               : 
 BOOL                 : 
 BREAK                : 
-CADENA               : 5
+CADENA               : 8
 CAPACITY             : 
 CARACTER             : 
 CHAR                 : 
 CLONE                : 
-COMA                 : 
+COMA                 : 5
 CONTAINS             : 
 CONTINUE             : 
 CORDER               : 
@@ -103,7 +104,7 @@ DECIMAL              :
 DIVIDIDO             : 
 DOSPT                : 
 ELSE                 : 
-ENTERO               : 
+ENTERO               : 7
 F64                  : 
 FALSE                : 
 FN                   : 
@@ -162,7 +163,8 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expresion            : 4
+expresion            : 5 6
+expresiones          : 4 5
 imprimir             : 3
 inicio               : 0
 instruccion          : 2
@@ -176,7 +178,7 @@ state 0
     (1) inicio -> . instrucciones
     (2) instrucciones -> . instruccion
     (3) instruccion -> . imprimir
-    (4) imprimir -> . PRINTLN NOT PARIZQ expresion PARDER PTCOMA
+    (4) imprimir -> . PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
 
     PRINTLN         shift and go to state 5
 
@@ -214,51 +216,94 @@ state 4
 
 state 5
 
-    (4) imprimir -> PRINTLN . NOT PARIZQ expresion PARDER PTCOMA
+    (4) imprimir -> PRINTLN . NOT PARIZQ expresiones PARDER PTCOMA
 
     NOT             shift and go to state 6
 
 
 state 6
 
-    (4) imprimir -> PRINTLN NOT . PARIZQ expresion PARDER PTCOMA
+    (4) imprimir -> PRINTLN NOT . PARIZQ expresiones PARDER PTCOMA
 
     PARIZQ          shift and go to state 7
 
 
 state 7
 
-    (4) imprimir -> PRINTLN NOT PARIZQ . expresion PARDER PTCOMA
-    (5) expresion -> . CADENA
+    (4) imprimir -> PRINTLN NOT PARIZQ . expresiones PARDER PTCOMA
+    (5) expresiones -> . expresiones COMA expresion
+    (6) expresiones -> . expresion
+    (7) expresion -> . ENTERO
+    (8) expresion -> . CADENA
 
-    CADENA          shift and go to state 9
+    ENTERO          shift and go to state 10
+    CADENA          shift and go to state 11
 
-    expresion                      shift and go to state 8
+    expresiones                    shift and go to state 8
+    expresion                      shift and go to state 9
 
 state 8
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresion . PARDER PTCOMA
+    (4) imprimir -> PRINTLN NOT PARIZQ expresiones . PARDER PTCOMA
+    (5) expresiones -> expresiones . COMA expresion
 
-    PARDER          shift and go to state 10
+    PARDER          shift and go to state 12
+    COMA            shift and go to state 13
 
 
 state 9
 
-    (5) expresion -> CADENA .
+    (6) expresiones -> expresion .
 
-    PARDER          reduce using rule 5 (expresion -> CADENA .)
+    PARDER          reduce using rule 6 (expresiones -> expresion .)
+    COMA            reduce using rule 6 (expresiones -> expresion .)
 
 
 state 10
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresion PARDER . PTCOMA
+    (7) expresion -> ENTERO .
 
-    PTCOMA          shift and go to state 11
+    PARDER          reduce using rule 7 (expresion -> ENTERO .)
+    COMA            reduce using rule 7 (expresion -> ENTERO .)
 
 
 state 11
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA .
+    (8) expresion -> CADENA .
 
-    $end            reduce using rule 4 (imprimir -> PRINTLN NOT PARIZQ expresion PARDER PTCOMA .)
+    PARDER          reduce using rule 8 (expresion -> CADENA .)
+    COMA            reduce using rule 8 (expresion -> CADENA .)
+
+
+state 12
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER . PTCOMA
+
+    PTCOMA          shift and go to state 14
+
+
+state 13
+
+    (5) expresiones -> expresiones COMA . expresion
+    (7) expresion -> . ENTERO
+    (8) expresion -> . CADENA
+
+    ENTERO          shift and go to state 10
+    CADENA          shift and go to state 11
+
+    expresion                      shift and go to state 15
+
+state 14
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .
+
+    $end            reduce using rule 4 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
+
+
+state 15
+
+    (5) expresiones -> expresiones COMA expresion .
+
+    PARDER          reduce using rule 5 (expresiones -> expresiones COMA expresion .)
+    COMA            reduce using rule 5 (expresiones -> expresiones COMA expresion .)
 

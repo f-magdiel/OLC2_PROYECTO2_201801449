@@ -49,6 +49,7 @@ from Instrucciones.Imprimir import Imprimir
 from Expresiones.Cadena import Cadena
 from Generador.Generador import Generador
 from Entorno.Entorno import Entorno
+from Expresiones.Numero import Numero
 
 
 #
@@ -339,11 +340,17 @@ def p_instrucion(t):
 #
 # def p_imprimir1(t):
 #     'imprimir : PRINTLN NOT PARIZQ expresion COMA expresiones PARDER PTCOMA'
-#     t[0] = Imprimir(t.lineno(2), t[4], t[6])
+#     #tmp = [t[4], t[6]]
+#     #tmp.append(t[4])
+#     #tmp.append(t[6])
+#     # t[4].append(t[6])
+#     t[0] = Imprimir(t.lineno(2), t[6])
+
+
 #
 #
 def p_imprimir2(t):
-    'imprimir : PRINTLN NOT PARIZQ expresion PARDER PTCOMA'
+    'imprimir : PRINTLN NOT PARIZQ expresiones PARDER PTCOMA'
     t[0] = Imprimir(t.lineno(2), t[4])
 
 
@@ -578,15 +585,19 @@ def p_imprimir2(t):
 #
 #
 # # !------------------------------------------------EXPRESIONES---------------------------------------------------------
-# def p_expresiones1(t):
-#     ' expresiones : expresiones COMA expresion'
-#     t[1].append(t[3])
-#     t[0] = t[1]
+def p_expresiones1(t):
+    ' expresiones : expresiones COMA expresion'
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
 #
 #
-# def p_expresiones2(t):
-#     'expresiones : expresion'
-#     t[0] = [t[1]]
+def p_expresiones2(t):
+    'expresiones : expresion'
+    t[0] = [t[1]]
+
+
 #
 #
 # def p_expresion_id(t):
@@ -594,9 +605,9 @@ def p_imprimir2(t):
 #     t[0] = Id(t.lineno(1), str(t[1]))
 #
 #
-# def p_expresion_entero(t):
-#     'expresion : ENTERO'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.I64, int(t[1]))
+def p_expresion_entero(t):
+    'expresion : ENTERO'
+    t[0] = Numero(t.lineno(1), TipoPrimitivo.I64, t[1])
 #
 #
 # def p_expresion_decimal(t):
@@ -638,6 +649,8 @@ def p_imprimir2(t):
 def p_expresion_cadena1(t):
     'expresion : CADENA'
     t[0] = Cadena(t.lineno(1), TipoPrimitivo.STR, str(t[1]))
+
+
 #
 #
 # def p_expresion_caracter(t):
@@ -941,8 +954,8 @@ def p_expresion_cadena1(t):
 #
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
-entrada = r'''
-println!("hola");
+entrada = '''
+println!("Nombre1 {}, Nombre2 {}, sale con {}", "Javs", "Frank", 100);
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)

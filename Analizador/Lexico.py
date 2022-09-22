@@ -115,6 +115,7 @@ t_PARDER = r'\)'
 t_SIGNOI = r'\&'
 t_BARRAS = r'\|'
 t_GUIONB = r'\_'
+t_ENTERO = r'\d+'
 
 
 # ?---------------FUNCIONES----------------------------
@@ -134,14 +135,14 @@ def t_DECIMAL(t):
     return t
 
 
-def t_ENTERO(t):
-    r'\d+'
-    try:
-        t.value = int(t.value)
-    except ValueError:
-        desc = f'Valor entero incorrecto {t.value}'
-        t.value = 0
-    return t
+# def t_ENTERO(t):
+#     r'\d+'
+#     try:
+#         t.value = int(t.value)
+#     except ValueError:
+#         desc = f'Valor entero incorrecto {t.value}'
+#         t.value = 0
+#     return t
 
 
 def t_CARACTER(t):

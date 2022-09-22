@@ -11,12 +11,19 @@ class Cadena(Expresion):
 
     def ejecutar(self, entorno: Entorno):
         temp = self.generador.nuevoTemp()
-        self.generador.agregarExpresion(temp, "H", "", "")
+        self.generador.agregarExpresion(temp, "P", "", "")
         # Recorrer la cadena
-        for c in self.valor:
-            self.generador.agregarValorHeap("H", str(ord(c)))
-            self.generador.sigHeap()
+        for char in self.valor:
+            if char == '{':
+                self.generador.agregarValorHeap("P", "-2")
+                self.generador.sigHeap()
+            elif char == '}':
+                continue
+            else:
+                self.generador.agregarValorHeap("P", str(ord(char)))
+                self.generador.sigHeap()
         # Agregar el final de cadena
-        self.generador.agregarValorHeap("H", "-1")
+        self.generador.agregarValorHeap("P", "-1")
+        self.generador.sigHeap()
         # Retornar el VALOR
         return Valor(self.fila, temp, True, self.tipo)

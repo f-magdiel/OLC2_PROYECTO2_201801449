@@ -15,11 +15,9 @@ class Generador:
         codigoTemp += "#include <stdio.h>\n"
         codigoTemp += "#include <math.h>\n"
         codigoTemp += "double HEAP[10000];\n"
-        codigoTemp += "double HEAP[10000];\n"
+        codigoTemp += "double STACK[10000];\n"
         codigoTemp += "double P;\n"
         codigoTemp += "double H;\n"
-
-
 
 
 
@@ -55,7 +53,7 @@ class Generador:
         self.codigo.append(target + " = " + left + " " + operador + " " + right + ";")
 
     def agregarIf(self, left, right, operador, label):
-        self.codigo.append("if(" + left + " " + operador + " " + right + ") goto" + label + ";")
+        self.codigo.append("if(" + left + " " + operador + " " + right + ") goto " + label + ";")
 
     def agregarGoto(self, label):
         self.codigo.append("goto " + label + ";")
