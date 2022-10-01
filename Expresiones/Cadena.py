@@ -10,20 +10,34 @@ class Cadena(Expresion):
         self.valor = valor
 
     def ejecutar(self, entorno: Entorno):
+        flag_cadena = False
         temp = self.generador.nuevoTemp()
         self.generador.agregarExpresion(temp, "P", "", "")
+        valor = Valor(self.fila, temp, True, self.tipo)
+        valor.listTemp.append(temp)
+
         # Recorrer la cadena
         for char in self.valor:
-            if char == '{':
-                self.generador.agregarValorHeap("P", "-2")
+            if flag_cadena:
+                flag_cadena = False
+                temp = self.generador.nuevoTemp()
+                self.generador.agregarExpresion(temp, "P", "", "")
+                valor.listTemp.append(temp)
+
+            elif char == '{':
+                self.generador.agregarValorHeap("P", "-1")
                 self.generador.sigHeap()
+                continue
             elif char == '}':
+                valor.listTemp.append("-1")
+                flag_cadena = True
                 continue
             else:
                 self.generador.agregarValorHeap("P", str(ord(char)))
                 self.generador.sigHeap()
-        # Agregar el final de cadena
-        self.generador.agregarValorHeap("P", "-1")
-        self.generador.sigHeap()
-        # Retornar el VALOR
-        return Valor(self.fila, temp, True, self.tipo)
+
+        if not flag_cadena:
+            self.generador.agregarValorHeap("P", "-1")
+            self.generador.sigHeap()
+
+        return valor

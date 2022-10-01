@@ -116,7 +116,7 @@ t_SIGNOI = r'\&'
 t_BARRAS = r'\|'
 t_GUIONB = r'\_'
 t_ENTERO = r'\d+'
-
+t_DECIMAL = r'\d+\.\d+'
 
 # ?---------------FUNCIONES----------------------------
 def t_ID(t):
@@ -125,14 +125,14 @@ def t_ID(t):
     return t
 
 
-def t_DECIMAL(t):
-    r'\d+\.\d+'
-    try:
-        t.value = float(t.value)
-    except ValueError:
-        desc = f'Valor decimal incorrecto {t.value}'
-        t.value = 0
-    return t
+# def t_DECIMAL(t):
+#     r'\d+\.\d+'
+#     try:
+#         t.value = float(t.value)
+#     except ValueError:
+#         desc = f'Valor decimal incorrecto {t.value}'
+#         t.value = 0
+#     return t
 
 
 # def t_ENTERO(t):

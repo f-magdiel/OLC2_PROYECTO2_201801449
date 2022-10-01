@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from Entorno.Entorno import Entorno
 
 
 class Instruccion(ABC):
@@ -9,5 +8,5 @@ class Instruccion(ABC):
         self.generador = None
 
     @abstractmethod
-    def ejecutar(self, entorno: Entorno):
+    def convertir(self, entorno):
         pass

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from Entorno.Entorno import Entorno
 
 
 class Expresion(ABC):
@@ -7,9 +6,8 @@ class Expresion(ABC):
         super().__init__()
         self.fila = fila
         self.generador = None
-        self.isLabel = ""
-        self.notLabel = ""
+
 
     @abstractmethod
-    def ejecutar(self, entorno: Entorno):
+    def convertir(self, entorno):
         pass

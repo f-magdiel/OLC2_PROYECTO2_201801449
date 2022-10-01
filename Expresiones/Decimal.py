@@ -4,7 +4,7 @@ from Entorno.Valor import Valor
 from Enum.TipoPrimitivo import TipoPrimitivo
 
 
-class Numero(Expresion):
+class Decimal(Expresion):
     def __init__(self, fila, tipo, valor):
         super().__init__(fila)
         self.fila = fila
@@ -12,4 +12,4 @@ class Numero(Expresion):
         self.valor = valor
 
     def ejecutar(self, entorno: Entorno):
-        return Valor(self.fila, self.valor, False, TipoPrimitivo.I64)
+        return Valor(self.fila, self.valor, False, TipoPrimitivo.F64)

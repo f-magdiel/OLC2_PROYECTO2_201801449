@@ -1,11 +1,10 @@
 class Valor:
-    def __init__(self, fila, valor, esTemp, tipo):
+    def __init__(self, fila, tipo):
         self.fila = fila
-        self.valor = valor
-        self.esTemp = esTemp
         self.tipo = tipo
-        self.isLabel = ""
-        self.notLabel = ""
+        self.codigo = ""
+        self.reference = None
+        self.trueLabel = ""
+        self.falseLabel = ""
+        self.listTemp = []
 
-    def obtenerValor(self):
-        return self.valor

@@ -49,7 +49,9 @@ from Instrucciones.Imprimir import Imprimir
 from Expresiones.Cadena import Cadena
 from Generador.Generador import Generador
 from Entorno.Entorno import Entorno
-from Expresiones.Numero import Numero
+from Expresiones.Entero import Entero
+from Expresiones.Decimal import Decimal
+from Expresiones.Char import Char
 
 
 #
@@ -607,12 +609,13 @@ def p_expresiones2(t):
 #
 def p_expresion_entero(t):
     'expresion : ENTERO'
-    t[0] = Numero(t.lineno(1), TipoPrimitivo.I64, t[1])
+    t[0] = Entero(t.lineno(1), TipoPrimitivo.I64, str(t[1]))
 #
 #
-# def p_expresion_decimal(t):
-#     'expresion : DECIMAL'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.F64, float(t[1]))
+def p_expresion_decimal(t):
+    'expresion : DECIMAL'
+    t[0] = Decimal(t.lineno(1), TipoPrimitivo.F64, str(t[1]))
+    print(t[0].valor)
 #
 #
 # def p_expresion_true(t):
@@ -653,9 +656,9 @@ def p_expresion_cadena1(t):
 
 #
 #
-# def p_expresion_caracter(t):
-#     'expresion : CARACTER'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.CHAR, str(t[1]))
+def p_expresion_caracter(t):
+    'expresion : CARACTER'
+    t[0] = Char(t.lineno(1), TipoPrimitivo.CHAR, str(t[1]))
 #
 #
 # def p_expresion_aritmetica1(t):

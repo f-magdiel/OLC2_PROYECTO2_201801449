@@ -9,14 +9,12 @@ Unused terminals:
     BOOL
     BREAK
     CAPACITY
-    CARACTER
     CHAR
     CLONE
     CONTAINS
     CONTINUE
     CORDER
     CORIZQ
-    DECIMAL
     DIVIDIDO
     DOSPT
     ELSE
@@ -80,7 +78,9 @@ Rule 4     imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
 Rule 5     expresiones -> expresiones COMA expresion
 Rule 6     expresiones -> expresion
 Rule 7     expresion -> ENTERO
-Rule 8     expresion -> CADENA
+Rule 8     expresion -> DECIMAL
+Rule 9     expresion -> CADENA
+Rule 10    expresion -> CARACTER
 
 Terminals, with rules where they appear
 
@@ -90,9 +90,9 @@ AS                   :
 BARRAS               : 
 BOOL                 : 
 BREAK                : 
-CADENA               : 8
+CADENA               : 9
 CAPACITY             : 
-CARACTER             : 
+CARACTER             : 10
 CHAR                 : 
 CLONE                : 
 COMA                 : 5
@@ -100,7 +100,7 @@ CONTAINS             :
 CONTINUE             : 
 CORDER               : 
 CORIZQ               : 
-DECIMAL              : 
+DECIMAL              : 8
 DIVIDIDO             : 
 DOSPT                : 
 ELSE                 : 
@@ -234,10 +234,14 @@ state 7
     (5) expresiones -> . expresiones COMA expresion
     (6) expresiones -> . expresion
     (7) expresion -> . ENTERO
-    (8) expresion -> . CADENA
+    (8) expresion -> . DECIMAL
+    (9) expresion -> . CADENA
+    (10) expresion -> . CARACTER
 
     ENTERO          shift and go to state 10
-    CADENA          shift and go to state 11
+    DECIMAL         shift and go to state 11
+    CADENA          shift and go to state 12
+    CARACTER        shift and go to state 13
 
     expresiones                    shift and go to state 8
     expresion                      shift and go to state 9
@@ -247,8 +251,8 @@ state 8
     (4) imprimir -> PRINTLN NOT PARIZQ expresiones . PARDER PTCOMA
     (5) expresiones -> expresiones . COMA expresion
 
-    PARDER          shift and go to state 12
-    COMA            shift and go to state 13
+    PARDER          shift and go to state 14
+    COMA            shift and go to state 15
 
 
 state 9
@@ -269,38 +273,58 @@ state 10
 
 state 11
 
-    (8) expresion -> CADENA .
+    (8) expresion -> DECIMAL .
 
-    PARDER          reduce using rule 8 (expresion -> CADENA .)
-    COMA            reduce using rule 8 (expresion -> CADENA .)
+    PARDER          reduce using rule 8 (expresion -> DECIMAL .)
+    COMA            reduce using rule 8 (expresion -> DECIMAL .)
 
 
 state 12
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER . PTCOMA
+    (9) expresion -> CADENA .
 
-    PTCOMA          shift and go to state 14
+    PARDER          reduce using rule 9 (expresion -> CADENA .)
+    COMA            reduce using rule 9 (expresion -> CADENA .)
 
 
 state 13
 
-    (5) expresiones -> expresiones COMA . expresion
-    (7) expresion -> . ENTERO
-    (8) expresion -> . CADENA
+    (10) expresion -> CARACTER .
 
-    ENTERO          shift and go to state 10
-    CADENA          shift and go to state 11
+    PARDER          reduce using rule 10 (expresion -> CARACTER .)
+    COMA            reduce using rule 10 (expresion -> CARACTER .)
 
-    expresion                      shift and go to state 15
 
 state 14
+
+    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER . PTCOMA
+
+    PTCOMA          shift and go to state 16
+
+
+state 15
+
+    (5) expresiones -> expresiones COMA . expresion
+    (7) expresion -> . ENTERO
+    (8) expresion -> . DECIMAL
+    (9) expresion -> . CADENA
+    (10) expresion -> . CARACTER
+
+    ENTERO          shift and go to state 10
+    DECIMAL         shift and go to state 11
+    CADENA          shift and go to state 12
+    CARACTER        shift and go to state 13
+
+    expresion                      shift and go to state 17
+
+state 16
 
     (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .
 
     $end            reduce using rule 4 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
 
 
-state 15
+state 17
 
     (5) expresiones -> expresiones COMA expresion .
 

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ABS AND AS BARRAS BOOL BREAK CADENA CAPACITY CARACTER CHAR CLONE COMA CONTAINS CONTINUE CORDER CORIZQ DECIMAL DIVIDIDO DOSPT ELSE ENTERO F64 FALSE FN FOR GUIONB I64 ID IF IGUAL IGUALQUE IN INSERT LEN LET LLAVEDER LLAVEIZQ LOOP MAIN MAS MATCH MAYORIQUE MAYORQUE MENORIQUE MENORQUE MENOS MODULO MUT NEW NOIGUALQUE NOT OR PARDER PARIZQ POR POW POWF PRINTLN PTCOMA PTO PUSH REMOVE RETURN SIGNOI SQRT STR STRING TOOWNED TOSTRING TRUE USIZE VEC VVEC WHILE WITH_CAPACITYinicio : instruccionesinstrucciones : instruccioninstruccion : imprimirimprimir : PRINTLN NOT PARIZQ expresiones PARDER PTCOMA expresiones : expresiones COMA expresionexpresiones : expresionexpresion : ENTEROexpresion : CADENA'
+_lr_signature = 'ABS AND AS BARRAS BOOL BREAK CADENA CAPACITY CARACTER CHAR CLONE COMA CONTAINS CONTINUE CORDER CORIZQ DECIMAL DIVIDIDO DOSPT ELSE ENTERO F64 FALSE FN FOR GUIONB I64 ID IF IGUAL IGUALQUE IN INSERT LEN LET LLAVEDER LLAVEIZQ LOOP MAIN MAS MATCH MAYORIQUE MAYORQUE MENORIQUE MENORQUE MENOS MODULO MUT NEW NOIGUALQUE NOT OR PARDER PARIZQ POR POW POWF PRINTLN PTCOMA PTO PUSH REMOVE RETURN SIGNOI SQRT STR STRING TOOWNED TOSTRING TRUE USIZE VEC VVEC WHILE WITH_CAPACITYinicio : instruccionesinstrucciones : instruccioninstruccion : imprimirimprimir : PRINTLN NOT PARIZQ expresiones PARDER PTCOMA expresiones : expresiones COMA expresionexpresiones : expresionexpresion : ENTEROexpresion : DECIMALexpresion : CADENAexpresion : CARACTER'
     
-_lr_action_items = {'PRINTLN':([0,],[5,]),'$end':([1,2,3,4,14,],[0,-1,-2,-3,-4,]),'NOT':([5,],[6,]),'PARIZQ':([6,],[7,]),'ENTERO':([7,13,],[10,10,]),'CADENA':([7,13,],[11,11,]),'PARDER':([8,9,10,11,15,],[12,-6,-7,-8,-5,]),'COMA':([8,9,10,11,15,],[13,-6,-7,-8,-5,]),'PTCOMA':([12,],[14,]),}
+_lr_action_items = {'PRINTLN':([0,],[5,]),'$end':([1,2,3,4,16,],[0,-1,-2,-3,-4,]),'NOT':([5,],[6,]),'PARIZQ':([6,],[7,]),'ENTERO':([7,15,],[10,10,]),'DECIMAL':([7,15,],[11,11,]),'CADENA':([7,15,],[12,12,]),'CARACTER':([7,15,],[13,13,]),'PARDER':([8,9,10,11,12,13,17,],[14,-6,-7,-8,-9,-10,-5,]),'COMA':([8,9,10,11,12,13,17,],[15,-6,-7,-8,-9,-10,-5,]),'PTCOMA':([14,],[16,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'inicio':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,],[3,]),'imprimir':([0,],[4,]),'expresiones':([7,],[8,]),'expresion':([7,13,],[9,15,]),}
+_lr_goto_items = {'inicio':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,],[3,]),'imprimir':([0,],[4,]),'expresiones':([7,],[8,]),'expresion':([7,15,],[9,17,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,12 +27,14 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> inicio","S'",1,None,None,None),
-  ('inicio -> instrucciones','inicio',1,'p_inicio','Sintactico.py',114),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones2','Sintactico.py',126),
-  ('instruccion -> imprimir','instruccion',1,'p_instrucion','Sintactico.py',133),
-  ('imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA','imprimir',6,'p_imprimir2','Sintactico.py',353),
-  ('expresiones -> expresiones COMA expresion','expresiones',3,'p_expresiones1','Sintactico.py',589),
-  ('expresiones -> expresion','expresiones',1,'p_expresiones2','Sintactico.py',597),
-  ('expresion -> ENTERO','expresion',1,'p_expresion_entero','Sintactico.py',609),
-  ('expresion -> CADENA','expresion',1,'p_expresion_cadena1','Sintactico.py',650),
+  ('inicio -> instrucciones','inicio',1,'p_inicio','Sintactico.py',116),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones2','Sintactico.py',128),
+  ('instruccion -> imprimir','instruccion',1,'p_instrucion','Sintactico.py',135),
+  ('imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA','imprimir',6,'p_imprimir2','Sintactico.py',355),
+  ('expresiones -> expresiones COMA expresion','expresiones',3,'p_expresiones1','Sintactico.py',591),
+  ('expresiones -> expresion','expresiones',1,'p_expresiones2','Sintactico.py',599),
+  ('expresion -> ENTERO','expresion',1,'p_expresion_entero','Sintactico.py',611),
+  ('expresion -> DECIMAL','expresion',1,'p_expresion_decimal','Sintactico.py',616),
+  ('expresion -> CADENA','expresion',1,'p_expresion_cadena1','Sintactico.py',653),
+  ('expresion -> CARACTER','expresion',1,'p_expresion_caracter','Sintactico.py',660),
 ]
