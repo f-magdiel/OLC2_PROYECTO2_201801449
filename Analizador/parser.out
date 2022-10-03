@@ -2,67 +2,34 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    ABS
     AND
-    AS
     BARRAS
-    BOOL
     BREAK
     CAPACITY
-    CHAR
-    CLONE
     CONTAINS
     CONTINUE
     CORDER
     CORIZQ
-    DIVIDIDO
-    DOSPT
     ELSE
-    F64
-    FALSE
     FN
     FOR
     GUIONB
-    I64
-    ID
     IF
-    IGUAL
-    IGUALQUE
     IN
     INSERT
     LEN
-    LET
     LLAVEDER
     LLAVEIZQ
     LOOP
     MAIN
-    MAS
     MATCH
-    MAYORIQUE
-    MAYORQUE
-    MENORIQUE
-    MENORQUE
-    MENOS
-    MODULO
-    MUT
     NEW
-    NOIGUALQUE
     OR
-    POR
-    POW
-    POWF
-    PTO
     PUSH
     REMOVE
     RETURN
     SIGNOI
-    SQRT
     STR
-    STRING
-    TOOWNED
-    TOSTRING
-    TRUE
-    USIZE
     VEC
     VVEC
     WHILE
@@ -72,89 +39,129 @@ Grammar
 
 Rule 0     S' -> inicio
 Rule 1     inicio -> instrucciones
-Rule 2     instrucciones -> instruccion
-Rule 3     instruccion -> imprimir
-Rule 4     imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
-Rule 5     expresiones -> expresiones COMA expresion
-Rule 6     expresiones -> expresion
-Rule 7     expresion -> ENTERO
-Rule 8     expresion -> DECIMAL
-Rule 9     expresion -> CADENA
-Rule 10    expresion -> CARACTER
+Rule 2     instrucciones -> instrucciones instruccion
+Rule 3     instrucciones -> instruccion
+Rule 4     instruccion -> imprimir
+Rule 5     instruccion -> declaracion
+Rule 6     imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
+Rule 7     declaracion -> LET MUT ID DOSPT tipo IGUAL expresion PTCOMA
+Rule 8     declaracion -> LET MUT ID IGUAL expresion PTCOMA
+Rule 9     declaracion -> LET ID DOSPT tipo IGUAL expresion PTCOMA
+Rule 10    declaracion -> LET ID IGUAL expresion PTCOMA
+Rule 11    tipo -> I64
+Rule 12    tipo -> F64
+Rule 13    tipo -> BOOL
+Rule 14    tipo -> CHAR
+Rule 15    tipo -> STRING
+Rule 16    tipo -> USIZE
+Rule 17    expresiones -> expresiones COMA expresion
+Rule 18    expresiones -> expresion
+Rule 19    expresion -> ENTERO
+Rule 20    expresion -> DECIMAL
+Rule 21    expresion -> TRUE
+Rule 22    expresion -> FALSE
+Rule 23    expresion -> tostring
+Rule 24    expresion -> toowned
+Rule 25    tostring -> expresion PTO TOSTRING PARIZQ PARDER
+Rule 26    toowned -> expresion PTO TOOWNED PARIZQ PARDER
+Rule 27    expresion -> CADENA
+Rule 28    expresion -> CARACTER
+Rule 29    expresion -> expresion MAS expresion
+Rule 30    expresion -> expresion MENOS expresion
+Rule 31    expresion -> expresion POR expresion
+Rule 32    expresion -> expresion DIVIDIDO expresion
+Rule 33    expresion -> expresion MODULO expresion
+Rule 34    expresion -> MENOS expresion
+Rule 35    expresion -> NOT expresion
+Rule 36    expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+Rule 37    expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+Rule 38    expresion -> expresion IGUALQUE expresion
+Rule 39    expresion -> expresion NOIGUALQUE expresion
+Rule 40    expresion -> expresion MENORQUE expresion
+Rule 41    expresion -> expresion MAYORQUE expresion
+Rule 42    expresion -> expresion MENORIQUE expresion
+Rule 43    expresion -> expresion MAYORIQUE expresion
+Rule 44    expresion -> PARIZQ expresion PARDER
+Rule 45    expresion -> PARIZQ expresion AS tipo PARDER
+Rule 46    expresion -> nativas_fun
+Rule 47    nativas_fun -> expresion PTO ABS PARIZQ PARDER
+Rule 48    nativas_fun -> expresion PTO SQRT PARIZQ PARDER
+Rule 49    nativas_fun -> expresion PTO CLONE PARIZQ PARDER
 
 Terminals, with rules where they appear
 
-ABS                  : 
+ABS                  : 47
 AND                  : 
-AS                   : 
+AS                   : 45
 BARRAS               : 
-BOOL                 : 
+BOOL                 : 13
 BREAK                : 
-CADENA               : 9
+CADENA               : 27
 CAPACITY             : 
-CARACTER             : 10
-CHAR                 : 
-CLONE                : 
-COMA                 : 5
+CARACTER             : 28
+CHAR                 : 14
+CLONE                : 49
+COMA                 : 17 36 37
 CONTAINS             : 
 CONTINUE             : 
 CORDER               : 
 CORIZQ               : 
-DECIMAL              : 8
-DIVIDIDO             : 
-DOSPT                : 
+DDOSPT               : 36 37
+DECIMAL              : 20
+DIVIDIDO             : 32
+DOSPT                : 7 9
 ELSE                 : 
-ENTERO               : 7
-F64                  : 
-FALSE                : 
+ENTERO               : 19
+F64                  : 12 37
+FALSE                : 22
 FN                   : 
 FOR                  : 
 GUIONB               : 
-I64                  : 
-ID                   : 
+I64                  : 11 36
+ID                   : 7 8 9 10
 IF                   : 
-IGUAL                : 
-IGUALQUE             : 
+IGUAL                : 7 8 9 10
+IGUALQUE             : 38
 IN                   : 
 INSERT               : 
 LEN                  : 
-LET                  : 
+LET                  : 7 8 9 10
 LLAVEDER             : 
 LLAVEIZQ             : 
 LOOP                 : 
 MAIN                 : 
-MAS                  : 
+MAS                  : 29
 MATCH                : 
-MAYORIQUE            : 
-MAYORQUE             : 
-MENORIQUE            : 
-MENORQUE             : 
-MENOS                : 
-MODULO               : 
-MUT                  : 
+MAYORIQUE            : 43
+MAYORQUE             : 41
+MENORIQUE            : 42
+MENORQUE             : 40
+MENOS                : 30 34
+MODULO               : 33
+MUT                  : 7 8
 NEW                  : 
-NOIGUALQUE           : 
-NOT                  : 4
+NOIGUALQUE           : 39
+NOT                  : 6 35
 OR                   : 
-PARDER               : 4
-PARIZQ               : 4
-POR                  : 
-POW                  : 
-POWF                 : 
-PRINTLN              : 4
-PTCOMA               : 4
-PTO                  : 
+PARDER               : 6 25 26 36 37 44 45 47 48 49
+PARIZQ               : 6 25 26 36 37 44 45 47 48 49
+POR                  : 31
+POW                  : 36
+POWF                 : 37
+PRINTLN              : 6
+PTCOMA               : 6 7 8 9 10
+PTO                  : 25 26 47 48 49
 PUSH                 : 
 REMOVE               : 
 RETURN               : 
 SIGNOI               : 
-SQRT                 : 
+SQRT                 : 48
 STR                  : 
-STRING               : 
-TOOWNED              : 
-TOSTRING             : 
-TRUE                 : 
-USIZE                : 
+STRING               : 15
+TOOWNED              : 26
+TOSTRING             : 25
+TRUE                 : 21
+USIZE                : 16
 VEC                  : 
 VVEC                 : 
 WHILE                : 
@@ -163,12 +170,17 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expresion            : 5 6
-expresiones          : 4 5
-imprimir             : 3
+declaracion          : 5
+expresion            : 7 8 9 10 17 18 25 26 29 29 30 30 31 31 32 32 33 33 34 35 36 36 37 37 38 38 39 39 40 40 41 41 42 42 43 43 44 45 47 48 49
+expresiones          : 6 17
+imprimir             : 4
 inicio               : 0
-instruccion          : 2
-instrucciones        : 1
+instruccion          : 2 3
+instrucciones        : 1 2
+nativas_fun          : 46
+tipo                 : 7 9 45
+toowned              : 24
+tostring             : 23
 
 Parsing method: LALR
 
@@ -176,16 +188,24 @@ state 0
 
     (0) S' -> . inicio
     (1) inicio -> . instrucciones
-    (2) instrucciones -> . instruccion
-    (3) instruccion -> . imprimir
-    (4) imprimir -> . PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
+    (2) instrucciones -> . instrucciones instruccion
+    (3) instrucciones -> . instruccion
+    (4) instruccion -> . imprimir
+    (5) instruccion -> . declaracion
+    (6) imprimir -> . PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
+    (7) declaracion -> . LET MUT ID DOSPT tipo IGUAL expresion PTCOMA
+    (8) declaracion -> . LET MUT ID IGUAL expresion PTCOMA
+    (9) declaracion -> . LET ID DOSPT tipo IGUAL expresion PTCOMA
+    (10) declaracion -> . LET ID IGUAL expresion PTCOMA
 
-    PRINTLN         shift and go to state 5
+    PRINTLN         shift and go to state 6
+    LET             shift and go to state 7
 
     inicio                         shift and go to state 1
     instrucciones                  shift and go to state 2
     instruccion                    shift and go to state 3
     imprimir                       shift and go to state 4
+    declaracion                    shift and go to state 5
 
 state 1
 
@@ -196,138 +216,3120 @@ state 1
 state 2
 
     (1) inicio -> instrucciones .
+    (2) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . imprimir
+    (5) instruccion -> . declaracion
+    (6) imprimir -> . PRINTLN NOT PARIZQ expresiones PARDER PTCOMA
+    (7) declaracion -> . LET MUT ID DOSPT tipo IGUAL expresion PTCOMA
+    (8) declaracion -> . LET MUT ID IGUAL expresion PTCOMA
+    (9) declaracion -> . LET ID DOSPT tipo IGUAL expresion PTCOMA
+    (10) declaracion -> . LET ID IGUAL expresion PTCOMA
 
     $end            reduce using rule 1 (inicio -> instrucciones .)
+    PRINTLN         shift and go to state 6
+    LET             shift and go to state 7
 
+    instruccion                    shift and go to state 8
+    imprimir                       shift and go to state 4
+    declaracion                    shift and go to state 5
 
 state 3
 
-    (2) instrucciones -> instruccion .
+    (3) instrucciones -> instruccion .
 
-    $end            reduce using rule 2 (instrucciones -> instruccion .)
+    PRINTLN         reduce using rule 3 (instrucciones -> instruccion .)
+    LET             reduce using rule 3 (instrucciones -> instruccion .)
+    $end            reduce using rule 3 (instrucciones -> instruccion .)
 
 
 state 4
 
-    (3) instruccion -> imprimir .
+    (4) instruccion -> imprimir .
 
-    $end            reduce using rule 3 (instruccion -> imprimir .)
+    PRINTLN         reduce using rule 4 (instruccion -> imprimir .)
+    LET             reduce using rule 4 (instruccion -> imprimir .)
+    $end            reduce using rule 4 (instruccion -> imprimir .)
 
 
 state 5
 
-    (4) imprimir -> PRINTLN . NOT PARIZQ expresiones PARDER PTCOMA
+    (5) instruccion -> declaracion .
 
-    NOT             shift and go to state 6
+    PRINTLN         reduce using rule 5 (instruccion -> declaracion .)
+    LET             reduce using rule 5 (instruccion -> declaracion .)
+    $end            reduce using rule 5 (instruccion -> declaracion .)
 
 
 state 6
 
-    (4) imprimir -> PRINTLN NOT . PARIZQ expresiones PARDER PTCOMA
+    (6) imprimir -> PRINTLN . NOT PARIZQ expresiones PARDER PTCOMA
 
-    PARIZQ          shift and go to state 7
+    NOT             shift and go to state 9
 
 
 state 7
 
-    (4) imprimir -> PRINTLN NOT PARIZQ . expresiones PARDER PTCOMA
-    (5) expresiones -> . expresiones COMA expresion
-    (6) expresiones -> . expresion
-    (7) expresion -> . ENTERO
-    (8) expresion -> . DECIMAL
-    (9) expresion -> . CADENA
-    (10) expresion -> . CARACTER
+    (7) declaracion -> LET . MUT ID DOSPT tipo IGUAL expresion PTCOMA
+    (8) declaracion -> LET . MUT ID IGUAL expresion PTCOMA
+    (9) declaracion -> LET . ID DOSPT tipo IGUAL expresion PTCOMA
+    (10) declaracion -> LET . ID IGUAL expresion PTCOMA
 
-    ENTERO          shift and go to state 10
-    DECIMAL         shift and go to state 11
-    CADENA          shift and go to state 12
-    CARACTER        shift and go to state 13
+    MUT             shift and go to state 10
+    ID              shift and go to state 11
 
-    expresiones                    shift and go to state 8
-    expresion                      shift and go to state 9
 
 state 8
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresiones . PARDER PTCOMA
-    (5) expresiones -> expresiones . COMA expresion
+    (2) instrucciones -> instrucciones instruccion .
 
-    PARDER          shift and go to state 14
-    COMA            shift and go to state 15
+    PRINTLN         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    LET             reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
 
 
 state 9
 
-    (6) expresiones -> expresion .
+    (6) imprimir -> PRINTLN NOT . PARIZQ expresiones PARDER PTCOMA
 
-    PARDER          reduce using rule 6 (expresiones -> expresion .)
-    COMA            reduce using rule 6 (expresiones -> expresion .)
+    PARIZQ          shift and go to state 12
 
 
 state 10
 
-    (7) expresion -> ENTERO .
+    (7) declaracion -> LET MUT . ID DOSPT tipo IGUAL expresion PTCOMA
+    (8) declaracion -> LET MUT . ID IGUAL expresion PTCOMA
 
-    PARDER          reduce using rule 7 (expresion -> ENTERO .)
-    COMA            reduce using rule 7 (expresion -> ENTERO .)
+    ID              shift and go to state 13
 
 
 state 11
 
-    (8) expresion -> DECIMAL .
+    (9) declaracion -> LET ID . DOSPT tipo IGUAL expresion PTCOMA
+    (10) declaracion -> LET ID . IGUAL expresion PTCOMA
 
-    PARDER          reduce using rule 8 (expresion -> DECIMAL .)
-    COMA            reduce using rule 8 (expresion -> DECIMAL .)
+    DOSPT           shift and go to state 14
+    IGUAL           shift and go to state 15
 
 
 state 12
 
-    (9) expresion -> CADENA .
+    (6) imprimir -> PRINTLN NOT PARIZQ . expresiones PARDER PTCOMA
+    (17) expresiones -> . expresiones COMA expresion
+    (18) expresiones -> . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
 
-    PARDER          reduce using rule 9 (expresion -> CADENA .)
-    COMA            reduce using rule 9 (expresion -> CADENA .)
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
 
+    expresiones                    shift and go to state 18
+    expresion                      shift and go to state 19
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
 
 state 13
 
-    (10) expresion -> CARACTER .
+    (7) declaracion -> LET MUT ID . DOSPT tipo IGUAL expresion PTCOMA
+    (8) declaracion -> LET MUT ID . IGUAL expresion PTCOMA
 
-    PARDER          reduce using rule 10 (expresion -> CARACTER .)
-    COMA            reduce using rule 10 (expresion -> CARACTER .)
+    DOSPT           shift and go to state 32
+    IGUAL           shift and go to state 33
 
 
 state 14
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER . PTCOMA
+    (9) declaracion -> LET ID DOSPT . tipo IGUAL expresion PTCOMA
+    (11) tipo -> . I64
+    (12) tipo -> . F64
+    (13) tipo -> . BOOL
+    (14) tipo -> . CHAR
+    (15) tipo -> . STRING
+    (16) tipo -> . USIZE
 
-    PTCOMA          shift and go to state 16
+    I64             shift and go to state 35
+    F64             shift and go to state 36
+    BOOL            shift and go to state 37
+    CHAR            shift and go to state 38
+    STRING          shift and go to state 39
+    USIZE           shift and go to state 40
 
+    tipo                           shift and go to state 34
 
 state 15
 
-    (5) expresiones -> expresiones COMA . expresion
-    (7) expresion -> . ENTERO
-    (8) expresion -> . DECIMAL
-    (9) expresion -> . CADENA
-    (10) expresion -> . CARACTER
+    (10) declaracion -> LET ID IGUAL . expresion PTCOMA
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
 
-    ENTERO          shift and go to state 10
-    DECIMAL         shift and go to state 11
-    CADENA          shift and go to state 12
-    CARACTER        shift and go to state 13
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
 
-    expresion                      shift and go to state 17
+    expresion                      shift and go to state 41
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
 
 state 16
 
-    (4) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .
+    (35) expresion -> NOT . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
 
-    $end            reduce using rule 4 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
 
+    expresion                      shift and go to state 42
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
 
 state 17
 
-    (5) expresiones -> expresiones COMA expresion .
+    (44) expresion -> PARIZQ . expresion PARDER
+    (45) expresion -> PARIZQ . expresion AS tipo PARDER
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
 
-    PARDER          reduce using rule 5 (expresiones -> expresiones COMA expresion .)
-    COMA            reduce using rule 5 (expresiones -> expresiones COMA expresion .)
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 43
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 18
+
+    (6) imprimir -> PRINTLN NOT PARIZQ expresiones . PARDER PTCOMA
+    (17) expresiones -> expresiones . COMA expresion
+
+    PARDER          shift and go to state 44
+    COMA            shift and go to state 45
+
+
+state 19
+
+    (18) expresiones -> expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PARDER          reduce using rule 18 (expresiones -> expresion .)
+    COMA            reduce using rule 18 (expresiones -> expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 20
+
+    (19) expresion -> ENTERO .
+
+    MAS             reduce using rule 19 (expresion -> ENTERO .)
+    MENOS           reduce using rule 19 (expresion -> ENTERO .)
+    POR             reduce using rule 19 (expresion -> ENTERO .)
+    DIVIDIDO        reduce using rule 19 (expresion -> ENTERO .)
+    MODULO          reduce using rule 19 (expresion -> ENTERO .)
+    IGUALQUE        reduce using rule 19 (expresion -> ENTERO .)
+    NOIGUALQUE      reduce using rule 19 (expresion -> ENTERO .)
+    MENORQUE        reduce using rule 19 (expresion -> ENTERO .)
+    MAYORQUE        reduce using rule 19 (expresion -> ENTERO .)
+    MENORIQUE       reduce using rule 19 (expresion -> ENTERO .)
+    MAYORIQUE       reduce using rule 19 (expresion -> ENTERO .)
+    PTO             reduce using rule 19 (expresion -> ENTERO .)
+    PARDER          reduce using rule 19 (expresion -> ENTERO .)
+    COMA            reduce using rule 19 (expresion -> ENTERO .)
+    PTCOMA          reduce using rule 19 (expresion -> ENTERO .)
+    AS              reduce using rule 19 (expresion -> ENTERO .)
+
+
+state 21
+
+    (20) expresion -> DECIMAL .
+
+    MAS             reduce using rule 20 (expresion -> DECIMAL .)
+    MENOS           reduce using rule 20 (expresion -> DECIMAL .)
+    POR             reduce using rule 20 (expresion -> DECIMAL .)
+    DIVIDIDO        reduce using rule 20 (expresion -> DECIMAL .)
+    MODULO          reduce using rule 20 (expresion -> DECIMAL .)
+    IGUALQUE        reduce using rule 20 (expresion -> DECIMAL .)
+    NOIGUALQUE      reduce using rule 20 (expresion -> DECIMAL .)
+    MENORQUE        reduce using rule 20 (expresion -> DECIMAL .)
+    MAYORQUE        reduce using rule 20 (expresion -> DECIMAL .)
+    MENORIQUE       reduce using rule 20 (expresion -> DECIMAL .)
+    MAYORIQUE       reduce using rule 20 (expresion -> DECIMAL .)
+    PTO             reduce using rule 20 (expresion -> DECIMAL .)
+    PARDER          reduce using rule 20 (expresion -> DECIMAL .)
+    COMA            reduce using rule 20 (expresion -> DECIMAL .)
+    PTCOMA          reduce using rule 20 (expresion -> DECIMAL .)
+    AS              reduce using rule 20 (expresion -> DECIMAL .)
+
+
+state 22
+
+    (21) expresion -> TRUE .
+
+    MAS             reduce using rule 21 (expresion -> TRUE .)
+    MENOS           reduce using rule 21 (expresion -> TRUE .)
+    POR             reduce using rule 21 (expresion -> TRUE .)
+    DIVIDIDO        reduce using rule 21 (expresion -> TRUE .)
+    MODULO          reduce using rule 21 (expresion -> TRUE .)
+    IGUALQUE        reduce using rule 21 (expresion -> TRUE .)
+    NOIGUALQUE      reduce using rule 21 (expresion -> TRUE .)
+    MENORQUE        reduce using rule 21 (expresion -> TRUE .)
+    MAYORQUE        reduce using rule 21 (expresion -> TRUE .)
+    MENORIQUE       reduce using rule 21 (expresion -> TRUE .)
+    MAYORIQUE       reduce using rule 21 (expresion -> TRUE .)
+    PTO             reduce using rule 21 (expresion -> TRUE .)
+    PARDER          reduce using rule 21 (expresion -> TRUE .)
+    COMA            reduce using rule 21 (expresion -> TRUE .)
+    PTCOMA          reduce using rule 21 (expresion -> TRUE .)
+    AS              reduce using rule 21 (expresion -> TRUE .)
+
+
+state 23
+
+    (22) expresion -> FALSE .
+
+    MAS             reduce using rule 22 (expresion -> FALSE .)
+    MENOS           reduce using rule 22 (expresion -> FALSE .)
+    POR             reduce using rule 22 (expresion -> FALSE .)
+    DIVIDIDO        reduce using rule 22 (expresion -> FALSE .)
+    MODULO          reduce using rule 22 (expresion -> FALSE .)
+    IGUALQUE        reduce using rule 22 (expresion -> FALSE .)
+    NOIGUALQUE      reduce using rule 22 (expresion -> FALSE .)
+    MENORQUE        reduce using rule 22 (expresion -> FALSE .)
+    MAYORQUE        reduce using rule 22 (expresion -> FALSE .)
+    MENORIQUE       reduce using rule 22 (expresion -> FALSE .)
+    MAYORIQUE       reduce using rule 22 (expresion -> FALSE .)
+    PTO             reduce using rule 22 (expresion -> FALSE .)
+    PARDER          reduce using rule 22 (expresion -> FALSE .)
+    COMA            reduce using rule 22 (expresion -> FALSE .)
+    PTCOMA          reduce using rule 22 (expresion -> FALSE .)
+    AS              reduce using rule 22 (expresion -> FALSE .)
+
+
+state 24
+
+    (23) expresion -> tostring .
+
+    MAS             reduce using rule 23 (expresion -> tostring .)
+    MENOS           reduce using rule 23 (expresion -> tostring .)
+    POR             reduce using rule 23 (expresion -> tostring .)
+    DIVIDIDO        reduce using rule 23 (expresion -> tostring .)
+    MODULO          reduce using rule 23 (expresion -> tostring .)
+    IGUALQUE        reduce using rule 23 (expresion -> tostring .)
+    NOIGUALQUE      reduce using rule 23 (expresion -> tostring .)
+    MENORQUE        reduce using rule 23 (expresion -> tostring .)
+    MAYORQUE        reduce using rule 23 (expresion -> tostring .)
+    MENORIQUE       reduce using rule 23 (expresion -> tostring .)
+    MAYORIQUE       reduce using rule 23 (expresion -> tostring .)
+    PTO             reduce using rule 23 (expresion -> tostring .)
+    PARDER          reduce using rule 23 (expresion -> tostring .)
+    COMA            reduce using rule 23 (expresion -> tostring .)
+    PTCOMA          reduce using rule 23 (expresion -> tostring .)
+    AS              reduce using rule 23 (expresion -> tostring .)
+
+
+state 25
+
+    (24) expresion -> toowned .
+
+    MAS             reduce using rule 24 (expresion -> toowned .)
+    MENOS           reduce using rule 24 (expresion -> toowned .)
+    POR             reduce using rule 24 (expresion -> toowned .)
+    DIVIDIDO        reduce using rule 24 (expresion -> toowned .)
+    MODULO          reduce using rule 24 (expresion -> toowned .)
+    IGUALQUE        reduce using rule 24 (expresion -> toowned .)
+    NOIGUALQUE      reduce using rule 24 (expresion -> toowned .)
+    MENORQUE        reduce using rule 24 (expresion -> toowned .)
+    MAYORQUE        reduce using rule 24 (expresion -> toowned .)
+    MENORIQUE       reduce using rule 24 (expresion -> toowned .)
+    MAYORIQUE       reduce using rule 24 (expresion -> toowned .)
+    PTO             reduce using rule 24 (expresion -> toowned .)
+    PARDER          reduce using rule 24 (expresion -> toowned .)
+    COMA            reduce using rule 24 (expresion -> toowned .)
+    PTCOMA          reduce using rule 24 (expresion -> toowned .)
+    AS              reduce using rule 24 (expresion -> toowned .)
+
+
+state 26
+
+    (27) expresion -> CADENA .
+
+    MAS             reduce using rule 27 (expresion -> CADENA .)
+    MENOS           reduce using rule 27 (expresion -> CADENA .)
+    POR             reduce using rule 27 (expresion -> CADENA .)
+    DIVIDIDO        reduce using rule 27 (expresion -> CADENA .)
+    MODULO          reduce using rule 27 (expresion -> CADENA .)
+    IGUALQUE        reduce using rule 27 (expresion -> CADENA .)
+    NOIGUALQUE      reduce using rule 27 (expresion -> CADENA .)
+    MENORQUE        reduce using rule 27 (expresion -> CADENA .)
+    MAYORQUE        reduce using rule 27 (expresion -> CADENA .)
+    MENORIQUE       reduce using rule 27 (expresion -> CADENA .)
+    MAYORIQUE       reduce using rule 27 (expresion -> CADENA .)
+    PTO             reduce using rule 27 (expresion -> CADENA .)
+    PARDER          reduce using rule 27 (expresion -> CADENA .)
+    COMA            reduce using rule 27 (expresion -> CADENA .)
+    PTCOMA          reduce using rule 27 (expresion -> CADENA .)
+    AS              reduce using rule 27 (expresion -> CADENA .)
+
+
+state 27
+
+    (28) expresion -> CARACTER .
+
+    MAS             reduce using rule 28 (expresion -> CARACTER .)
+    MENOS           reduce using rule 28 (expresion -> CARACTER .)
+    POR             reduce using rule 28 (expresion -> CARACTER .)
+    DIVIDIDO        reduce using rule 28 (expresion -> CARACTER .)
+    MODULO          reduce using rule 28 (expresion -> CARACTER .)
+    IGUALQUE        reduce using rule 28 (expresion -> CARACTER .)
+    NOIGUALQUE      reduce using rule 28 (expresion -> CARACTER .)
+    MENORQUE        reduce using rule 28 (expresion -> CARACTER .)
+    MAYORQUE        reduce using rule 28 (expresion -> CARACTER .)
+    MENORIQUE       reduce using rule 28 (expresion -> CARACTER .)
+    MAYORIQUE       reduce using rule 28 (expresion -> CARACTER .)
+    PTO             reduce using rule 28 (expresion -> CARACTER .)
+    PARDER          reduce using rule 28 (expresion -> CARACTER .)
+    COMA            reduce using rule 28 (expresion -> CARACTER .)
+    PTCOMA          reduce using rule 28 (expresion -> CARACTER .)
+    AS              reduce using rule 28 (expresion -> CARACTER .)
+
+
+state 28
+
+    (34) expresion -> MENOS . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 58
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 29
+
+    (36) expresion -> I64 . DDOSPT POW PARIZQ expresion COMA expresion PARDER
+
+    DDOSPT          shift and go to state 59
+
+
+state 30
+
+    (37) expresion -> F64 . DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+
+    DDOSPT          shift and go to state 60
+
+
+state 31
+
+    (46) expresion -> nativas_fun .
+
+    MAS             reduce using rule 46 (expresion -> nativas_fun .)
+    MENOS           reduce using rule 46 (expresion -> nativas_fun .)
+    POR             reduce using rule 46 (expresion -> nativas_fun .)
+    DIVIDIDO        reduce using rule 46 (expresion -> nativas_fun .)
+    MODULO          reduce using rule 46 (expresion -> nativas_fun .)
+    IGUALQUE        reduce using rule 46 (expresion -> nativas_fun .)
+    NOIGUALQUE      reduce using rule 46 (expresion -> nativas_fun .)
+    MENORQUE        reduce using rule 46 (expresion -> nativas_fun .)
+    MAYORQUE        reduce using rule 46 (expresion -> nativas_fun .)
+    MENORIQUE       reduce using rule 46 (expresion -> nativas_fun .)
+    MAYORIQUE       reduce using rule 46 (expresion -> nativas_fun .)
+    PTO             reduce using rule 46 (expresion -> nativas_fun .)
+    PARDER          reduce using rule 46 (expresion -> nativas_fun .)
+    COMA            reduce using rule 46 (expresion -> nativas_fun .)
+    PTCOMA          reduce using rule 46 (expresion -> nativas_fun .)
+    AS              reduce using rule 46 (expresion -> nativas_fun .)
+
+
+state 32
+
+    (7) declaracion -> LET MUT ID DOSPT . tipo IGUAL expresion PTCOMA
+    (11) tipo -> . I64
+    (12) tipo -> . F64
+    (13) tipo -> . BOOL
+    (14) tipo -> . CHAR
+    (15) tipo -> . STRING
+    (16) tipo -> . USIZE
+
+    I64             shift and go to state 35
+    F64             shift and go to state 36
+    BOOL            shift and go to state 37
+    CHAR            shift and go to state 38
+    STRING          shift and go to state 39
+    USIZE           shift and go to state 40
+
+    tipo                           shift and go to state 61
+
+state 33
+
+    (8) declaracion -> LET MUT ID IGUAL . expresion PTCOMA
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 62
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 34
+
+    (9) declaracion -> LET ID DOSPT tipo . IGUAL expresion PTCOMA
+
+    IGUAL           shift and go to state 63
+
+
+state 35
+
+    (11) tipo -> I64 .
+
+    IGUAL           reduce using rule 11 (tipo -> I64 .)
+    PARDER          reduce using rule 11 (tipo -> I64 .)
+
+
+state 36
+
+    (12) tipo -> F64 .
+
+    IGUAL           reduce using rule 12 (tipo -> F64 .)
+    PARDER          reduce using rule 12 (tipo -> F64 .)
+
+
+state 37
+
+    (13) tipo -> BOOL .
+
+    IGUAL           reduce using rule 13 (tipo -> BOOL .)
+    PARDER          reduce using rule 13 (tipo -> BOOL .)
+
+
+state 38
+
+    (14) tipo -> CHAR .
+
+    IGUAL           reduce using rule 14 (tipo -> CHAR .)
+    PARDER          reduce using rule 14 (tipo -> CHAR .)
+
+
+state 39
+
+    (15) tipo -> STRING .
+
+    IGUAL           reduce using rule 15 (tipo -> STRING .)
+    PARDER          reduce using rule 15 (tipo -> STRING .)
+
+
+state 40
+
+    (16) tipo -> USIZE .
+
+    IGUAL           reduce using rule 16 (tipo -> USIZE .)
+    PARDER          reduce using rule 16 (tipo -> USIZE .)
+
+
+state 41
+
+    (10) declaracion -> LET ID IGUAL expresion . PTCOMA
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PTCOMA          shift and go to state 64
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 42
+
+    (35) expresion -> NOT expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 35 (expresion -> NOT expresion .)
+    MENOS           reduce using rule 35 (expresion -> NOT expresion .)
+    POR             reduce using rule 35 (expresion -> NOT expresion .)
+    DIVIDIDO        reduce using rule 35 (expresion -> NOT expresion .)
+    MODULO          reduce using rule 35 (expresion -> NOT expresion .)
+    IGUALQUE        reduce using rule 35 (expresion -> NOT expresion .)
+    NOIGUALQUE      reduce using rule 35 (expresion -> NOT expresion .)
+    MENORQUE        reduce using rule 35 (expresion -> NOT expresion .)
+    MAYORQUE        reduce using rule 35 (expresion -> NOT expresion .)
+    MENORIQUE       reduce using rule 35 (expresion -> NOT expresion .)
+    MAYORIQUE       reduce using rule 35 (expresion -> NOT expresion .)
+    PARDER          reduce using rule 35 (expresion -> NOT expresion .)
+    COMA            reduce using rule 35 (expresion -> NOT expresion .)
+    PTCOMA          reduce using rule 35 (expresion -> NOT expresion .)
+    AS              reduce using rule 35 (expresion -> NOT expresion .)
+    PTO             shift and go to state 57
+
+  ! PTO             [ reduce using rule 35 (expresion -> NOT expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! POR             [ shift and go to state 48 ]
+  ! DIVIDIDO        [ shift and go to state 49 ]
+  ! MODULO          [ shift and go to state 50 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 43
+
+    (44) expresion -> PARIZQ expresion . PARDER
+    (45) expresion -> PARIZQ expresion . AS tipo PARDER
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PARDER          shift and go to state 65
+    AS              shift and go to state 66
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 44
+
+    (6) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER . PTCOMA
+
+    PTCOMA          shift and go to state 67
+
+
+state 45
+
+    (17) expresiones -> expresiones COMA . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 68
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 46
+
+    (29) expresion -> expresion MAS . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 69
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 47
+
+    (30) expresion -> expresion MENOS . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 70
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 48
+
+    (31) expresion -> expresion POR . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 71
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 49
+
+    (32) expresion -> expresion DIVIDIDO . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 72
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 50
+
+    (33) expresion -> expresion MODULO . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 73
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 51
+
+    (38) expresion -> expresion IGUALQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 74
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 52
+
+    (39) expresion -> expresion NOIGUALQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 75
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 53
+
+    (40) expresion -> expresion MENORQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 76
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 54
+
+    (41) expresion -> expresion MAYORQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 77
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 55
+
+    (42) expresion -> expresion MENORIQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 78
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 56
+
+    (43) expresion -> expresion MAYORIQUE . expresion
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 79
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 57
+
+    (25) tostring -> expresion PTO . TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion PTO . TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion PTO . ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion PTO . SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion PTO . CLONE PARIZQ PARDER
+
+    TOSTRING        shift and go to state 80
+    TOOWNED         shift and go to state 81
+    ABS             shift and go to state 82
+    SQRT            shift and go to state 83
+    CLONE           shift and go to state 84
+
+
+state 58
+
+    (34) expresion -> MENOS expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 34 (expresion -> MENOS expresion .)
+    MENOS           reduce using rule 34 (expresion -> MENOS expresion .)
+    POR             reduce using rule 34 (expresion -> MENOS expresion .)
+    DIVIDIDO        reduce using rule 34 (expresion -> MENOS expresion .)
+    MODULO          reduce using rule 34 (expresion -> MENOS expresion .)
+    IGUALQUE        reduce using rule 34 (expresion -> MENOS expresion .)
+    NOIGUALQUE      reduce using rule 34 (expresion -> MENOS expresion .)
+    MENORQUE        reduce using rule 34 (expresion -> MENOS expresion .)
+    MAYORQUE        reduce using rule 34 (expresion -> MENOS expresion .)
+    MENORIQUE       reduce using rule 34 (expresion -> MENOS expresion .)
+    MAYORIQUE       reduce using rule 34 (expresion -> MENOS expresion .)
+    PARDER          reduce using rule 34 (expresion -> MENOS expresion .)
+    COMA            reduce using rule 34 (expresion -> MENOS expresion .)
+    PTCOMA          reduce using rule 34 (expresion -> MENOS expresion .)
+    AS              reduce using rule 34 (expresion -> MENOS expresion .)
+    PTO             shift and go to state 57
+
+  ! PTO             [ reduce using rule 34 (expresion -> MENOS expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! POR             [ shift and go to state 48 ]
+  ! DIVIDIDO        [ shift and go to state 49 ]
+  ! MODULO          [ shift and go to state 50 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 59
+
+    (36) expresion -> I64 DDOSPT . POW PARIZQ expresion COMA expresion PARDER
+
+    POW             shift and go to state 85
+
+
+state 60
+
+    (37) expresion -> F64 DDOSPT . POWF PARIZQ expresion COMA expresion PARDER
+
+    POWF            shift and go to state 86
+
+
+state 61
+
+    (7) declaracion -> LET MUT ID DOSPT tipo . IGUAL expresion PTCOMA
+
+    IGUAL           shift and go to state 87
+
+
+state 62
+
+    (8) declaracion -> LET MUT ID IGUAL expresion . PTCOMA
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PTCOMA          shift and go to state 88
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 63
+
+    (9) declaracion -> LET ID DOSPT tipo IGUAL . expresion PTCOMA
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 89
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 64
+
+    (10) declaracion -> LET ID IGUAL expresion PTCOMA .
+
+    PRINTLN         reduce using rule 10 (declaracion -> LET ID IGUAL expresion PTCOMA .)
+    LET             reduce using rule 10 (declaracion -> LET ID IGUAL expresion PTCOMA .)
+    $end            reduce using rule 10 (declaracion -> LET ID IGUAL expresion PTCOMA .)
+
+
+state 65
+
+    (44) expresion -> PARIZQ expresion PARDER .
+
+    MAS             reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    POR             reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    DIVIDIDO        reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MODULO          reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    IGUALQUE        reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    NOIGUALQUE      reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MENORQUE        reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MAYORQUE        reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MENORIQUE       reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    MAYORIQUE       reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    PTO             reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    COMA            reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    PTCOMA          reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+    AS              reduce using rule 44 (expresion -> PARIZQ expresion PARDER .)
+
+
+state 66
+
+    (45) expresion -> PARIZQ expresion AS . tipo PARDER
+    (11) tipo -> . I64
+    (12) tipo -> . F64
+    (13) tipo -> . BOOL
+    (14) tipo -> . CHAR
+    (15) tipo -> . STRING
+    (16) tipo -> . USIZE
+
+    I64             shift and go to state 35
+    F64             shift and go to state 36
+    BOOL            shift and go to state 37
+    CHAR            shift and go to state 38
+    STRING          shift and go to state 39
+    USIZE           shift and go to state 40
+
+    tipo                           shift and go to state 90
+
+state 67
+
+    (6) imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .
+
+    PRINTLN         reduce using rule 6 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
+    LET             reduce using rule 6 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
+    $end            reduce using rule 6 (imprimir -> PRINTLN NOT PARIZQ expresiones PARDER PTCOMA .)
+
+
+state 68
+
+    (17) expresiones -> expresiones COMA expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PARDER          reduce using rule 17 (expresiones -> expresiones COMA expresion .)
+    COMA            reduce using rule 17 (expresiones -> expresiones COMA expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 69
+
+    (29) expresion -> expresion MAS expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 29 (expresion -> expresion MAS expresion .)
+    MENOS           reduce using rule 29 (expresion -> expresion MAS expresion .)
+    IGUALQUE        reduce using rule 29 (expresion -> expresion MAS expresion .)
+    NOIGUALQUE      reduce using rule 29 (expresion -> expresion MAS expresion .)
+    MENORQUE        reduce using rule 29 (expresion -> expresion MAS expresion .)
+    MAYORQUE        reduce using rule 29 (expresion -> expresion MAS expresion .)
+    MENORIQUE       reduce using rule 29 (expresion -> expresion MAS expresion .)
+    MAYORIQUE       reduce using rule 29 (expresion -> expresion MAS expresion .)
+    PARDER          reduce using rule 29 (expresion -> expresion MAS expresion .)
+    COMA            reduce using rule 29 (expresion -> expresion MAS expresion .)
+    PTCOMA          reduce using rule 29 (expresion -> expresion MAS expresion .)
+    AS              reduce using rule 29 (expresion -> expresion MAS expresion .)
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! POR             [ reduce using rule 29 (expresion -> expresion MAS expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 29 (expresion -> expresion MAS expresion .) ]
+  ! MODULO          [ reduce using rule 29 (expresion -> expresion MAS expresion .) ]
+  ! PTO             [ reduce using rule 29 (expresion -> expresion MAS expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 70
+
+    (30) expresion -> expresion MENOS expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    MENOS           reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    IGUALQUE        reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    NOIGUALQUE      reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    MENORQUE        reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    MAYORQUE        reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    MENORIQUE       reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    MAYORIQUE       reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    PARDER          reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    COMA            reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    PTCOMA          reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    AS              reduce using rule 30 (expresion -> expresion MENOS expresion .)
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! POR             [ reduce using rule 30 (expresion -> expresion MENOS expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 30 (expresion -> expresion MENOS expresion .) ]
+  ! MODULO          [ reduce using rule 30 (expresion -> expresion MENOS expresion .) ]
+  ! PTO             [ reduce using rule 30 (expresion -> expresion MENOS expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 71
+
+    (31) expresion -> expresion POR expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 31 (expresion -> expresion POR expresion .)
+    MENOS           reduce using rule 31 (expresion -> expresion POR expresion .)
+    POR             reduce using rule 31 (expresion -> expresion POR expresion .)
+    DIVIDIDO        reduce using rule 31 (expresion -> expresion POR expresion .)
+    MODULO          reduce using rule 31 (expresion -> expresion POR expresion .)
+    IGUALQUE        reduce using rule 31 (expresion -> expresion POR expresion .)
+    NOIGUALQUE      reduce using rule 31 (expresion -> expresion POR expresion .)
+    MENORQUE        reduce using rule 31 (expresion -> expresion POR expresion .)
+    MAYORQUE        reduce using rule 31 (expresion -> expresion POR expresion .)
+    MENORIQUE       reduce using rule 31 (expresion -> expresion POR expresion .)
+    MAYORIQUE       reduce using rule 31 (expresion -> expresion POR expresion .)
+    PARDER          reduce using rule 31 (expresion -> expresion POR expresion .)
+    COMA            reduce using rule 31 (expresion -> expresion POR expresion .)
+    PTCOMA          reduce using rule 31 (expresion -> expresion POR expresion .)
+    AS              reduce using rule 31 (expresion -> expresion POR expresion .)
+    PTO             shift and go to state 57
+
+  ! PTO             [ reduce using rule 31 (expresion -> expresion POR expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! POR             [ shift and go to state 48 ]
+  ! DIVIDIDO        [ shift and go to state 49 ]
+  ! MODULO          [ shift and go to state 50 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 72
+
+    (32) expresion -> expresion DIVIDIDO expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MENOS           reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    POR             reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    DIVIDIDO        reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MODULO          reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    IGUALQUE        reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    NOIGUALQUE      reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MENORQUE        reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MAYORQUE        reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MENORIQUE       reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    MAYORIQUE       reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    PARDER          reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    COMA            reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    PTCOMA          reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    AS              reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .)
+    PTO             shift and go to state 57
+
+  ! PTO             [ reduce using rule 32 (expresion -> expresion DIVIDIDO expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! POR             [ shift and go to state 48 ]
+  ! DIVIDIDO        [ shift and go to state 49 ]
+  ! MODULO          [ shift and go to state 50 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 73
+
+    (33) expresion -> expresion MODULO expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    MAS             reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MENOS           reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    POR             reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    DIVIDIDO        reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MODULO          reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    IGUALQUE        reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    NOIGUALQUE      reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MENORQUE        reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MAYORQUE        reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MENORIQUE       reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    MAYORIQUE       reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    PARDER          reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    COMA            reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    PTCOMA          reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    AS              reduce using rule 33 (expresion -> expresion MODULO expresion .)
+    PTO             shift and go to state 57
+
+  ! PTO             [ reduce using rule 33 (expresion -> expresion MODULO expresion .) ]
+  ! MAS             [ shift and go to state 46 ]
+  ! MENOS           [ shift and go to state 47 ]
+  ! POR             [ shift and go to state 48 ]
+  ! DIVIDIDO        [ shift and go to state 49 ]
+  ! MODULO          [ shift and go to state 50 ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 74
+
+    (38) expresion -> expresion IGUALQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    NOIGUALQUE      reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    MENORQUE        reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    MAYORQUE        reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    MENORIQUE       reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    MAYORIQUE       reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    PARDER          reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    COMA            reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    PTCOMA          reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    AS              reduce using rule 38 (expresion -> expresion IGUALQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! MENOS           [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! POR             [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! MODULO          [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! PTO             [ reduce using rule 38 (expresion -> expresion IGUALQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 75
+
+    (39) expresion -> expresion NOIGUALQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    NOIGUALQUE      reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    MENORQUE        reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    MAYORQUE        reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    MENORIQUE       reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    MAYORIQUE       reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    PARDER          reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    COMA            reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    PTCOMA          reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    AS              reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! MENOS           [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! POR             [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! MODULO          [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! PTO             [ reduce using rule 39 (expresion -> expresion NOIGUALQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 76
+
+    (40) expresion -> expresion MENORQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    NOIGUALQUE      reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    MENORQUE        reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    MAYORQUE        reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    MENORIQUE       reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    MAYORIQUE       reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    PARDER          reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    COMA            reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    PTCOMA          reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    AS              reduce using rule 40 (expresion -> expresion MENORQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! MENOS           [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! POR             [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! MODULO          [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! PTO             [ reduce using rule 40 (expresion -> expresion MENORQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 77
+
+    (41) expresion -> expresion MAYORQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    NOIGUALQUE      reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    MENORQUE        reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    MAYORQUE        reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    MENORIQUE       reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    MAYORIQUE       reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    PARDER          reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    COMA            reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    PTCOMA          reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    AS              reduce using rule 41 (expresion -> expresion MAYORQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! MENOS           [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! POR             [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! MODULO          [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! PTO             [ reduce using rule 41 (expresion -> expresion MAYORQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 78
+
+    (42) expresion -> expresion MENORIQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    NOIGUALQUE      reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    MENORQUE        reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    MAYORQUE        reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    MENORIQUE       reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    MAYORIQUE       reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    PARDER          reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    COMA            reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    PTCOMA          reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    AS              reduce using rule 42 (expresion -> expresion MENORIQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! MENOS           [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! POR             [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! MODULO          [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! PTO             [ reduce using rule 42 (expresion -> expresion MENORIQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 79
+
+    (43) expresion -> expresion MAYORIQUE expresion .
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    IGUALQUE        reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    NOIGUALQUE      reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    MENORQUE        reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    MAYORQUE        reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    MENORIQUE       reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    MAYORIQUE       reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    PARDER          reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    COMA            reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    PTCOMA          reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    AS              reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .)
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    PTO             shift and go to state 57
+
+  ! MAS             [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! MENOS           [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! POR             [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! DIVIDIDO        [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! MODULO          [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! PTO             [ reduce using rule 43 (expresion -> expresion MAYORIQUE expresion .) ]
+  ! IGUALQUE        [ shift and go to state 51 ]
+  ! NOIGUALQUE      [ shift and go to state 52 ]
+  ! MENORQUE        [ shift and go to state 53 ]
+  ! MAYORQUE        [ shift and go to state 54 ]
+  ! MENORIQUE       [ shift and go to state 55 ]
+  ! MAYORIQUE       [ shift and go to state 56 ]
+
+
+state 80
+
+    (25) tostring -> expresion PTO TOSTRING . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 91
+
+
+state 81
+
+    (26) toowned -> expresion PTO TOOWNED . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 92
+
+
+state 82
+
+    (47) nativas_fun -> expresion PTO ABS . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 93
+
+
+state 83
+
+    (48) nativas_fun -> expresion PTO SQRT . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 94
+
+
+state 84
+
+    (49) nativas_fun -> expresion PTO CLONE . PARIZQ PARDER
+
+    PARIZQ          shift and go to state 95
+
+
+state 85
+
+    (36) expresion -> I64 DDOSPT POW . PARIZQ expresion COMA expresion PARDER
+
+    PARIZQ          shift and go to state 96
+
+
+state 86
+
+    (37) expresion -> F64 DDOSPT POWF . PARIZQ expresion COMA expresion PARDER
+
+    PARIZQ          shift and go to state 97
+
+
+state 87
+
+    (7) declaracion -> LET MUT ID DOSPT tipo IGUAL . expresion PTCOMA
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 98
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 88
+
+    (8) declaracion -> LET MUT ID IGUAL expresion PTCOMA .
+
+    PRINTLN         reduce using rule 8 (declaracion -> LET MUT ID IGUAL expresion PTCOMA .)
+    LET             reduce using rule 8 (declaracion -> LET MUT ID IGUAL expresion PTCOMA .)
+    $end            reduce using rule 8 (declaracion -> LET MUT ID IGUAL expresion PTCOMA .)
+
+
+state 89
+
+    (9) declaracion -> LET ID DOSPT tipo IGUAL expresion . PTCOMA
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PTCOMA          shift and go to state 99
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 90
+
+    (45) expresion -> PARIZQ expresion AS tipo . PARDER
+
+    PARDER          shift and go to state 100
+
+
+state 91
+
+    (25) tostring -> expresion PTO TOSTRING PARIZQ . PARDER
+
+    PARDER          shift and go to state 101
+
+
+state 92
+
+    (26) toowned -> expresion PTO TOOWNED PARIZQ . PARDER
+
+    PARDER          shift and go to state 102
+
+
+state 93
+
+    (47) nativas_fun -> expresion PTO ABS PARIZQ . PARDER
+
+    PARDER          shift and go to state 103
+
+
+state 94
+
+    (48) nativas_fun -> expresion PTO SQRT PARIZQ . PARDER
+
+    PARDER          shift and go to state 104
+
+
+state 95
+
+    (49) nativas_fun -> expresion PTO CLONE PARIZQ . PARDER
+
+    PARDER          shift and go to state 105
+
+
+state 96
+
+    (36) expresion -> I64 DDOSPT POW PARIZQ . expresion COMA expresion PARDER
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 106
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 97
+
+    (37) expresion -> F64 DDOSPT POWF PARIZQ . expresion COMA expresion PARDER
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 107
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 98
+
+    (7) declaracion -> LET MUT ID DOSPT tipo IGUAL expresion . PTCOMA
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PTCOMA          shift and go to state 108
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 99
+
+    (9) declaracion -> LET ID DOSPT tipo IGUAL expresion PTCOMA .
+
+    PRINTLN         reduce using rule 9 (declaracion -> LET ID DOSPT tipo IGUAL expresion PTCOMA .)
+    LET             reduce using rule 9 (declaracion -> LET ID DOSPT tipo IGUAL expresion PTCOMA .)
+    $end            reduce using rule 9 (declaracion -> LET ID DOSPT tipo IGUAL expresion PTCOMA .)
+
+
+state 100
+
+    (45) expresion -> PARIZQ expresion AS tipo PARDER .
+
+    MAS             reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MENOS           reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    POR             reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    DIVIDIDO        reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MODULO          reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    IGUALQUE        reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    NOIGUALQUE      reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MENORQUE        reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MAYORQUE        reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MENORIQUE       reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    MAYORIQUE       reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    PTO             reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    PARDER          reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    COMA            reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    PTCOMA          reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+    AS              reduce using rule 45 (expresion -> PARIZQ expresion AS tipo PARDER .)
+
+
+state 101
+
+    (25) tostring -> expresion PTO TOSTRING PARIZQ PARDER .
+
+    MAS             reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MENOS           reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    POR             reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    DIVIDIDO        reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MODULO          reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    IGUALQUE        reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    NOIGUALQUE      reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MENORQUE        reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MAYORQUE        reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MENORIQUE       reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    MAYORIQUE       reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    PTO             reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    PARDER          reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    COMA            reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    PTCOMA          reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+    AS              reduce using rule 25 (tostring -> expresion PTO TOSTRING PARIZQ PARDER .)
+
+
+state 102
+
+    (26) toowned -> expresion PTO TOOWNED PARIZQ PARDER .
+
+    MAS             reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MENOS           reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    POR             reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    DIVIDIDO        reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MODULO          reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    IGUALQUE        reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    NOIGUALQUE      reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MENORQUE        reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MAYORQUE        reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MENORIQUE       reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    MAYORIQUE       reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    PTO             reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    PARDER          reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    COMA            reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    PTCOMA          reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+    AS              reduce using rule 26 (toowned -> expresion PTO TOOWNED PARIZQ PARDER .)
+
+
+state 103
+
+    (47) nativas_fun -> expresion PTO ABS PARIZQ PARDER .
+
+    MAS             reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MENOS           reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    POR             reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    DIVIDIDO        reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MODULO          reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    IGUALQUE        reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    NOIGUALQUE      reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MENORQUE        reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MAYORQUE        reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MENORIQUE       reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    MAYORIQUE       reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    PTO             reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    PARDER          reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    COMA            reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    PTCOMA          reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+    AS              reduce using rule 47 (nativas_fun -> expresion PTO ABS PARIZQ PARDER .)
+
+
+state 104
+
+    (48) nativas_fun -> expresion PTO SQRT PARIZQ PARDER .
+
+    MAS             reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MENOS           reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    POR             reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    DIVIDIDO        reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MODULO          reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    IGUALQUE        reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    NOIGUALQUE      reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MENORQUE        reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MAYORQUE        reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MENORIQUE       reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    MAYORIQUE       reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    PTO             reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    PARDER          reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    COMA            reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    PTCOMA          reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+    AS              reduce using rule 48 (nativas_fun -> expresion PTO SQRT PARIZQ PARDER .)
+
+
+state 105
+
+    (49) nativas_fun -> expresion PTO CLONE PARIZQ PARDER .
+
+    MAS             reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MENOS           reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    POR             reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    DIVIDIDO        reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MODULO          reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    IGUALQUE        reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    NOIGUALQUE      reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MENORQUE        reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MAYORQUE        reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MENORIQUE       reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    MAYORIQUE       reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    PTO             reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    PARDER          reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    COMA            reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    PTCOMA          reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+    AS              reduce using rule 49 (nativas_fun -> expresion PTO CLONE PARIZQ PARDER .)
+
+
+state 106
+
+    (36) expresion -> I64 DDOSPT POW PARIZQ expresion . COMA expresion PARDER
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    COMA            shift and go to state 109
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 107
+
+    (37) expresion -> F64 DDOSPT POWF PARIZQ expresion . COMA expresion PARDER
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    COMA            shift and go to state 110
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 108
+
+    (7) declaracion -> LET MUT ID DOSPT tipo IGUAL expresion PTCOMA .
+
+    PRINTLN         reduce using rule 7 (declaracion -> LET MUT ID DOSPT tipo IGUAL expresion PTCOMA .)
+    LET             reduce using rule 7 (declaracion -> LET MUT ID DOSPT tipo IGUAL expresion PTCOMA .)
+    $end            reduce using rule 7 (declaracion -> LET MUT ID DOSPT tipo IGUAL expresion PTCOMA .)
+
+
+state 109
+
+    (36) expresion -> I64 DDOSPT POW PARIZQ expresion COMA . expresion PARDER
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 111
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 110
+
+    (37) expresion -> F64 DDOSPT POWF PARIZQ expresion COMA . expresion PARDER
+    (19) expresion -> . ENTERO
+    (20) expresion -> . DECIMAL
+    (21) expresion -> . TRUE
+    (22) expresion -> . FALSE
+    (23) expresion -> . tostring
+    (24) expresion -> . toowned
+    (27) expresion -> . CADENA
+    (28) expresion -> . CARACTER
+    (29) expresion -> . expresion MAS expresion
+    (30) expresion -> . expresion MENOS expresion
+    (31) expresion -> . expresion POR expresion
+    (32) expresion -> . expresion DIVIDIDO expresion
+    (33) expresion -> . expresion MODULO expresion
+    (34) expresion -> . MENOS expresion
+    (35) expresion -> . NOT expresion
+    (36) expresion -> . I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+    (37) expresion -> . F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER
+    (38) expresion -> . expresion IGUALQUE expresion
+    (39) expresion -> . expresion NOIGUALQUE expresion
+    (40) expresion -> . expresion MENORQUE expresion
+    (41) expresion -> . expresion MAYORQUE expresion
+    (42) expresion -> . expresion MENORIQUE expresion
+    (43) expresion -> . expresion MAYORIQUE expresion
+    (44) expresion -> . PARIZQ expresion PARDER
+    (45) expresion -> . PARIZQ expresion AS tipo PARDER
+    (46) expresion -> . nativas_fun
+    (25) tostring -> . expresion PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> . expresion PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> . expresion PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> . expresion PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> . expresion PTO CLONE PARIZQ PARDER
+
+    ENTERO          shift and go to state 20
+    DECIMAL         shift and go to state 21
+    TRUE            shift and go to state 22
+    FALSE           shift and go to state 23
+    CADENA          shift and go to state 26
+    CARACTER        shift and go to state 27
+    MENOS           shift and go to state 28
+    NOT             shift and go to state 16
+    I64             shift and go to state 29
+    F64             shift and go to state 30
+    PARIZQ          shift and go to state 17
+
+    expresion                      shift and go to state 112
+    tostring                       shift and go to state 24
+    toowned                        shift and go to state 25
+    nativas_fun                    shift and go to state 31
+
+state 111
+
+    (36) expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion . PARDER
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PARDER          shift and go to state 113
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 112
+
+    (37) expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion . PARDER
+    (29) expresion -> expresion . MAS expresion
+    (30) expresion -> expresion . MENOS expresion
+    (31) expresion -> expresion . POR expresion
+    (32) expresion -> expresion . DIVIDIDO expresion
+    (33) expresion -> expresion . MODULO expresion
+    (38) expresion -> expresion . IGUALQUE expresion
+    (39) expresion -> expresion . NOIGUALQUE expresion
+    (40) expresion -> expresion . MENORQUE expresion
+    (41) expresion -> expresion . MAYORQUE expresion
+    (42) expresion -> expresion . MENORIQUE expresion
+    (43) expresion -> expresion . MAYORIQUE expresion
+    (25) tostring -> expresion . PTO TOSTRING PARIZQ PARDER
+    (26) toowned -> expresion . PTO TOOWNED PARIZQ PARDER
+    (47) nativas_fun -> expresion . PTO ABS PARIZQ PARDER
+    (48) nativas_fun -> expresion . PTO SQRT PARIZQ PARDER
+    (49) nativas_fun -> expresion . PTO CLONE PARIZQ PARDER
+
+    PARDER          shift and go to state 114
+    MAS             shift and go to state 46
+    MENOS           shift and go to state 47
+    POR             shift and go to state 48
+    DIVIDIDO        shift and go to state 49
+    MODULO          shift and go to state 50
+    IGUALQUE        shift and go to state 51
+    NOIGUALQUE      shift and go to state 52
+    MENORQUE        shift and go to state 53
+    MAYORQUE        shift and go to state 54
+    MENORIQUE       shift and go to state 55
+    MAYORIQUE       shift and go to state 56
+    PTO             shift and go to state 57
+
+
+state 113
+
+    (36) expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .
+
+    MAS             reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MENOS           reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    POR             reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    DIVIDIDO        reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MODULO          reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    IGUALQUE        reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    NOIGUALQUE      reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MENORQUE        reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MAYORQUE        reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MENORIQUE       reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    MAYORIQUE       reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    PTO             reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    PARDER          reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    COMA            reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    PTCOMA          reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+    AS              reduce using rule 36 (expresion -> I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER .)
+
+
+state 114
+
+    (37) expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .
+
+    MAS             reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MENOS           reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    POR             reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    DIVIDIDO        reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MODULO          reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    IGUALQUE        reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    NOIGUALQUE      reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MENORQUE        reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MAYORQUE        reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MENORIQUE       reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    MAYORIQUE       reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    PTO             reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    PARDER          reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    COMA            reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    PTCOMA          reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
+    AS              reduce using rule 37 (expresion -> F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER .)
 

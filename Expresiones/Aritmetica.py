@@ -27,13 +27,13 @@ class Aritmetica(Expresion):
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
                         # ! generar tempora
-                        tmp = self.generador
+                        tmp = self.generador.nuevoTemp()
                         nuevo_valor.reference = tmp
                         # ! generar c3d
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} + {val_der.reference};\n"
                         return nuevo_valor
 
-                    elif val_izq.tipo in [TipoPrimitivo.TOS, TipoPrimitivo.TOW] and val_der.tipo == TipoPrimitivo.STR:
+                    elif val_izq.tipo == TipoPrimitivo.STRING and val_der.tipo == TipoPrimitivo.STR:
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.STR)
                         tmp1 = self.generador.nuevoTemp()
@@ -42,14 +42,14 @@ class Aritmetica(Expresion):
                         tmp2 = self.generador.nuevoTemp()
                         tmp3 = self.generador.nuevoTemp()
 
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp1} = HP;\n" \
-                                                                               f"\tSP = SP + {entorno.size};\n" \
-                                                                               f"\t{tmp2} = SP + 0;\n" \
+                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp1} = H;\n" \
+                                                                               f"\tS = S + {entorno.size};\n" \
+                                                                               f"\t{tmp2} = S + 0;\n" \
                                                                                f"\tSTACK[(int){tmp2}] = {val_izq.reference};\n" \
-                                                                               f"\t{tmp3} = SP + 1;\n" \
+                                                                               f"\t{tmp3} = S + 1;\n" \
                                                                                f"\tSTACK[(int){tmp3}] = {val_der.reference};\n" \
                                                                                f"\tconcatenar();\n" \
-                                                                               f"\tSP = SP - {entorno.size};\n"
+                                                                               f"\tS = S - {entorno.size};\n"
 
                         return nuevo_valor
                     else:
@@ -186,13 +186,13 @@ class Aritmetica(Expresion):
                                                                                f"\tif ({tmp1} < {val_der.reference}) goto {lbl3};\n" \
                                                                                f"\tgoto {lbl4};\n" \
                                                                                f"\t{lbl3}:\n" \
-                                                                               f"\t{tmp} = {tmp} * {val_izq.ref};\n" \
+                                                                               f"\t{tmp} = {tmp} * {val_izq.reference};\n" \
                                                                                f"\t{tmp1} = {tmp1} + 1;\n" \
                                                                                f"\tgoto {lbl5};\n" \
                                                                                f"\t{lbl4}:\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl7}: // Retornar el mismo\n" \
-                                                                               f"\t{tmp} = {val_izq.ref};\n" \
+                                                                               f"\t{tmp} = {val_izq.reference};\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl2}: // Retornar 1\n" \
                                                                                f"\t{tmp} = 1;\n" \

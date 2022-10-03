@@ -9,8 +9,6 @@ class TipoPrimitivo(Enum):
     STRING = 'STRING'
     STR = 'STR'
     NULO = 'NULO'
-    TOS = 'TOS'  # ? Esto es para to_string y el to_ownewd
-    TOW = 'TOW'
     ARREGLO = 'ARREGLO'
     VECTOR = 'VECTOR'
     USIZE = 'USIZE'

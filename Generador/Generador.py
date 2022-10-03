@@ -22,7 +22,7 @@ class Generador:
 
         codigo = "void imprimir(){\n" \
                  f"    // OBTENER DIRECCIÓN\n" \
-                 f"    {tmp1} = SP + 0;\n" \
+                 f"    {tmp1} = S + 0;\n" \
                  f"    {tmp2} = STACK[(int){tmp1}];\n" \
                  f"    // WHILE\n" \
                  f"    {lbl3}:\n" \
@@ -62,9 +62,9 @@ class Generador:
 
         codigo = "void concatenar(){\n" \
                  f"    // OBTENER DIRECCIONES\n" \
-                 f"    {tmp1} = SP + 0;\n" \
+                 f"    {tmp1} = S + 0;\n" \
                  f"    {tmp2} = STACK[(int){tmp1}];\n" \
-                 f"    {tmp3} = SP + 1;\n" \
+                 f"    {tmp3} = S + 1;\n" \
                  f"    {tmp4} = STACK[(int){tmp3}];\n" \
                  f"    // WHILE CAD_1\n" \
                  f"    {lbl3}:\n" \
@@ -76,8 +76,8 @@ class Generador:
                  f"        goto {lbl2};\n" \
                  f"        {lbl1}:\n" \
                  f"            // CONCATENAR EN HEAP\n" \
-                 f"            HEAP[(int)HP] = {tmp5};\n" \
-                 f"            HP = HP + 1;\n" \
+                 f"            HEAP[(int)H] = {tmp5};\n" \
+                 f"            H = H + 1;\n" \
                  f"            {tmp2} = {tmp2} + 1;\n" \
                  f"        goto {lbl3};\n" \
                  f"        {lbl2}:\n" \
@@ -91,14 +91,14 @@ class Generador:
                  f"        goto {lbl5};\n" \
                  f"        {lbl4}:\n" \
                  f"            // CONCATENAR EN HEAP\n" \
-                 f"            HEAP[(int)HP] = {tmp7};\n" \
-                 f"            HP = HP + 1;\n" \
+                 f"            HEAP[(int)H] = {tmp7};\n" \
+                 f"            H = H + 1;\n" \
                  f"            {tmp4} = {tmp4} + 1;\n" \
                  f"        goto {lbl6};\n" \
                  f"        {lbl5}:\n" \
                  f"    // COLOCAR FIN DE CADENA\n" \
-                 f"    HEAP[(int)HP] = - 1;\n" \
-                 f"    HP = HP + 1;\n" \
+                 f"    HEAP[(int)H] = - 1;\n" \
+                 f"    H = H + 1;\n" \
                  f"    return;\n" \
                  "}"
         self.funciones_predef.append(codigo)
@@ -113,8 +113,8 @@ class Generador:
                      "#include <math.h>\n" \
                      "double HEAP[80000];\n" \
                      "double STACK[80000];\n" \
-                     "double SP;\n" \
-                     "double HP;\n\n"
+                     "double S;\n" \
+                     "double H;\n\n"
 
         codigoTemp += "/* TEMPORALES */\n" + "double " + ",".join(self.tempLista) + ";\n\n"
 
@@ -128,7 +128,7 @@ class Generador:
 
     # ! Genera un nuevo temporal
     def nuevoTemp(self):
-        temp = "t" + str(self.temporal)
+        temp = "tmp" + str(self.temporal)
         self.temporal = self.temporal + 1
 
         self.tempLista.append(temp)

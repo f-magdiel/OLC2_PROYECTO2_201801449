@@ -46,27 +46,35 @@ from Enum.TipoPrimitivo import TipoPrimitivo
 from Reporte.TipoError import TIPIN_ERROR
 from Reporte.Contenido import Tabla_Errorres, Errores
 from Instrucciones.Imprimir import Imprimir
-from Expresiones.Cadena import Cadena
 from Generador.Generador import Generador
 from Entorno.Entorno import Entorno
-from Expresiones.Entero import Entero
-from Expresiones.Decimal import Decimal
-from Expresiones.Char import Char
-
+from Instrucciones.Declaracion import Declaracion
+from Expresiones.FuncionesNativas import FuncionNativa
+from Enum.Nativas import NATIVAS
+from Expresiones.Primitiva import Primitiva
+from Expresiones.Aritmetica import Aritmetica
+from Enum.OpAritmetico import OPERADOR_ARITMETICO
+from Enum.OpUnario import OPERADOR_UNARIO
+from Expresiones.Unaria import Unaria
+from Expresiones.Relacional import Relacional
+from Enum.OpRelacional import OPERADOR_RELACIONAL
+from Expresiones.Casteo import Casteo
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
-# precedence = (
-#     ('left', 'OR'),
-#     ('left', 'AND'),
-#     ('left', 'IGUALQUE', 'NOIGUALQUE', 'MENORQUE', 'MENORIQUE', 'MAYORQUE', 'MAYORIQUE'),
-#     ('left', 'MAS', 'MENOS'),
-#     ('left', 'DIVIDIDO', 'POR', 'MODULO'),
-#     ('left', 'AS'),
-#     ('right', 'UMENOS', 'NOT'),
-#     ('nonassoc', 'PTO'),
-#
-# )
+precedence = (
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'IGUALQUE', 'NOIGUALQUE', 'MENORQUE', 'MENORIQUE', 'MAYORQUE', 'MAYORIQUE'),
+    ('left', 'MAS', 'MENOS'),
+    ('left', 'DIVIDIDO', 'POR', 'MODULO'),
+    ('left', 'AS'),
+    ('right', 'UMENOS', 'NOT'),
+    ('nonassoc', 'PTO'),
+
+)
+
+
 #
 #
 # # ?--------------------------------------------PRODUCCIONES------------------------------------------------------------
@@ -105,12 +113,7 @@ from Expresiones.Char import Char
 #     t[0] = MainInstru(t.lineno(1), t[6])
 #
 #
-# def p_instrucciones1(t):
-#     'instrucciones : instrucciones instruccion'
-#     t[1].append(t[2])
-#     t[0] = t[1]
-#
-#
+
 
 def p_inicio(t):
     'inicio : instrucciones'
@@ -119,9 +122,16 @@ def p_inicio(t):
     for instru in t[1]:
         if instru:
             instru.generador = generadorGlob
-            instru.ejecutar(entornoGlob)
+            # instru.convertir(entornoGlob)
+            generadorGlob.codigo.append(instru.convertir(entornoGlob))
 
     t[0] = generadorGlob.obtenerCodigo()
+
+
+def p_instrucciones1(t):
+    'instrucciones : instrucciones instruccion'
+    t[1].append(t[2])
+    t[0] = t[1]
 
 
 def p_instrucciones2(t):
@@ -132,8 +142,8 @@ def p_instrucciones2(t):
 #
 #
 def p_instrucion(t):
-    '''instruccion : imprimir'''
-    #                     | declaracion
+    '''instruccion : imprimir
+                          | declaracion'''
     #                     | asignacion
     #                     | if
     #                     | match
@@ -360,24 +370,26 @@ def p_imprimir2(t):
 #
 # # !--------------------------------------------DECLARACION-------------------------------------------------------------
 #
-# def p_declaracion1(t):
-#     'declaracion : LET MUT ID DOSPT tipo IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionVariable(t.lineno(2), t[5], t[3], t[7], True)
-#
-#
-# def p_declaracion2(t):
-#     'declaracion : LET MUT ID IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionVariable(t.lineno(2), tipoPrimitivo.NULO, t[3], t[5], True)
-#
-#
-# def p_declaracion3(t):
-#     'declaracion : LET ID DOSPT tipo IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionVariable(t.lineno(2), t[4], t[2], t[6], False)
-#
-#
-# def p_declaracion4(t):
-#     'declaracion : LET ID IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionVariable(t.lineno(2), tipoPrimitivo.NULO, t[2], t[4], False)
+def p_declaracion1(t):
+    'declaracion : LET MUT ID DOSPT tipo IGUAL expresion PTCOMA'
+    t[0] = Declaracion(t.lineno(2), t[5], t[3], t[7], True)
+
+
+def p_declaracion2(t):
+    'declaracion : LET MUT ID IGUAL expresion PTCOMA'
+    t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[3], t[5], True)
+
+
+def p_declaracion3(t):
+    'declaracion : LET ID DOSPT tipo IGUAL expresion PTCOMA'
+    t[0] = Declaracion(t.lineno(2), t[4], t[2], t[6], False)
+
+
+def p_declaracion4(t):
+    'declaracion : LET ID IGUAL expresion PTCOMA'
+    t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[2], t[4], False)
+
+
 #
 #
 # # !-----------------------------------------------ASIGNACION----------------------------------------------------------
@@ -558,27 +570,29 @@ def p_imprimir2(t):
 #
 # # !----------------------------------------------------TIPO-----------------------------------------------------------
 #
-# def p_tipo1(t):
-#     '''tipo : I64
-#             | F64
-#             | BOOL
-#             | CHAR
-#             | STRING
-#             | USIZE
-#     '''
-#     tipo = t[1]
-#     if (tipo == 'i64'):
-#         t[0] = tipoPrimitivo.I64
-#     elif (tipo == 'f64'):
-#         t[0] = tipoPrimitivo.F64
-#     elif (tipo == 'bool'):
-#         t[0] = tipoPrimitivo.BOOL
-#     elif (tipo == 'char'):
-#         t[0] = tipoPrimitivo.CHAR
-#     elif (tipo == 'String'):
-#         t[0] = tipoPrimitivo.TOS
-#     elif (tipo == 'usize'):
-#         t[0] = tipoPrimitivo.I64
+def p_tipo1(t):
+    '''tipo : I64
+            | F64
+            | BOOL
+            | CHAR
+            | STRING
+            | USIZE
+    '''
+    tipo = t[1]
+    if (tipo == 'i64'):
+        t[0] = TipoPrimitivo.I64
+    elif (tipo == 'f64'):
+        t[0] = TipoPrimitivo.F64
+    elif (tipo == 'bool'):
+        t[0] = TipoPrimitivo.BOOL
+    elif (tipo == 'char'):
+        t[0] = TipoPrimitivo.CHAR
+    elif (tipo == 'String'):
+        t[0] = TipoPrimitivo.TOS
+    elif (tipo == 'usize'):
+        t[0] = TipoPrimitivo.I64
+
+
 #
 #
 # def p_tipo2(t):
@@ -609,125 +623,128 @@ def p_expresiones2(t):
 #
 def p_expresion_entero(t):
     'expresion : ENTERO'
-    t[0] = Entero(t.lineno(1), TipoPrimitivo.I64, str(t[1]))
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.I64, str(t[1]))
+
+
 #
 #
 def p_expresion_decimal(t):
     'expresion : DECIMAL'
-    t[0] = Decimal(t.lineno(1), TipoPrimitivo.F64, str(t[1]))
-    print(t[0].valor)
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.F64, str(t[1]))
+
+
 #
 #
-# def p_expresion_true(t):
-#     'expresion : TRUE'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.BOOL, True)
+def p_expresion_true(t):
+    'expresion : TRUE'
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.BOOL, "1")
+
+
+def p_expresion_false(t):
+    'expresion : FALSE'
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.BOOL, "0")
+
+
 #
 #
-# def p_expresion_false(t):
-#     'expresion : FALSE'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.BOOL, False)
+def p_expresion_to(t):
+    '''expresion : tostring
+                | toowned'''
+    t[0] = t[1]
+
+
 #
 #
-# def p_expresion_to(t):
-#     '''expresion : tostring
-#                 | toowned'''
-#     t[0] = t[1]
+def p_expresion_tostring(t):
+    'tostring : expresion PTO TOSTRING PARIZQ PARDER '
+    t[0] = FuncionNativa(t.lineno(2), NATIVAS.TOSTRING, t[1])
+
+
+def p_expresion_toowned(t):
+    'toowned : expresion PTO TOOWNED PARIZQ PARDER '
+    t[0] = FuncionNativa(t.lineno(2), NATIVAS.TOOWNED, t[1])
+
+
 #
 #
-# def p_expresion_tostring(t):
-#     'tostring : expresion PTO TOSTRING PARIZQ PARDER '
-#     t[0] = FuncionesNativas(t.lineno(2), NATIVAS.TOSTRING, t[1])
-#
-#
-# def p_expresion_toowned(t):
-#     'toowned : expresion PTO TOOWNED PARIZQ PARDER '
-#     t[0] = FuncionesNativas(t.lineno(2), NATIVAS.TOOWNED, t[1])
-#
-#
-# def p_expresion_cadena2(t):
-#     'expresion : STR'
-#     t[0] = Primitiva(t.lineno(1), tipoPrimitivo.STR, t[1])
 #
 #
 def p_expresion_cadena1(t):
     'expresion : CADENA'
-    t[0] = Cadena(t.lineno(1), TipoPrimitivo.STR, str(t[1]))
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.STR, str(t[1]))
 
 
 #
 #
 def p_expresion_caracter(t):
     'expresion : CARACTER'
-    t[0] = Char(t.lineno(1), TipoPrimitivo.CHAR, str(t[1]))
+    t[0] = Primitiva(t.lineno(1), TipoPrimitivo.CHAR, str(t[1]))
+
+
 #
 #
-# def p_expresion_aritmetica1(t):
-#     '''expresion : expresion MAS expresion
-#                     | expresion MENOS expresion
-#                     | expresion POR expresion
-#                     | expresion DIVIDIDO expresion
-#                     | expresion MODULO expresion'''
-#
-#     operador = t[2]
-#
-#     if operador == '+':
-#         t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MAS, t[3], None)
-#     elif operador == '-':
-#         t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MENOS, t[3], None)
-#     elif operador == '*':
-#         t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.POR, t[3], None)
-#     elif operador == '/':
-#         t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.DIVIDIDO, t[3], None)
-#     elif operador == '%':
-#         t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MODULO, t[3], None)
-#
-#
-# def p_exp_unaria(t):
-#     '''expresion : MENOS expresion %prec UMENOS
-#                 | NOT expresion'''
-#
-#     operador = str(t[1])
-#
-#     if operador == '-':
-#         t[0] = Unaria(t.lineno(1), OPERADOR_UNARIO.MENOS, t[2])
-#     elif operador == '!':
-#         t[0] = Unaria(t.lineno(1), OPERADOR_UNARIO.NOT, t[2])
+def p_expresion_aritmetica1(t):
+    '''expresion : expresion MAS expresion
+                    | expresion MENOS expresion
+                    | expresion POR expresion
+                    | expresion DIVIDIDO expresion
+                    | expresion MODULO expresion'''
+
+    operador = t[2]
+
+    if operador == '+':
+        t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MAS, t[3])
+    elif operador == '-':
+        t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MENOS, t[3])
+    elif operador == '*':
+        t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.POR, t[3])
+    elif operador == '/':
+        t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.DIVIDIDO, t[3])
+    elif operador == '%':
+        t[0] = Aritmetica(t.lineno(2), t[1], OPERADOR_ARITMETICO.MODULO, t[3])
+
+
 #
 #
-# def p_expresion_aritmetica2(t):
-#     '''expresion : tipo DOSPT DOSPT POW PARIZQ expresion COMA expresion PARDER
-#                 | tipo DOSPT DOSPT POWF PARIZQ expresion COMA expresion PARDER'''
-#     reserv = t[4]
+def p_exp_unaria(t):
+    '''expresion : MENOS expresion %prec UMENOS
+                | NOT expresion'''
+
+    operador = str(t[1])
+
+    if operador == '-':
+        t[0] = Unaria(t.lineno(1), OPERADOR_UNARIO.MENOS, t[2])
+    elif operador == '!':
+        t[0] = Unaria(t.lineno(1), OPERADOR_UNARIO.NOT, t[2])
+
+
 #
-#     if reserv == 'powf':
-#         t[0] = Aritmetica(t.lineno(2), t[6], OPERADOR_ARITMETICO.POTENCIAF, t[8], t[1])
-#     elif reserv == 'pow':
-#         t[0] = Aritmetica(t.lineno(2), t[6], OPERADOR_ARITMETICO.POTENCIA, t[8], t[1])
-#     else:
-#         print("Error de potencia")
+#
+def p_expresion_aritmetica2(t):
+    '''expresion : I64 DDOSPT POW PARIZQ expresion COMA expresion PARDER
+                | F64 DDOSPT POWF PARIZQ expresion COMA expresion PARDER'''
+    reserv = t[3]
+
+    if reserv == 'powf':
+        t[0] = Aritmetica(t.lineno(2), t[5], OPERADOR_ARITMETICO.POTENCIAF, t[7])
+    elif reserv == 'pow':
+        t[0] = Aritmetica(t.lineno(2), t[5], OPERADOR_ARITMETICO.POTENCIA, t[7])
+    else:
+        print("Error de potencia")
+
+
 #
 #
-# def p_expresion_relacional(t):
-#     '''expresion : expresion IGUALQUE expresion
-#             | expresion NOIGUALQUE expresion
-#             | expresion MENORQUE expresion
-#             | expresion MAYORQUE expresion
-#             | expresion MENORIQUE expresion
-#             | expresion MAYORIQUE expresion '''
-#
-#     operador = str(t[2])
-#     if operador == '==':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.IGUALQUE, t[3])
-#     elif operador == '>':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.MAYORQUE, t[3])
-#     elif operador == '<':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.MENORQUE, t[3])
-#     elif operador == '>=':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.MAYORIQUE, t[3])
-#     elif operador == '<=':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.MENORIQUE, t[3])
-#     elif operador == '!=':
-#         t[0] = Relacional(t.lineno(2), t[1], OPERADOR_RELACIONAL.NOGUALQUE, t[3])
+def p_expresion_relacional(t):
+    '''expresion : expresion IGUALQUE expresion
+            | expresion NOIGUALQUE expresion
+            | expresion MENORQUE expresion
+            | expresion MAYORQUE expresion
+            | expresion MENORIQUE expresion
+            | expresion MAYORIQUE expresion '''
+    t[0] = Relacional(t.lineno(2), t[1], t[2], t[3])
+
+
 #
 #
 # def p_expresion_logica(t):
@@ -741,9 +758,11 @@ def p_expresion_caracter(t):
 #         t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.OR, t[3])
 #
 #
-# def p_exp_agrupa(t):
-#     'expresion : PARIZQ expresion PARDER'
-#     t[0] = t[2]
+def p_exp_agrupa(t):
+    'expresion : PARIZQ expresion PARDER'
+    t[0] = t[2]
+
+
 #
 #
 # def p_llamada_funcion_asig(t):
@@ -905,50 +924,56 @@ def p_expresion_caracter(t):
 #
 #
 # # !------------------------------------CASTEO---------------------------------------------------------------------
-# def p_casteo(t):
-#     'expresion : PARIZQ expresion AS tipo PARDER'
-#     t[0] = Casteos(t.lineno(1), t[2], t[4])
+def p_casteo(t):
+    'expresion : PARIZQ expresion AS tipo PARDER'
+    t[0] = Casteo(t.lineno(1), t[2], t[4])
+
+
 #
 #
 # # !----------------------------------------FUNCIONES NATIVAS--------------------------------------------------
-# def p_funciones_nat_inicio(t):
-#     'expresion : nativas_fun '
-#     t[0] = t[1]
-#
-#
-# def p_funciones_nat1(t):
-#     '''nativas_fun : expresion PTO ABS PARIZQ PARDER
-#                     | expresion PTO SQRT PARIZQ PARDER'''
-#     fun = t[3]
-#
-#     if fun == 'abs':
-#         t[0] = FuncionesNativas(t.lineno(1), NATIVAS.ABS, t[1])
-#     elif fun == 'sqrt':
-#         t[0] = FuncionesNativas(t.lineno(1), NATIVAS.SQRT, t[1])
-#
-#
-# def p_funciones_nat2(t):
-#     'nativas_fun : expresion PTO CLONE PARIZQ PARDER'
-#     t[0] = FuncionesNativas(t.lineno(2), NATIVAS.CLONE, t[1])
+def p_funciones_nat_inicio(t):
+    'expresion : nativas_fun '
+    t[0] = t[1]
+
+
+def p_funciones_nat1(t):
+    '''nativas_fun : expresion PTO ABS PARIZQ PARDER
+                    | expresion PTO SQRT PARIZQ PARDER'''
+    fun = t[3]
+
+    if fun == 'abs':
+        t[0] = FuncionNativa(t.lineno(1), NATIVAS.ABS, t[1])
+    elif fun == 'sqrt':
+        t[0] = FuncionNativa(t.lineno(1), NATIVAS.SQRT, t[1])
+
+
+def p_funciones_nat2(t):
+    'nativas_fun : expresion PTO CLONE PARIZQ PARDER'
+    t[0] = FuncionNativa(t.lineno(2), NATIVAS.CLONE, t[1])
+
+
 #
 #
 # # !-----------------------------------------------ERROR----------------------------------------------------------------
-# def p_error(t):
-#     if t:
-#         alert = "El token '{}' es inválido en está posición".format(t.value)
-#         error_syntaxis = Errores(t.lexer.lineno, alert, TIPIN_ERROR.SINTACITO)
-#         Tabla_Errorres.append(error_syntaxis)
-#         while True:
-#             car = parser.token()
-#             if not car or car.type in ['LLAVEDER', 'PTCOMA']:
-#                 break
-#         print(alert)
-#         parser.restart()
-#     else:
-#         alert = "Se detecto un error al final"
-#         error_syntaxis = Errores(0, alert, TIPIN_ERROR.SINTACITO)
-#         Tabla_Errorres.append(error_syntaxis)
-#         print(alert)
+def p_error(t):
+    if t:
+        alert = "El token '{}' es inválido en está posición".format(t.value)
+        error_syntaxis = Errores(t.lexer.lineno, alert, TIPIN_ERROR.SINTACITO)
+        Tabla_Errorres.append(error_syntaxis)
+        while True:
+            car = parser.token()
+            if not car or car.type in ['LLAVEDER', 'PTCOMA']:
+                break
+        print(alert)
+        parser.restart()
+    else:
+        alert = "Se detecto un error al final"
+        error_syntaxis = Errores(0, alert, TIPIN_ERROR.SINTACITO)
+        Tabla_Errorres.append(error_syntaxis)
+        print(alert)
+
+
 #
 #
 # def report(self):
@@ -957,8 +982,14 @@ def p_expresion_caracter(t):
 #
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
-entrada = '''
-println!("Nombre1 {}, Nombre2 {}, sale con {}", "Javs", "Frank", 100);
+entrada = r'''
+//let mut var1 = 6 > 7;
+//let mut var2 = i64::pow(2,8);
+//let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
+
+//println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
+println!(("Hola".clone()).to_owned() + " Mundo");
+//println!("Nombre1 {}, Nombre2 {}, sale con {}", "Javs", "Frank", 100, true, false, -10, !true);
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)

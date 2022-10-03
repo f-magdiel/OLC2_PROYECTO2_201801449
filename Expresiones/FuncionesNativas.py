@@ -73,8 +73,8 @@ class FuncionNativa(Expresion):
                     print("Error")
             # ! tow, tos
             elif self.funcion in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
-                if valor.tipo in [TipoPrimitivo.TOS, TipoPrimitivo.TOW]:
-                    valor.tipo = TipoPrimitivo.TOS
+                if valor.tipo == TipoPrimitivo.STR:
+                    valor.tipo = TipoPrimitivo.STRING
                     return valor
                 else:
                     print("Error")

@@ -68,18 +68,19 @@ tokens = [
     'OR',
     'AND',
     'NOT',
+    'BARRAS',
+    'SIGNOI',
     'IGUAL',
+    'GUIONB',
     'PTO',
     'COMA',
     'PTCOMA',
+    'DDOSPT',
     'DOSPT',
     'LLAVEIZQ',
     'LLAVEDER',
     'PARIZQ',
     'PARDER',
-    'SIGNOI',
-    'BARRAS',
-    'GUIONB',
     'CORIZQ',
     'CORDER',
 
@@ -100,21 +101,22 @@ t_MAYORQUE = r'>'
 t_MENORQUE = r'<'
 t_OR = r'\|\|'
 t_AND = r'&&'
-t_NOT = r'\!'
+t_NOT = r'!'
+t_BARRAS = r'\|'
+t_SIGNOI = r'&'
 t_IGUAL = r'='
-t_PTO = r'.'
-t_COMA = r'\,'
-t_PTCOMA = r'\;'
-t_DOSPT = '\:'
-t_CORIZQ = '\['
-t_CORDER = '\]'
-t_LLAVEIZQ = r'\{'
-t_LLAVEDER = r'\}'
+t_GUIONB = r'_'
+t_PTO = r'\.'
+t_COMA = r','
+t_PTCOMA = r';'
+t_DDOSPT = r'::'
+t_DOSPT = r':'
+t_LLAVEIZQ = r'{'
+t_LLAVEDER = r'}'
+t_CORIZQ = r'\['
+t_CORDER = r'\]'
 t_PARIZQ = r'\('
 t_PARDER = r'\)'
-t_SIGNOI = r'\&'
-t_BARRAS = r'\|'
-t_GUIONB = r'\_'
 t_ENTERO = r'\d+'
 t_DECIMAL = r'\d+\.\d+'
 
@@ -186,7 +188,7 @@ t_ignore = ' \t\r'
 
 def t_newline(t):
     r'\n+'
-    t.lexer.lineno += t.value.count('\n')
+    t.lexer.lineno += len(t.value)
 
 
 def t_error(t):

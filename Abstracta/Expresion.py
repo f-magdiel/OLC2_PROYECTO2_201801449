@@ -7,7 +7,6 @@ class Expresion(ABC):
         self.fila = fila
         self.generador = None
 
-
     @abstractmethod
     def convertir(self, entorno):
         pass

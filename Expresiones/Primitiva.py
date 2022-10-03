@@ -1,6 +1,7 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from Entorno.Entorno import Entorno
 
 
 class Primitiva(Expresion):
@@ -41,7 +42,7 @@ class Primitiva(Expresion):
             # ! Asignar tmp para la cadena
             tmp = self.generador.nuevoTemp()
             valor.reference = tmp
-            valor.codigo = f"\t{tmp} = P;\n"
+            valor.codigo = f"\t{tmp} = H;\n"
             valor.listTemp.append(tmp)
 
             # ! Recorrer la cadena
@@ -50,12 +51,12 @@ class Primitiva(Expresion):
                 if flag_cadena:
                     flag_cadena = False
                     tmp = self.generador.nuevoTemp()
-                    valor.codigo += f"\t{tmp} = P;\n"
+                    valor.codigo += f"\t{tmp} = H;\n"
                     valor.listTemp.append(tmp)
                 # ! Validar caracter especial
                 if char == '{':
-                    valor.codigo += f"\tHEAP[(int)P] = - 1;\n" \
-                                    f"\tP = P + 1;\n"
+                    valor.codigo += f"\tHEAP[(int)H] = - 1;\n" \
+                                    f"\tH = H + 1;\n"
                     continue
 
                 elif char == '}':
@@ -65,11 +66,11 @@ class Primitiva(Expresion):
                     continue
 
                 else:
-                    valor.codigo += f"\tHEAP[(int)P] = {ord(char)};\n" \
-                                    f"\tP = P + 1;\n"
+                    valor.codigo += f"\tHEAP[(int)H] = {ord(char)};\n" \
+                                    f"\tH = H + 1;\n"
 
             if not flag_cadena:
-                valor.codigo += f"\tHEAP[(int)P] = - 1;\n" \
-                                f"\tP = P + 1;\n"
+                valor.codigo += f"\tHEAP[(int)H] = - 1;\n" \
+                                f"\tH = H + 1;\n"
 
             return valor
