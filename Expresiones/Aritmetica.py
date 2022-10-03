@@ -1,6 +1,5 @@
 from Abstracta.Expresion import Expresion
 from Enum.OpAritmetico import OPERADOR_ARITMETICO
-from Entorno.Entorno import Entorno
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
 
@@ -12,11 +11,10 @@ class Aritmetica(Expresion):
         self.exp2 = exp2
         self.operador = operador
 
-    def convertir(self, entorno: Entorno):
-        self.exp1.generador = self.generador
-        self.exp2.generador = self.generador
-        val_izq = self.exp1.convertir(entorno)
-        val_der = self.exp2.convertir(entorno)
+    def convertir(self, generador,entorno):
+
+        val_izq = self.exp1.convertir(generador,entorno)
+        val_der = self.exp2.convertir(generador,entorno)
 
         if self.exp1 and self.exp2:
             # ! SUMA
@@ -27,7 +25,7 @@ class Aritmetica(Expresion):
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
                         # ! generar tempora
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
                         # ! generar c3d
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} + {val_der.reference};\n"
@@ -36,11 +34,11 @@ class Aritmetica(Expresion):
                     elif val_izq.tipo == TipoPrimitivo.STRING and val_der.tipo == TipoPrimitivo.STR:
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.STR)
-                        tmp1 = self.generador.nuevoTemp()
+                        tmp1 = generador.nuevoTemp()
                         nuevo_valor.reference = tmp1
 
-                        tmp2 = self.generador.nuevoTemp()
-                        tmp3 = self.generador.nuevoTemp()
+                        tmp2 = generador.nuevoTemp()
+                        tmp3 = generador.nuevoTemp()
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp1} = H;\n" \
                                                                                f"\tS = S + {entorno.size};\n" \
@@ -59,7 +57,7 @@ class Aritmetica(Expresion):
                     # ! resta para i64, f64
                     if val_izq.tipo == val_der.tipo and val_der.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} - {val_der.reference};\n"
@@ -72,7 +70,7 @@ class Aritmetica(Expresion):
                     # ! multiplicación para i64, f64
                     if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoT
                         nuevo_valor.reference = tmp
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} * {val_der.reference};\n"
                         return nuevo_valor
@@ -83,13 +81,13 @@ class Aritmetica(Expresion):
                     # ! división para f64, i64
                     if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
 
-                        # ! label aux
-                        lbl1 = self.generador.nuevoLabel()
-                        lbl2 = self.generador.nuevoLabel()
-                        lbl3 = self.generador.nuevoLabel()
+                        # ! labe
+                        lbl1 = generador.nuevoLabel()
+                        lbl2 = generador.nuevoLabel()
+                        lbl3 = generador.nuevoLabel()
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.reference} == 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \
@@ -115,19 +113,19 @@ class Aritmetica(Expresion):
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIA:
                     if val_izq.tipo == TipoPrimitivo.I64 and val_der.tipo == TipoPrimitivo.I64:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.I64)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
 
-                        tmp1 = self.generador.nuevoTemp()
+                        tmp1 = generador.nuevoTemp()
 
-                        lbl1 = self.generador.nuevoLabel()
-                        lbl2 = self.generador.nuevoLabel()
-                        lbl3 = self.generador.nuevoLabel()
-                        lbl4 = self.generador.nuevoLabel()
-                        lbl5 = self.generador.nuevoLabel()
-                        lbl6 = self.generador.nuevoLabel()
-                        lbl7 = self.generador.nuevoLabel()
-                        lbl8 = self.generador.nuevoLabel()
+                        lbl1 = generador.nuevoLabel()
+                        lbl2 = generador.nuevoLabel()
+                        lbl3 = generador.nuevoLabel()
+                        lbl4 = generador.nuevoLabel()
+                        lbl5 = generador.nuevoLabel()
+                        lbl6 = generador.nuevoLabel()
+                        lbl7 = generador.nuevoLabel()
+                        lbl8 = generador.nuevoLabel()
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.reference} != 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \
@@ -159,20 +157,20 @@ class Aritmetica(Expresion):
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIAF:
                     if val_izq.tipo == TipoPrimitivo.F64 and val_der.tipo == TipoPrimitivo.F64:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
 
-                        tmp1 = self.generador.nuevoTemp()
+                        tmp1 = generador.nuevoTemp()
 
                         # ! labels aux
-                        lbl1 = self.generador.nuevoLabel()
-                        lbl2 = self.generador.nuevoLabel()
-                        lbl3 = self.generador.nuevoLabel()
-                        lbl4 = self.generador.nuevoLabel()
-                        lbl5 = self.generador.nuevoLabel()
-                        lbl6 = self.generador.nuevoLabel()
-                        lbl7 = self.generador.nuevoLabel()
-                        lbl8 = self.generador.nuevoLabel()
+                        lbl1 = generador.nuevoLabel()
+                        lbl2 = generador.nuevoLabel()
+                        lbl3 = generador.nuevoLabel()
+                        lbl4 = generador.nuevoLabel()
+                        lbl5 = generador.nuevoLabel()
+                        lbl6 = generador.nuevoLabel()
+                        lbl7 = generador.nuevoLabel()
+                        lbl8 = generador.nuevoLabel()
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.reference} != 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \
@@ -205,13 +203,13 @@ class Aritmetica(Expresion):
 
                     if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
 
                         # ! labels aux
-                        lbl1 = self.generador.nuevoLabel()
-                        lbl2 = self.generador.nuevoLabel()
-                        lbl3 = self.generador.nuevoLabel()
+                        lbl1 = generador.nuevoLabel()
+                        lbl2 = generador.nuevoLabel()
+                        lbl3 = generador.nuevoLabel()
 
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.ref} == 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \

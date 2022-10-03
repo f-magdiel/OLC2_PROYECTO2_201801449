@@ -5,8 +5,7 @@ class Instruccion(ABC):
     def __init__(self, fila):
         super().__init__()
         self.fila = fila
-        self.generador = None
 
     @abstractmethod
-    def convertir(self, entorno):
+    def convertir(self, generador, entorno):
         pass

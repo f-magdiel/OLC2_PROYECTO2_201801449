@@ -10,7 +10,7 @@ class Primitiva(Expresion):
         self.tipo = tipo
         self.valor = valor
 
-    def convertir(self, entorno):
+    def convertir(self, generador, entorno):
         valor = Valor(self.fila, self.tipo)
         # ! validar el tipo
         if self.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
@@ -25,8 +25,8 @@ class Primitiva(Expresion):
 
         elif self.tipo == TipoPrimitivo.BOOL:
             # ! Crear labels
-            trueLabel = self.generador.nuevoLabel()
-            falseLabel = self.generador.nuevoLabel()
+            trueLabel = generador.nuevoLabel()
+            falseLabel = generador.nuevoLabel()
             # ! Generar código
             valor.codigo = f"\tif ({self.valor}) goto {trueLabel};\n" \
                            f"\tgoto {falseLabel};\n"
@@ -40,7 +40,7 @@ class Primitiva(Expresion):
             cadena = self.valor.replace("{:?}", "{}")
             flag_cadena = False
             # ! Asignar tmp para la cadena
-            tmp = self.generador.nuevoTemp()
+            tmp = generador.nuevoTemp()
             valor.reference = tmp
             valor.codigo = f"\t{tmp} = H;\n"
             valor.listTemp.append(tmp)
@@ -50,7 +50,7 @@ class Primitiva(Expresion):
                 # ! Validar flag cadena
                 if flag_cadena:
                     flag_cadena = False
-                    tmp = self.generador.nuevoTemp()
+                    tmp = generador.nuevoTemp()
                     valor.codigo += f"\t{tmp} = H;\n"
                     valor.listTemp.append(tmp)
                 # ! Validar caracter especial

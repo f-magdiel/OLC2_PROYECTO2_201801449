@@ -9,9 +9,8 @@ class Casteo(Expresion):
         self.expresion = expresion
         self.tipo = tipo
 
-    def convertir(self, entorno):
-        self.expresion.generador = self.generador
-        valor = self.expresion.convertir(entorno)
+    def convertir(self, generador, entorno):
+        valor = self.expresion.convertir(generador, entorno)
         if valor:
             # ! de i64
             if self.tipo == TipoPrimitivo.I64:
@@ -19,12 +18,12 @@ class Casteo(Expresion):
                 if valor.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.BOOL, TipoPrimitivo.CHAR]:
                     if valor.tipo == TipoPrimitivo.BOOL:
                         nuevo_valor = Valor(self.fila, self.tipo)
-                        tmp = self.generador.nuevoTemp()
+                        tmp = generador.nuevoTemp()
                         nuevo_valor.reference = tmp
                         nuevo_valor.codigo = valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                          f"\t{tmp} = 1;\n" \
-                                                          f"\t{valor.falseLabel}:\n" \
-                                                          f"\t{tmp} = 0;\n"
+                                                            f"\t{tmp} = 1;\n" \
+                                                            f"\t{valor.falseLabel}:\n" \
+                                                            f"\t{tmp} = 0;\n"
                         return nuevo_valor
                     else:
                         valor.tipo = self.tipo
@@ -63,7 +62,7 @@ class Casteo(Expresion):
                     print("Error")
             # ! de string
             else:
-                if valor.tipo in [TipoPrimitivo.TOS, TipoPrimitivo.TOW]:
+                if valor.tipo == TipoPrimitivo.STRING:
                     return valor
                 else:
                     print("Error")

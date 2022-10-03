@@ -11,27 +11,24 @@ class Declaracion(Instruccion):
         self.id = id
         self.expresion = expresion
 
-    def convertir(self, entorno):
-        self.expresion.generador = self.generador
-
-        valor = self.expresion.convertir(entorno)
+    def convertir(self, generador, entorno):
+        valor = self.expresion.convertir(generador, entorno)
 
         if valor:
 
             if self.tipo == TipoPrimitivo.NULO:
-                print("SIIII")
                 variable = Variable(self.fila, self.mutable, self.id, valor.tipo)
                 entorno.nueva_variable(variable)
 
                 if valor.tipo != TipoPrimitivo.BOOL:
-                    tmp1 = self.generador.nuevoTemp()
+                    tmp1 = generador.nuevoTemp()
                     codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion};\n" \
                                                                        f"\tSTACK[(int){tmp1}] = {valor.reference};\n"
                     return codigo
                 else:
 
-                    tmp1 = self.generador.nuevoTemp()
-                    lbl1 = self.generador.nuevoLabel()
+                    tmp1 = generador.nuevoTemp()
+                    lbl1 = generador.nuevoLabel()
 
                     codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
                                                                        f"\t{tmp1} = S + {variable.posicion};\n" \

@@ -59,6 +59,7 @@ from Expresiones.Unaria import Unaria
 from Expresiones.Relacional import Relacional
 from Enum.OpRelacional import OPERADOR_RELACIONAL
 from Expresiones.Casteo import Casteo
+from Instrucciones.Main import Main
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -78,13 +79,13 @@ precedence = (
 #
 #
 # # ?--------------------------------------------PRODUCCIONES------------------------------------------------------------
-# def p_inicio_inicio(t):
-#     'inicio : instrucciones main instrucciones'
-#     ins = t[3]
-#     for ele in ins:
-#         t[1].append(ele)
-#     t[1].append(t[2])
-#     t[0] = t[1]
+def p_inicio_inicio(t):
+    'inicio : instrucciones main instrucciones'
+    t[1] += t[3]
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
 #
 #
 # def p_inicio1(t):
@@ -99,6 +100,8 @@ precedence = (
 #     'inicio : main instrucciones'
 #     t[2].append(t[1])
 #     t[0] = t[2]
+
+
 #
 #
 # def p_inicio2(t):
@@ -108,25 +111,26 @@ precedence = (
 #     t[0] = [t[1]]  # ? ----> como una lista
 #
 #
-# def p_main(t):
-#     'main : FN MAIN PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = MainInstru(t.lineno(1), t[6])
+def p_main(t):
+    'main : FN MAIN PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = Main(t.lineno(1), t[6])
+
+
 #
 #
 
 
-def p_inicio(t):
-    'inicio : instrucciones'
-    generadorGlob = Generador()
-    entornoGlob = Entorno(None)
-    for instru in t[1]:
-        if instru:
-            instru.generador = generadorGlob
-            # instru.convertir(entornoGlob)
-            generadorGlob.codigo.append(instru.convertir(entornoGlob))
-
-    t[0] = generadorGlob.obtenerCodigo()
-
+# def p_inicio(t):
+#     'inicio : instrucciones'
+#     generadorGlob = Generador()
+#     entornoGlob = Entorno(None)
+#     for instru in t[1]:
+#         if instru:
+#             instru.generador = generadorGlob
+#             # instru.convertir(entornoGlob)
+#             generadorGlob.codigo.append(instru.convertir(entornoGlob))
+#
+#     t[0] = generadorGlob.obtenerCodigo()
 
 def p_instrucciones1(t):
     'instrucciones : instrucciones instruccion'
@@ -137,6 +141,10 @@ def p_instrucciones1(t):
 def p_instrucciones2(t):
     'instrucciones : instruccion'
     t[0] = [t[1]]
+
+def p_instrucciones3(t):
+    'instrucciones : '
+    t[0] = []
 
 
 #
@@ -983,16 +991,29 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
-//let mut var1 = 6 > 7;
-//let mut var2 = i64::pow(2,8);
-//let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
+fn main(){
+let mut var1 = 6 > 7;
+let mut var2 = i64::pow(2,8);
+let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
 
-//println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
+println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
 println!(("Hola".clone()).to_owned() + " Mundo");
+}
+
+
 //println!("Nombre1 {}, Nombre2 {}, sale con {}", "Javs", "Frank", 100, true, false, -10, !true);
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)
-print(instruc)
+
+if instruc:
+    generador = Generador()
+    env = Entorno(None)
+    for inst in instruc:
+        inst.convertir(generador, env)
+    codigo = generador.obtenerCodigo()
+    print(codigo)
+else:
+    print("Error no hay main")
 
 print("Finaliza analizador...")

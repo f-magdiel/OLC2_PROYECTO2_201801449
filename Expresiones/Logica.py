@@ -11,12 +11,11 @@ class Logica(Expresion):
         self.exp2 = exp2
         self.operador = operador
 
-    def convertir(self, entorno):
+    def convertir(self, generador, entorno):
         # ! Convertir expres y obtener resultados al operar
-        self.exp1.generador = self.generador
-        self.exp2.generador = self.generador
-        val_izq = self.exp1.convertir(entorno)
-        val_der = self.exp2.convertir(entorno)
+
+        val_izq = self.exp1.convertir(generador, entorno)
+        val_der = self.exp2.convertir(generador, entorno)
 
         if val_izq and val_der:
             if val_izq.tipo == TipoPrimitivo.BOOL and val_der.tipo == TipoPrimitivo.BOOL:

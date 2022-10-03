@@ -10,24 +10,23 @@ class FuncionNativa(Expresion):
         self.funcion = funcion
         self.expresion = expresion
 
-    def convertir(self, entorno):
+    def convertir(self, generador, entorno):
         # ! Convertir la expresion y obtener los resultados
-        self.expresion.generador = self.generador
-        valor = self.expresion.convertir(entorno)
+        valor = self.expresion.convertir(generador, entorno)
 
         if valor:
             # ! Absoluto
             if valor.tipo == NATIVAS.ABS:
                 if valor.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, valor.tipo)
-                    tmp1 = self.generador.nuevoTemp()
-                    tmp = self.generador.nuevoTemp()
+                    tmp1 = generador.nuevoTemp()
+                    tmp = generador.nuevoTemp()
                     nuevo_valor.reference = tmp
 
-                    lbl1 = self.generador.nuevoLabel()
-                    lbl2 = self.generador.nuevoLabel()
-                    lbl3 = self.generador.nuevoLabel()
-                    lbl4 = self.generador.nuevoLabel()
+                    lbl1 = generador.nuevoLabel()
+                    lbl2 = generador.nuevoLabel()
+                    lbl3 = generador.nuevoLabel()
+                    lbl4 = generador.nuevoLabel()
 
                     nuevo_valor.codigo = valor.codigo + f"\t{tmp1} = - 1; // Para operar\n" \
                                                         f"\tif ({valor.reference} < 0) goto {lbl1};\n" \
@@ -45,16 +44,16 @@ class FuncionNativa(Expresion):
             elif self.funcion == NATIVAS.SQRT:
                 if valor.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, TipoPrimitivo.I64)
-                    tmp = self.generador.nuevoTemp()
+                    tmp = generador.nuevoTemp()
                     nuevo_valor.reference = tmp
 
-                    tmp1 = self.generador.nuevoTemp()
-                    tmp2 = self.generador.nuevoTemp()
-                    tmp3 = self.generador.nuevoTemp()
+                    tmp1 = generador.nuevoTemp()
+                    tmp2 = generador.nuevoTemp()
+                    tmp3 = generador.nuevoTemp()
 
-                    lbl1 = self.generador.nuevoLabel()
-                    lbl2 = self.generador.nuevoLabel()
-                    lbl3 = self.generador.nuevoLabel()
+                    lbl1 = generador.nuevoLabel()
+                    lbl2 = generador.nuevoLabel()
+                    lbl3 = generador.nuevoLabel()
 
                     nuevo_valor.codigo = valor.codigo + f"\t{tmp} = {valor.reference} / 2;\n" \
                                                         f"\t{tmp1} = 0;\n" \

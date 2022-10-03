@@ -10,18 +10,17 @@ class Relacional(Expresion):
         self.exp2 = exp2
         self.operador = operador
 
-    def convertir(self, entorno):
+    def convertir(self, generador, entorno):
         # ! Convertir las expres y obtener resultados operados
-        self.exp1.generador = self.generador
-        self.exp2.generador = self.generador
-        val_izq = self.exp1.convertir(entorno)
-        val_der = self.exp2.convertir(entorno)
+
+        val_izq = self.exp1.convertir(generador, entorno)
+        val_der = self.exp2.convertir(generador, entorno)
 
         if val_izq and val_der:
             if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.STR]:
                 nuevo_valor = Valor(self.fila, TipoPrimitivo.BOOL)
-                trueLabel = self.generador.nuevoLabel()
-                falseLabel = self.generador.nuevoLabel()
+                trueLabel = generador.nuevoLabel()
+                falseLabel = generador.nuevoLabel()
 
                 nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_izq.reference} {self.operador} {val_der.reference}) goto {trueLabel};\n" \
                                                                         f"\tgoto {falseLabel};\n"
