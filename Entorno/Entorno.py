@@ -1,9 +1,7 @@
-from Entorno.Variable import Variable
-
-
 class Entorno:
-    def __init__(self, padre):
+    def __init__(self, padre, flag_bucle):
         self.padre = padre
+        self.flag_bucle = flag_bucle
         self.variables = {}
         self.size = 0
 
@@ -12,20 +10,18 @@ class Entorno:
         self.size += 1
         self.variables[id] = var
 
-    # def guardarVariable(self, id):
-    #     if (self.variable.get(id) != None):
-    #         print("La variable " + id + " ya existe")
-    #
-    #     tempVariable = Simbolo(id, self.size)
-    #     self.size = self.size + 1
-    #     self.variable[id] = tempVariable
-    #     return tempVariable
-    #
-    # def obtenerVariable(self, id):
-    #     tempEntorno = self
-    #     while (tempEntorno != None):
-    #         if (tempEntorno.variable.get(id) != None):
-    #             return tempEntorno.variable.get(id)
-    #         tempEntorno = tempEntorno.padre
-    #     print("Error: La variable" + id + " no existe")
-    #     return None
+    def existe_variable(self, id):
+        ent = self
+        while ent:
+            if id in ent.variables:
+                return True
+            ent = ent.padre
+        return False
+
+    def obtener_variable(self, id):
+        ent = self
+        while ent:
+            if id in ent.variables:
+                return ent.variables.get(id)
+            else:
+                ent = ent.padre

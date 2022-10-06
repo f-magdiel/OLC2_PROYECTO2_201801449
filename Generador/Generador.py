@@ -118,26 +118,23 @@ class Generador:
 
         codigoTemp += "/* TEMPORALES */\n" + "double " + ",".join(self.tempLista) + ";\n\n"
 
-        codigoTemp += "/* VARIABLES GLOBALES */\n" + "double i;\n\n"
-
         codigoTemp += "/* FUNCIONES */\n" + "\n\n".join(self.funciones_predef) + "\n\n"
 
-        codigoTemp += "void main(){\n" + "\n".join(self.codigo) + "\n\n\treturn;\n}\n"
+        codigoTemp += "void main(){\n" + "\n".join(self.codigo) + "\n\n\t return;\n}\n"
 
         return codigoTemp
 
     # ! Genera un nuevo temporal
     def nuevoTemp(self):
         temp = "tmp" + str(self.temporal)
-        self.temporal = self.temporal + 1
-
+        self.temporal += 1
         self.tempLista.append(temp)
         return temp
 
     # ! Genera un nuevo label
     def nuevoLabel(self):
         temp = self.label
-        self.label = self.label + 1
+        self.label += 1
         return "L" + str(temp)
 
     # def agregarLlamadaFuncion(self, nombre):

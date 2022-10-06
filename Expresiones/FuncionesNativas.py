@@ -15,71 +15,75 @@ class FuncionNativa(Expresion):
         valor = self.expresion.convertir(generador, entorno)
 
         if valor:
-            # ! Absoluto
+            # ! ABSOLUTO
             if valor.tipo == NATIVAS.ABS:
-                if valor.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
+                # ! F64, I64
+                if valor.tipo[0] in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, valor.tipo)
                     tmp1 = generador.nuevoTemp()
-                    tmp = generador.nuevoTemp()
-                    nuevo_valor.reference = tmp
-
+                    nuevo_valor.reference = generador.nuevoTemp()
+                    # ! Labels aux
                     lbl1 = generador.nuevoLabel()
                     lbl2 = generador.nuevoLabel()
                     lbl3 = generador.nuevoLabel()
                     lbl4 = generador.nuevoLabel()
-
-                    nuevo_valor.codigo = valor.codigo + f"\t{tmp1} = - 1; // Para operar\n" \
+                    # ! Se genera código
+                    nuevo_valor.codigo = valor.codigo + f"\t/* ABS() */\n" \
                                                         f"\tif ({valor.reference} < 0) goto {lbl1};\n" \
                                                         f"\tgoto {lbl2};\n" \
                                                         f"\t{lbl1}:\n" \
-                                                        f"\t{tmp} = {valor.reference} * {tmp1};\n" \
+                                                        f"\t{tmp1} = - 1;\n" \
+                                                        f"\t{nuevo_valor.reference} = {valor.reference} * {tmp1};\n" \
                                                         f"\tgoto {lbl3};\n" \
                                                         f"\t{lbl2}:\n" \
-                                                        f"\t{tmp} = {valor.reference};\n" \
+                                                        f"\t{nuevo_valor.reference} = {valor.reference};\n" \
                                                         f"\t{lbl3}:\n"
                     return nuevo_valor
                 else:
                     print("Error")
-            # ! Sqrt
+            # ! SQRT
             elif self.funcion == NATIVAS.SQRT:
-                if valor.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
-                    nuevo_valor = Valor(self.fila, TipoPrimitivo.I64)
-                    tmp = generador.nuevoTemp()
-                    nuevo_valor.reference = tmp
-
+                # F64, I64
+                if valor.tipo[0] in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
+                    nuevo_valor = Valor(self.fila, [TipoPrimitivo.F64])
+                    nuevo_valor.reference = generador.nuevoTemp()
+                    # ! Temporales aux
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     tmp3 = generador.nuevoTemp()
-
+                    # ! Labels aux
                     lbl1 = generador.nuevoLabel()
                     lbl2 = generador.nuevoLabel()
                     lbl3 = generador.nuevoLabel()
 
-                    nuevo_valor.codigo = valor.codigo + f"\t{tmp} = {valor.reference} / 2;\n" \
+                    nuevo_valor.codigo = valor.codigo + f"\t/* SQRT() */\n" \
+                                                        f"\t{nuevo_valor.reference} = {valor.reference} / 2;\n" \
                                                         f"\t{tmp1} = 0;\n" \
                                                         f"\t{lbl3}:\n" \
-                                                        f"\tif ({tmp} != {tmp1}) goto {lbl1};\n" \
+                                                        f"\tif ({nuevo_valor.reference} != {tmp1}) goto {lbl1};\n" \
                                                         f"\tgoto {lbl2};\n" \
                                                         f"\t{lbl1}:\n" \
-                                                        f"\t{tmp1} = {tmp};\n" \
+                                                        f"\t{tmp1} = {nuevo_valor.reference};\n" \
                                                         f"\t{tmp2} = {valor.reference} / {tmp1};\n" \
                                                         f"\t{tmp3} = {tmp2} + {tmp1};\n" \
-                                                        f"\t{tmp} = {tmp3} / 2;\n" \
+                                                        f"\t{nuevo_valor.reference} = {tmp3} / 2;\n" \
                                                         f"\tgoto {lbl3};\n" \
                                                         f"\t{lbl2}:\n"
                     return nuevo_valor
                 else:
                     print("Error")
-            # ! tow, tos
+            # ! TOW, TOS
             elif self.funcion in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
-                if valor.tipo == TipoPrimitivo.STR:
-                    valor.tipo = TipoPrimitivo.STRING
+                # ! STR, STRING
+                if valor.tipo[0] in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
+                    valor.tipo[0] = TipoPrimitivo.STRING
                     return valor
                 else:
                     print("Error")
-            # ! Clone
+            # ! CLONE
             else:
-                if valor.tipo not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
+                # ! CUANDO NO ES ARREGLO/VECTOR
+                if valor.tipo[0] not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                     return valor
                 else:
                     pass

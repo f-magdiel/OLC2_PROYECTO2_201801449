@@ -11,43 +11,46 @@ class Aritmetica(Expresion):
         self.exp2 = exp2
         self.operador = operador
 
-    def convertir(self, generador,entorno):
-
-        val_izq = self.exp1.convertir(generador,entorno)
-        val_der = self.exp2.convertir(generador,entorno)
+    def convertir(self, generador, entorno):
+        val_izq = self.exp1.convertir(generador, entorno)
+        val_der = self.exp2.convertir(generador, entorno)
 
         if self.exp1 and self.exp2:
             # ! SUMA
             if val_izq and val_der:
+                # ! MAS
                 if self.operador == OPERADOR_ARITMETICO.MAS:
                     # ! suma de i64, f64
-                    if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
+                    if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        # ! generar tempora
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
+                        # ! generar temporal
+                        nuevo_valor.reference = generador.nuevoTemp()
                         # ! generar c3d
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} + {val_der.reference};\n"
+                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{nuevo_valor.reference} = {val_izq.reference} + {val_der.reference};\n"
                         return nuevo_valor
-
-                    elif val_izq.tipo == TipoPrimitivo.STRING and val_der.tipo == TipoPrimitivo.STR:
+                    # ! STRIGN + STR
+                    elif val_izq.tipo[0] == TipoPrimitivo.STRING and val_der.tipo[0] == TipoPrimitivo.STR:
                         # ! valor a retornar
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.STR)
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Temp auxiliares
                         tmp1 = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp1
-
                         tmp2 = generador.nuevoTemp()
                         tmp3 = generador.nuevoTemp()
-
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp1} = H;\n" \
-                                                                               f"\tS = S + {entorno.size};\n" \
-                                                                               f"\t{tmp2} = S + 0;\n" \
-                                                                               f"\tSTACK[(int){tmp2}] = {val_izq.reference};\n" \
-                                                                               f"\t{tmp3} = S + 1;\n" \
-                                                                               f"\tSTACK[(int){tmp3}] = {val_der.reference};\n" \
-                                                                               f"\tconcatenar();\n" \
-                                                                               f"\tS = S - {entorno.size};\n"
+                        tmp4 = generador.nuevoTemp()
+                        # ! Se genera código
+                        nuevo_valor.codigo = f"\t/* CONCATENAR */\n" + val_izq.codigo + \
+                                             f"\t{tmp1} = S + {entorno.tamanio};\n" \
+                                             f"\t{tmp2} = {tmp1} + 0;\n" \
+                                             f"\tSTACK[(int){tmp2}] = {val_izq.ref};\n\n" + val_der.codigo + \
+                                             f"\t{tmp3} = S + {entorno.tamanio};\n" \
+                                             f"\t{tmp4} = {tmp3} + 1;\n" \
+                                             f"\tSTACK[(int){tmp4}] = {val_der.ref};\n\n" \
+                                             f"\t{nuevo_valor.reference} = H;\n" \
+                                             f"\tS = S + {entorno.size};\n" \
+                                             f"\tconcatenar();\n" \
+                                             f"\tS = S - {entorno.size};\n"
 
                         return nuevo_valor
                     else:
@@ -55,36 +58,33 @@ class Aritmetica(Expresion):
                 # ! RESTA
                 elif self.operador == OPERADOR_ARITMETICO.MENOS:
                     # ! resta para i64, f64
-                    if val_izq.tipo == val_der.tipo and val_der.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
+                    if val_izq.tipo[0] == val_der.tipo[0] and val_der.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
-
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} - {val_der.reference};\n"
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Se genera código
+                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{nuevo_valor.reference} = {val_izq.reference} - {val_der.reference};\n"
                         return nuevo_valor
                     else:
                         print("Error")
 
-                # ! Mutiplicación
+                # ! MULTIPLICACIÓN
                 elif self.operador == OPERADOR_ARITMETICO.POR:
                     # ! multiplicación para i64, f64
-                    if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
+                    if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = generador.nuevoT
-                        nuevo_valor.reference = tmp
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{tmp} = {val_izq.reference} * {val_der.reference};\n"
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Se genera código
+                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{nuevo_valor.reference} = {val_izq.reference} * {val_der.reference};\n"
                         return nuevo_valor
                     else:
                         print("Error")
-                # ! División
+                # ! DIVISIÓN
                 elif self.operador == OPERADOR_ARITMETICO.DIVIDIDO:
                     # ! división para f64, i64
-                    if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
+                    if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
-
-                        # ! labe
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Labels temporales
                         lbl1 = generador.nuevoLabel()
                         lbl2 = generador.nuevoLabel()
                         lbl3 = generador.nuevoLabel()
@@ -101,23 +101,22 @@ class Aritmetica(Expresion):
                                                                                f"\tprintf(\"%c\", 114); //r\n" \
                                                                                f"\tprintf(\"%c\", 111); //o\n" \
                                                                                f"\tprintf(\"%c\", 114); //r\n" \
-                                                                               f"\t{tmp} = 0;\n" \
+                                                                               f"\t{nuevo_valor.reference} = 0;\n" \
                                                                                f"\tgoto {lbl3};\n" \
                                                                                f"\t{lbl2}:\n" \
-                                                                               f"\t{tmp} = {val_izq.reference} / {val_der.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = {val_izq.reference} / {val_der.reference};\n" \
                                                                                f"\t{lbl3}:\n"
                         return nuevo_valor
                     else:
                         print("Error")
-                # ! Potencia
+                # ! POTENCIA
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIA:
-                    if val_izq.tipo == TipoPrimitivo.I64 and val_der.tipo == TipoPrimitivo.I64:
+                    if val_izq.tipo[0] == TipoPrimitivo.I64 and val_der.tipo[0] == TipoPrimitivo.I64:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.I64)
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
-
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Temporal nuevo_valor.reference
                         tmp1 = generador.nuevoTemp()
-
+                        # ! Labels auxiliares
                         lbl1 = generador.nuevoLabel()
                         lbl2 = generador.nuevoLabel()
                         lbl3 = generador.nuevoLabel()
@@ -133,36 +132,35 @@ class Aritmetica(Expresion):
                                                                                f"\tif ({val_der.reference} != 1) goto {lbl6};\n" \
                                                                                f"\tgoto {lbl7};\n" \
                                                                                f"\t{lbl6}: // for\n" \
-                                                                               f"\t{tmp} = 1; // Valor inicial\n" \
+                                                                               f"\t{nuevo_valor.reference} = 1; // Valor inicial\n" \
                                                                                f"\t{tmp1} = 0; // Contador\n" \
                                                                                f"\t{lbl5}:\n" \
                                                                                f"\tif ({tmp1} < {val_der.reference}) goto {lbl3};\n" \
                                                                                f"\tgoto {lbl4};\n" \
                                                                                f"\t{lbl3}:\n" \
-                                                                               f"\t{tmp} = {tmp} * {val_izq.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = {nuevo_valor.reference} * {val_izq.reference};\n" \
                                                                                f"\t{tmp1} = {tmp1} + 1;\n" \
                                                                                f"\tgoto {lbl5};\n" \
                                                                                f"\t{lbl4}:\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl7}: // retornar el mismo\n" \
-                                                                               f"\t{tmp} = {val_izq.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = {val_izq.reference};\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl2}: // Retornar 1\n" \
-                                                                               f"\t{tmp} = 1;\n" \
+                                                                               f"\t{nuevo_valor.reference} = 1;\n" \
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor
                     else:
                         print("Error")
-                # ! Potencia f
+                # ! POTENCIAF
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIAF:
-                    if val_izq.tipo == TipoPrimitivo.F64 and val_der.tipo == TipoPrimitivo.F64:
+                    if val_izq.tipo[0] == TipoPrimitivo.F64 and val_der.tipo[0] == TipoPrimitivo.F64:
                         nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
-
+                        nuevo_valor.reference = generador.nuevoTemp()
+                        # ! Temporal aux
                         tmp1 = generador.nuevoTemp()
 
-                        # ! labels aux
+                        # nuevo_valor.referenceabels aux
                         lbl1 = generador.nuevoLabel()
                         lbl2 = generador.nuevoLabel()
                         lbl3 = generador.nuevoLabel()
@@ -178,39 +176,36 @@ class Aritmetica(Expresion):
                                                                                f"\tif ({val_der.reference} != 1) goto {lbl6};\n" \
                                                                                f"\tgoto {lbl7};\n" \
                                                                                f"\t{lbl6}: // for\n" \
-                                                                               f"\t{tmp} = 1; // Valor inicial\n" \
+                                                                               f"\t{nuevo_valor.reference} = 1; // Valor inicial\n" \
                                                                                f"\t{tmp1} = 0; // Contador\n" \
                                                                                f"\t{lbl5}:\n" \
                                                                                f"\tif ({tmp1} < {val_der.reference}) goto {lbl3};\n" \
                                                                                f"\tgoto {lbl4};\n" \
                                                                                f"\t{lbl3}:\n" \
-                                                                               f"\t{tmp} = {tmp} * {val_izq.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = {nuevo_valor.reference} * {val_izq.reference};\n" \
                                                                                f"\t{tmp1} = {tmp1} + 1;\n" \
                                                                                f"\tgoto {lbl5};\n" \
                                                                                f"\t{lbl4}:\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl7}: // Retornar el mismo\n" \
-                                                                               f"\t{tmp} = {val_izq.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = {val_izq.reference};\n" \
                                                                                f"\tgoto {lbl8}; // Fin\n" \
                                                                                f"\t{lbl2}: // Retornar 1\n" \
-                                                                               f"\t{tmp} = 1;\n" \
+                                                                               f"\t{nuevo_valor.reference} = 1;\n" \
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor
                     else:
                         print("Error")
-                # ! Modulo
+                # ! MODULO
                 else:
-
-                    if val_izq.tipo == val_der.tipo and val_izq.tipo in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
-                        nuevo_valor = Valor(self.fila, val_izq.tipo)
-                        tmp = generador.nuevoTemp()
-                        nuevo_valor.reference = tmp
+                    if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
+                        nuevo_valor = Valor(self.fila, val_izq.tipo[0])
+                        nuevo_valor.reference = generador.nuevoTemp()
 
                         # ! labels aux
                         lbl1 = generador.nuevoLabel()
                         lbl2 = generador.nuevoLabel()
-                        lbl3 = generador.nuevoLabel()
-
+                        lbl3 = generador.nuevoLabelnuevo_valor.reference
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.ref} == 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \
                                                                                f"\t{lbl1}:\n" \
@@ -223,10 +218,10 @@ class Aritmetica(Expresion):
                                                                                f"\tprintf(\"%c\", 114); //r\n" \
                                                                                f"\tprintf(\"%c\", 111); //o\n" \
                                                                                f"\tprintf(\"%c\", 114); //r\n" \
-                                                                               f"\t{tmp} = 0;\n" \
+                                                                               f"\t{nuevo_valor.reference} = 0;\n" \
                                                                                f"\tgoto {lbl3};\n" \
                                                                                f"\t{lbl2}:\n" \
-                                                                               f"\t{tmp} = {val_izq.reference} % {val_der.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = (int){val_izq.reference} % (int){val_der.reference};\n" \
                                                                                f"\t{lbl3}:\n"
                         return nuevo_valor
                     else:

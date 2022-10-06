@@ -12,31 +12,31 @@ class Unaria(Expresion):
         self.expresion = expresion
 
     def convertir(self, generador, entorno):
-
+        # ! Se genera valor a retornar
         valor = self.expresion.convertir(generador, entorno)
-
         if valor:
             # ! menos
             if self.operador == OPERADOR_UNARIO.MENOS:
                 # ! para f64,i64
-                if valor.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
+                if valor.tipo[0] in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, valor.tipo)
-                    tmp = generador.nuevoTemp()
-                    nuevo_valor.reference = tmp
-                    nuevo_valor.codigo = valor.codigo + f"\t{tmp} = - {valor.reference};\n"
+                    nuevo_valor.reference = generador.nuevoTemp()
+                    nuevo_valor.codigo = valor.codigo + f"\t{nuevo_valor.reference} = - {valor.reference};\n"
                     return nuevo_valor
                 else:
-                    print("Error")
+                    print("Error al operar")
             # ! not
             else:
                 # ! Bool
-                if valor.tipo == TipoPrimitivo.BOOL:
-                    nuevo_valor = Valor(self.fila, valor.tipo)
+                if valor.tipo[0] == TipoPrimitivo.BOOL:
+                    nuevo_valor = Valor(self.fila, [TipoPrimitivo.BOOL])
+                    # ! Se copia el código
                     nuevo_valor.codigo = valor.codigo
-                    nuevo_valor.trueLabel = valor.trueLabel
-                    nuevo_valor.falseLabel = valor.falseLabel
+                    # ! Se intercambian las etiquetas
+                    nuevo_valor.trueLabel = valor.falseLabel
+                    nuevo_valor.falseLabel = valor.trueLabel
                     return nuevo_valor
                 else:
-                    print("Error")
+                    print("Error al operar")
         else:
-            print("Error")
+            print("Error en la expresion")

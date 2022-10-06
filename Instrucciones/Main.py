@@ -1,5 +1,6 @@
 from Abstracta.Instruccion import Instruccion
 from Entorno.Entorno import Entorno
+from Reporte.Contenido import Envs
 
 
 class Main(Instruccion):
@@ -8,7 +9,7 @@ class Main(Instruccion):
         self.instrucciones = instrucciones
 
     def convertir(self, generador, entorno):
-        env = Entorno(entorno)
+        env_main = Entorno(entorno, entorno.flag_bucle)
         for instr in self.instrucciones:
-            codigo = instr.convertir(generador, env)
+            codigo = instr.convertir(generador, env_main)
             generador.codigo.append(codigo)

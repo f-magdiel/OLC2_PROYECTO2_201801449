@@ -13,3 +13,4 @@ class Errores:
 Tabla_Errorres = []
 Tabla_Simbolos = []
 Tabla_Impresion = []
+Envs = []

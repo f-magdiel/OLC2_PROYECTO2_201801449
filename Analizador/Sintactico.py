@@ -60,6 +60,9 @@ from Expresiones.Relacional import Relacional
 from Enum.OpRelacional import OPERADOR_RELACIONAL
 from Expresiones.Casteo import Casteo
 from Instrucciones.Main import Main
+from Instrucciones.If import If
+from Expresiones.Logica import Logica
+from Enum.OpLogico import OPERADOR_LOGICO
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -142,6 +145,7 @@ def p_instrucciones2(t):
     'instrucciones : instruccion'
     t[0] = [t[1]]
 
+
 def p_instrucciones3(t):
     'instrucciones : '
     t[0] = []
@@ -151,9 +155,9 @@ def p_instrucciones3(t):
 #
 def p_instrucion(t):
     '''instruccion : imprimir
-                          | declaracion'''
+                    | if'''
     #                     | asignacion
-    #                     | if
+    #                     | declaracion
     #                     | match
     #                     | loop
     #                     | while
@@ -378,24 +382,24 @@ def p_imprimir2(t):
 #
 # # !--------------------------------------------DECLARACION-------------------------------------------------------------
 #
-def p_declaracion1(t):
-    'declaracion : LET MUT ID DOSPT tipo IGUAL expresion PTCOMA'
-    t[0] = Declaracion(t.lineno(2), t[5], t[3], t[7], True)
-
-
-def p_declaracion2(t):
-    'declaracion : LET MUT ID IGUAL expresion PTCOMA'
-    t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[3], t[5], True)
-
-
-def p_declaracion3(t):
-    'declaracion : LET ID DOSPT tipo IGUAL expresion PTCOMA'
-    t[0] = Declaracion(t.lineno(2), t[4], t[2], t[6], False)
-
-
-def p_declaracion4(t):
-    'declaracion : LET ID IGUAL expresion PTCOMA'
-    t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[2], t[4], False)
+# def p_declaracion1(t):
+#     'declaracion : LET MUT ID DOSPT tipo IGUAL expresion PTCOMA'
+#     t[0] = Declaracion(t.lineno(2), t[5], t[3], t[7], True)
+#
+#
+# def p_declaracion2(t):
+#     'declaracion : LET MUT ID IGUAL expresion PTCOMA'
+#     t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[3], t[5], True)
+#
+#
+# def p_declaracion3(t):
+#     'declaracion : LET ID DOSPT tipo IGUAL expresion PTCOMA'
+#     t[0] = Declaracion(t.lineno(2), t[4], t[2], t[6], False)
+#
+#
+# def p_declaracion4(t):
+#     'declaracion : LET ID IGUAL expresion PTCOMA'
+#     t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[2], t[4], False)
 
 
 #
@@ -412,45 +416,57 @@ def p_declaracion4(t):
 #
 #
 # # !---------------------------------------------------IF------------------------------------------------------------
-# def p_if(t):
-#     'if : IF expresion LLAVEIZQ instrucciones LLAVEDER '
-#     t[0] = If(t.lineno(1), t[2], t[4], [])
-#
-#
-# def p_else_if(t):
-#     'if : IF expresion LLAVEIZQ instrucciones LLAVEDER else'
-#     t[0] = If(t.lineno(2), t[2], t[4], t[6])
-#
-#
-# def p_else_if_else_if(t):
-#     'if : IF expresion LLAVEIZQ instrucciones LLAVEDER lelseif'
-#     t[0] = ElseIf(t.lineno(1), t[2], t[4], t[6], [])
-#
-#
-# def p_else_if_else(t):
-#     'if : IF expresion LLAVEIZQ instrucciones LLAVEDER lelseif else'
-#     t[0] = ElseIf(t.lineno(1), t[2], t[4], t[6], t[7])
-#
-#
-# def p_else_if1(t):
-#     'lelseif : lelseif elseif'
-#     t[1].append(t[2])
-#     t[0] = t[1]
-#
-#
-# def p_else_if2(t):
-#     'lelseif : elseif'
-#     t[0] = [t[1]]
-#
-#
-# def p_else_if3(t):
-#     'elseif : ELSE IF expresion LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = [t[3], t[5]]
-#
-#
-# def p_else(t):
-#     'else : ELSE LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = t[3]
+def p_if(t):
+    'if : IF expresion LLAVEIZQ instrucciones LLAVEDER '
+    sentencia = {'exp': t[2], 'instrs': t[4]}
+    sentencias = [sentencia]  # [{exp_cond, instrucciones}]
+    t[0] = If(t.lineno(1), sentencias)
+
+
+def p_else_if(t):
+    'if : IF expresion LLAVEIZQ instrucciones LLAVEDER else'
+    sentencia = {'exp': t[2], 'instrs': t[4]}
+    sentencias = [sentencia]  # [{exp_cond, instrucciones}]
+    t[0] = If(t.lineno(1), sentencias, t[6])
+
+
+def p_else_if_else_if(t):
+    'if : IF expresion LLAVEIZQ instrucciones LLAVEDER lelseif'
+    sentencia = {'exp': t[2], 'instrs': t[4]}
+    sentencias = [sentencia]  # [{exp_cond, instrucciones}]
+    sentencias += t[6]
+    t[0] = If(t.lineno(1), sentencias)
+
+
+def p_else_if_else(t):
+    'if : IF expresion LLAVEIZQ instrucciones LLAVEDER lelseif else'
+    sentencia = {'exp': t[2], 'instrs': t[4]}
+    sentencias = [sentencia]  # [{exp_cond, instrucciones}]
+    sentencias += t[6]
+    t[0] = If(t.lineno(1), sentencias, t[7])
+
+
+def p_else_if1(t):
+    'lelseif : lelseif elseif'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_else_if2(t):
+    'lelseif : elseif'
+    t[0] = [t[1]]
+
+
+def p_else_if3(t):
+    'elseif : ELSE IF expresion LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = {'exp': t[3], 'instrs': t[5]}
+
+
+def p_else(t):
+    'else : ELSE LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = t[3]
+
+
 #
 #
 # # !-------------------------------------------MATCH---------------------------------------------------
@@ -755,15 +771,15 @@ def p_expresion_relacional(t):
 
 #
 #
-# def p_expresion_logica(t):
-#     '''expresion : expresion OR expresion
-#                 | expresion AND expresion
-#                 '''
-#     operador = t[2]
-#     if operador == '&&':
-#         t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.AND, t[3])
-#     elif operador == '||':
-#         t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.OR, t[3])
+def p_expresion_logica(t):
+    '''expresion : expresion OR expresion
+                | expresion AND expresion
+                '''
+    operador = t[2]
+    if operador == '&&':
+        t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.AND, t[3])
+    elif operador == '||':
+        t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.OR, t[3])
 #
 #
 def p_exp_agrupa(t):
@@ -992,12 +1008,21 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-let mut var1 = 6 > 7;
-let mut var2 = i64::pow(2,8);
-let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
-
-println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
-println!(("Hola".clone()).to_owned() + " Mundo");
+    if (true && false && true) {
+        println!("If.");
+    }else if (false){
+        println!("Primer Else-If.");
+    }else if (true){
+        println!("Segundo Else-If.");
+    }else{
+        println!("Else.");
+    }
+//let mut var1 = 6 > 7;
+//let mut var2 = i64::pow(2,8);
+//let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
+//println!("SIUU {}",1+5);
+//println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
+//println!(("Hola".clone()).to_owned() + " Mundo");
 }
 
 
@@ -1008,7 +1033,7 @@ instruc = parser.parse(entrada)
 
 if instruc:
     generador = Generador()
-    env = Entorno(None)
+    env = Entorno(None, None)
     for inst in instruc:
         inst.convertir(generador, env)
     codigo = generador.obtenerCodigo()
