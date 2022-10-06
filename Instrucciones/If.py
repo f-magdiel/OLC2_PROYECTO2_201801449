@@ -56,6 +56,8 @@ class If(Instruccion):
                             codigo += instruc.convertir(generador, env_if)
                         elif isinstance(instruc, Imprimir):
                             codigo += instruc.convertir(generador, env_if)
+                        elif isinstance(instruc, If):
+                            codigo += instruc.convertir(generador, env_if)
                         else:  # ! Errores sino es ninguno
                             print("Error instruccines invalida en entorno")
 

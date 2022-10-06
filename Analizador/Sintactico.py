@@ -63,6 +63,9 @@ from Instrucciones.Main import Main
 from Instrucciones.If import If
 from Expresiones.Logica import Logica
 from Enum.OpLogico import OPERADOR_LOGICO
+from Instrucciones.While import While
+from Instrucciones.Break import Break
+from Instrucciones.Continue import Continue
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -155,15 +158,15 @@ def p_instrucciones3(t):
 #
 def p_instrucion(t):
     '''instruccion : imprimir
-                    | if'''
+                    | if
+                    | while
+                    | continue
+                    | break '''
     #                     | asignacion
     #                     | declaracion
     #                     | match
     #                     | loop
-    #                     | while
-    #                     | break
     #                     | return
-    #                     | continue
     #                     | funciones
     #                     | llamada_funciones PTCOMA
     #                     | declaracion_arreglos
@@ -552,9 +555,9 @@ def p_else(t):
 #
 #
 # # ! -------------------WHILE-------------------------------
-# def p_while_inicio(t):
-#     'while : WHILE expresion LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = While(t.lineno(1), t[2], t[4])
+def p_while_inicio(t):
+    'while : WHILE expresion LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = While(t.lineno(1), t[2], t[4])
 #
 #
 # # ! ------------------------------FORIN--------------------------------
@@ -569,9 +572,9 @@ def p_else(t):
 #
 #
 # # * ---------------------------------------BREAK------------------------------------
-# def p_break_inicio(t):
-#     'break : BREAK PTCOMA'
-#     t[0] = Break(t.lineno(1))
+def p_break_inicio(t):
+    'break : BREAK PTCOMA'
+    t[0] = Break(t.lineno(1))
 #
 #
 # def p_break_expresion(t):
@@ -580,9 +583,9 @@ def p_else(t):
 #
 #
 # # * --------------------------------------CONTINUE-------------------------------------
-# def p_continue_inicio(t):
-#     'continue : CONTINUE PTCOMA'
-#     t[0] = Continue(t.lineno(2))
+def p_continue_inicio(t):
+    'continue : CONTINUE PTCOMA'
+    t[0] = Continue(t.lineno(2))
 #
 #
 # # * -------------------------------------------RETURN-----------------------------------
@@ -1008,15 +1011,15 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-    if (true && false && true) {
-        println!("If.");
-    }else if (false){
-        println!("Primer Else-If.");
-    }else if (true){
-        println!("Segundo Else-If.");
-    }else{
-        println!("Else.");
-    }
+    while (true){
+            if (true){
+                if (true) {
+                    println!("SIUU");
+                    break;
+                }
+                
+            }
+        }
 //let mut var1 = 6 > 7;
 //let mut var2 = i64::pow(2,8);
 //let mut var3 = ("Hola".clone()).to_owned() + " Mundo";

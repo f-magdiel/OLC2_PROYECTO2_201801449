@@ -1,7 +1,6 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
-from Entorno.Entorno import Entorno
 
 
 class Primitiva(Expresion):
@@ -12,6 +11,7 @@ class Primitiva(Expresion):
 
     def convertir(self, generador, entorno):
         valor = Valor(self.fila, [self.tipo])
+
         # ! Validar el tipo
         if self.tipo in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
             # ! Hacer referencia al valor

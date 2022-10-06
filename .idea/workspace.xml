@@ -29,18 +29,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.Color Scheme Font"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Color Scheme Font&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.Sintactico">
     <configuration name="Generador" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="OLC2_PROYECTO2_201801449" />
@@ -136,7 +136,9 @@
       <workItem from="1664898961225" duration="1283000" />
       <workItem from="1664941054422" duration="1797000" />
       <workItem from="1664986556904" duration="1671000" />
-      <workItem from="1665002509300" duration="20700000" />
+      <workItem from="1665002509300" duration="20947000" />
+      <workItem from="1665075356079" duration="4404000" />
+      <workItem from="1665090027830" duration="881000" />
     </task>
     <servers />
   </component>
@@ -156,6 +158,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Generador.coverage" NAME="Generador Coverage Results" MODIFIED="1663718640894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Generador" />
-    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1665045698882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
+    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1665090842749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
   </component>
 </project>
