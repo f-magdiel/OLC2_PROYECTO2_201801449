@@ -32,7 +32,7 @@ class Aritmetica(Expresion):
                     # ! STRIGN + STR
                     elif val_izq.tipo[0] == TipoPrimitivo.STRING and val_der.tipo[0] == TipoPrimitivo.STR:
                         # ! valor a retornar
-                        nuevo_valor = Valor(self.fila, TipoPrimitivo.STR)
+                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.STR])
                         nuevo_valor.reference = generador.nuevoTemp()
                         # ! Temp auxiliares
                         tmp1 = generador.nuevoTemp()
@@ -82,7 +82,7 @@ class Aritmetica(Expresion):
                 elif self.operador == OPERADOR_ARITMETICO.DIVIDIDO:
                     # ! división para f64, i64
                     if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
-                        nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
+                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.F64])
                         nuevo_valor.reference = generador.nuevoTemp()
                         # ! Labels temporales
                         lbl1 = generador.nuevoLabel()
@@ -104,7 +104,7 @@ class Aritmetica(Expresion):
                                                                                f"\t{nuevo_valor.reference} = 0;\n" \
                                                                                f"\tgoto {lbl3};\n" \
                                                                                f"\t{lbl2}:\n" \
-                                                                               f"\t{nuevo_valor.reference} = {val_izq.reference} / {val_der.reference};\n" \
+                                                                               f"\t{nuevo_valor.reference} = (float){val_izq.reference} / (float){val_der.reference};\n" \
                                                                                f"\t{lbl3}:\n"
                         return nuevo_valor
                     else:
@@ -112,7 +112,7 @@ class Aritmetica(Expresion):
                 # ! POTENCIA
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIA:
                     if val_izq.tipo[0] == TipoPrimitivo.I64 and val_der.tipo[0] == TipoPrimitivo.I64:
-                        nuevo_valor = Valor(self.fila, TipoPrimitivo.I64)
+                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.I64])
                         nuevo_valor.reference = generador.nuevoTemp()
                         # ! Temporal nuevo_valor.reference
                         tmp1 = generador.nuevoTemp()
@@ -155,7 +155,7 @@ class Aritmetica(Expresion):
                 # ! POTENCIAF
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIAF:
                     if val_izq.tipo[0] == TipoPrimitivo.F64 and val_der.tipo[0] == TipoPrimitivo.F64:
-                        nuevo_valor = Valor(self.fila, TipoPrimitivo.F64)
+                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.F64])
                         nuevo_valor.reference = generador.nuevoTemp()
                         # ! Temporal aux
                         tmp1 = generador.nuevoTemp()
@@ -199,7 +199,7 @@ class Aritmetica(Expresion):
                 # ! MODULO
                 else:
                     if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
-                        nuevo_valor = Valor(self.fila, val_izq.tipo[0])
+                        nuevo_valor = Valor(self.fila, val_izq.tipo)
                         nuevo_valor.reference = generador.nuevoTemp()
 
                         # ! labels aux

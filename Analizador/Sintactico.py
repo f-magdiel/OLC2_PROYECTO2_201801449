@@ -66,6 +66,7 @@ from Enum.OpLogico import OPERADOR_LOGICO
 from Instrucciones.While import While
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
+from Instrucciones.Loop import Loop
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -161,11 +162,12 @@ def p_instrucion(t):
                     | if
                     | while
                     | continue
-                    | break '''
+                    | break
+                    | loop
+                        '''
     #                     | asignacion
     #                     | declaracion
     #                     | match
-    #                     | loop
     #                     | return
     #                     | funciones
     #                     | llamada_funciones PTCOMA
@@ -549,9 +551,9 @@ def p_else(t):
 #
 # # * --------------------------------------------------LOOP--------------------------------------------------
 # # ! -----------------------LOOP----------------------------
-# def p_loop_inicio(t):
-#     'loop : LOOP LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = Loop(t.lineno(1), t[3])
+def p_loop_inicio(t):
+    'loop : LOOP LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = Loop(t.lineno(1), t[3])
 #
 #
 # # ! -------------------WHILE-------------------------------
@@ -1011,15 +1013,10 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-    while (true){
-            if (true){
-                if (true) {
-                    println!("SIUU");
-                    break;
-                }
-                
-            }
-        }
+loop {
+    println!("SIUU");
+    break;
+}
 //let mut var1 = 6 > 7;
 //let mut var2 = i64::pow(2,8);
 //let mut var3 = ("Hola".clone()).to_owned() + " Mundo";

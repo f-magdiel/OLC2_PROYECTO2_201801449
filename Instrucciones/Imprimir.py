@@ -44,6 +44,7 @@ class Imprimir(Instruccion):
                                                   f"\tS = S - {entorno.size};\n"
                                     else:
                                         valor = valores.pop(0)
+
                                         if valor.tipo[0] == TipoPrimitivo.I64:
                                             codigo += valor.codigo + f"\tprintf(\"%d\", (int){valor.reference});\n"
                                         elif valor.tipo[0] == TipoPrimitivo.F64:
