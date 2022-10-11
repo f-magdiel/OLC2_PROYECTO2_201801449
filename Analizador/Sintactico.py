@@ -67,6 +67,8 @@ from Instrucciones.While import While
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
 from Instrucciones.Loop import Loop
+from Expresiones.Arreglos import Arreglo
+from Instrucciones.Match import Match
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -158,16 +160,16 @@ def p_instrucciones3(t):
 #
 #
 def p_instrucion(t):
-    '''instruccion : imprimir
+    '''instruccion : imprimir PTCOMA
                     | if
                     | while
-                    | continue
-                    | break
+                    | continue PTCOMA
+                    | break PTCOMA
                     | loop
+                    | match
                         '''
     #                     | asignacion
     #                     | declaracion
-    #                     | match
     #                     | return
     #                     | funciones
     #                     | llamada_funciones PTCOMA
@@ -177,6 +179,7 @@ def p_instrucion(t):
     #                     | nativas_vector
     #     '''
     t[0] = t[1]
+
 
 
 #
@@ -379,7 +382,7 @@ def p_instrucion(t):
 #
 #
 def p_imprimir2(t):
-    'imprimir : PRINTLN NOT PARIZQ expresiones PARDER PTCOMA'
+    'imprimir : PRINTLN NOT PARIZQ expresiones PARDER'
     t[0] = Imprimir(t.lineno(2), t[4])
 
 
@@ -475,91 +478,79 @@ def p_else(t):
 #
 #
 # # !-------------------------------------------MATCH---------------------------------------------------
-# def p_match_inicio(t):
-#     'match : MATCH expresion LLAVEIZQ imatch LLAVEDER'
-#     t[0] = Match(t.lineno(1), t[2], t[4])
-#
-#
-#
-# def p_imatch(t):
-#     'imatch : opmatch COMA dmatch'
-#     t[1].append(t[3])
-#     t[0] = t[1]
-#
-#
-# def p_opmatch(t):
-#     '''opmatch : opmatch COMA cmatch
-#                 | opmatch COMA rmatch'''
-#     t[1].append(t[3])
-#     t[0] = t[1]
-#
-#
-# def p_opmatch2(t):
-#     '''opmatch : cmatch
-#                 | rmatch '''
-#     t[0] = [t[1]]
-#
-#
-# def p_cmatch(t):
-#     'cmatch : bloque_match IGUAL MAYORQUE LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = [t[1], t[5], TIPO_MATCH.MATCHBARRAS]
-#
-#
-# def p_cmatch2(t):
-#     'cmatch : bloque_match IGUAL MAYORQUE instruccion'
-#     t[0] = [t[1], [t[4]], TIPO_MATCH.MATCHBARRAS]
-#
-#
-# def p_bloque_match(t):
-#     'bloque_match : bloque_match BARRAS expresion'
-#     t[1].append(t[3])
-#     t[0] = t[1]
-#
-#
-# def p_bloque_match2(t):
-#     'bloque_match : expresion'
-#     t[0] = [t[1]]
-#
-#
-# def p_dmatch(t):
-#     'dmatch : GUIONB IGUAL MAYORQUE  LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = [[t[1]], [t[5]], TIPO_MATCH.MATCHDEFAULT]
-#
-#
-# def p_dmatch2(t):
-#     'dmatch : GUIONB IGUAL MAYORQUE instruccion'
-#     t[0] = [[t[1]], [t[4]], TIPO_MATCH.MATCHDEFAULT]
-#
-#
-# def p_rmatch(t):
-#     'rmatch : expresion PTO PTO IGUAL expresion IGUAL MAYORQUE rrmatch'
-#     var = []
-#     var.append(t[1])
-#     var.append(t[5])
-#     t[0] = [var, t[8], TIPO_MATCH.MATCHRANGO]
-#
-#
-# def p_rrmatch2(t):
-#     'rrmatch : instruccion'
-#     t[0] = [t[1]]
-#
-#
-# def p_rrmatch(t):
-#     'rrmatch : LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = t[2]
-#
-#
+def p_match(t):
+    'match : MATCH expresion LLAVEIZQ brazos LLAVEDER'
+    t[0] = Match(t.lineno(1), t[2], t[4])
+
+
+def p_brazos_1(t):
+    'brazos : brazos brazo'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_brazos_2(t):
+    'brazos : brazo'
+    t[0] = [t[1]]
+
+
+def p_brazo_1(t):
+    'brazo : coincidencias IGUAL MAYORQUE LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = {'exps': t[1], 'instrs': t[5]}
+
+
+def p_brazo_2(t):
+    'brazo : coincidencias IGUAL MAYORQUE instr_match COMA'
+    t[0] = {'exps': t[1], 'instrs': [t[4]]}
+
+
+def p_coincidencias_1(t):
+    'coincidencias : coincidencias BARRAS coincidencia'
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
+def p_coincidencias_2(t):
+    'coincidencias : coincidencia'
+    t[0] = [t[1]]
+
+
+def p_coincidencia_1(t):
+    'coincidencia : expresion'
+    t[0] = t[1]
+
+
+def p_coincidencia_2(t):
+    'coincidencia : GUIONB'
+    t[0] = t[1]
+
+
+def p_instrs_match(t):
+    '''instr_match : imprimir
+                   | if
+                   | while
+                   | break
+                   | continue
+                   | loop
+                   | match'''
+    t[0] = t[1]
+
+
 # # * --------------------------------------------------LOOP--------------------------------------------------
 # # ! -----------------------LOOP----------------------------
 def p_loop_inicio(t):
     'loop : LOOP LLAVEIZQ instrucciones LLAVEDER'
     t[0] = Loop(t.lineno(1), t[3])
+
+
 #
 #
 # # ! -------------------WHILE-------------------------------
 def p_while_inicio(t):
     'while : WHILE expresion LLAVEIZQ instrucciones LLAVEDER'
     t[0] = While(t.lineno(1), t[2], t[4])
+
+
 #
 #
 # # ! ------------------------------FORIN--------------------------------
@@ -575,8 +566,10 @@ def p_while_inicio(t):
 #
 # # * ---------------------------------------BREAK------------------------------------
 def p_break_inicio(t):
-    'break : BREAK PTCOMA'
+    'break : BREAK'
     t[0] = Break(t.lineno(1))
+
+
 #
 #
 # def p_break_expresion(t):
@@ -586,8 +579,10 @@ def p_break_inicio(t):
 #
 # # * --------------------------------------CONTINUE-------------------------------------
 def p_continue_inicio(t):
-    'continue : CONTINUE PTCOMA'
+    'continue : CONTINUE'
     t[0] = Continue(t.lineno(2))
+
+
 #
 #
 # # * -------------------------------------------RETURN-----------------------------------
@@ -641,6 +636,11 @@ def p_expresiones1(t):
 def p_expresiones2(t):
     'expresiones : expresion'
     t[0] = [t[1]]
+
+
+def p_expresiones3(t):
+    'expresiones : '
+    t[0] = []
 
 
 #
@@ -785,6 +785,8 @@ def p_expresion_logica(t):
         t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.AND, t[3])
     elif operador == '||':
         t[0] = Logica(t.lineno(2), t[1], OPERADOR_LOGICO.OR, t[3])
+
+
 #
 #
 def p_exp_agrupa(t):
@@ -799,9 +801,11 @@ def p_exp_agrupa(t):
 #     t[0] = t[1]
 #
 #
-# def p_expresion_arreglo(t):
-#     'expresion : CORIZQ expresiones CORDER '
-#     t[0] = Arreglo(t.lineno(1), t[2])
+def p_expresion_arreglo(t):
+    'expresion : CORIZQ expresiones CORDER '
+    t[0] = Arreglo(t.lineno(1), t[2])
+
+
 #
 #
 # def p_expresion_Accesarreglo(t):
@@ -1013,20 +1017,18 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-loop {
-    println!("SIUU");
-    break;
-}
-//let mut var1 = 6 > 7;
-//let mut var2 = i64::pow(2,8);
-//let mut var3 = ("Hola".clone()).to_owned() + " Mundo";
-//println!("SIUU {}",1+5);
-//println!("Pruebas: p1 {}, p2 {}, p3 {}, p4 {}, p5 {}", (10 + 15), (f64::powf(2.0,8.0)), 'A', ("Hola".clone()).to_owned() + " Mundo", 5 < 6);
-//println!(("Hola".clone()).to_owned() + " Mundo");
+  //println!("Arreglo: {:?}, Valor: {}", [], 15 + 48 * 2);
+ match "Simoon" {
+        "Adios" | "Simon" => {
+            println!("Danuko no es.");
+        }
+        "Siu" | "Danuko" | "Hola" => println!("Danny si es"),
+        _ => println!("Resto de casos"),
+    }
+    
+   
 }
 
-
-//println!("Nombre1 {}, Nombre2 {}, sale con {}", "Javs", "Frank", 100, true, false, -10, !true);
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)
