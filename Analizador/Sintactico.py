@@ -75,6 +75,7 @@ from Expresiones.NewVector import NewVector
 from Expresiones.VectorUnico import VectorUnico
 from Expresiones.VectorNativa import VectorNativa
 from Instrucciones.Asignacion import Asignacion
+from Instrucciones.Forin import Forin
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -175,13 +176,13 @@ def p_instrucion(t):
                     | match
                     | declaracion PTCOMA
                     | asignacion PTCOMA
+                    | forin
                                         '''
     #                     | return
     #                     | funciones
     #                     | llamada_funciones PTCOMA
     #                     | declaracion_arreglos
     #                     | declaracion_vector
-    #                     | forin
     #                     | nativas_vector
     #     '''
     t[0] = t[1]
@@ -581,7 +582,11 @@ def p_instrs_match(t):
                    | break
                    | continue
                    | loop
-                   | match'''
+                   | match
+                   | declaracion
+                   | asignacion
+                   | forin
+                                '''
     t[0] = t[1]
 
 
@@ -603,14 +608,14 @@ def p_while_inicio(t):
 #
 #
 # # ! ------------------------------FORIN--------------------------------
-# def p_forin_inicio(t):
-#     'forin : FOR ID IN expresion LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = ForIn(t.lineno(1), t[2], t[4], t[6])
-#
-#
-# def p_forin_2(t):
-#     'forin : FOR ID IN expresion PTO PTO expresion LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = ForIn(t.lineno(1), t[2], t[4], t[9], t[7])
+def p_forin_inicio(t):
+    'forin : FOR ID IN expresion LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = Forin(t.lineno(1), t[2], t[4], t[6])
+
+
+def p_forin_2(t):
+    'forin : FOR ID IN expresion PTO PTO expresion LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = Forin(t.lineno(1), t[2], t[4], t[9], t[7])
 #
 #
 # # * ---------------------------------------BREAK------------------------------------
@@ -629,7 +634,7 @@ def p_break_inicio(t):
 # # * --------------------------------------CONTINUE-------------------------------------
 def p_continue_inicio(t):
     'continue : CONTINUE'
-    t[0] = Continue(t.lineno(2))
+    t[0] = Continue(t.lineno(1))
 
 
 #
@@ -1073,11 +1078,18 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-    let mut arr1 = [[1,2],[3,4]];
-    
-    if (true) {
-        arr1[3 - 3][0] = 10 * 1;
+    for i in vec![[1,2], [3,4], [5,6]]{
+        println!("Simon");
     }
+    //for i in vec![1,2,3,4]{
+   //     println!("{}","siu");
+    //}
+    
+   // let mut arr1 = [[1,2],[3,4]];
+    
+    //if (true) {
+    //    arr1[3 - 3][0] = 10 * 1;
+    //}
    
     //let mut var0 = 3;
     //let mut var1 = 10 + 50;
