@@ -18,7 +18,6 @@ class Match(Instruccion):
         if valor_p:
             if valor_p.tipo[0] not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                 codigo = f"\t/* SENTENCIA MATCH */\n"
-
                 if valor_p.tipo[0] != TipoPrimitivo.BOOL:
                     codigo += valor_p.codigo
                 else:
@@ -64,7 +63,7 @@ class Match(Instruccion):
                                             f"\tgoto {falseLabel};\n"
                                     # ! Actualizar información del brazo
                                     ult_falseLabel = falseLabel
-                                    list_trueLabel += f"\t{trueLabel}:\n"
+                                    list_trueLabel += f"\t{trueLabel};\n"
 
                                 elif valor.tipo[0] == TipoPrimitivo.BOOL:
                                     tmp2 = generador.nuevoTemp()
@@ -139,7 +138,7 @@ class Match(Instruccion):
                                     list_trueLabel += f"\t{trueLabel}:\n"
                             else:
                                 print("ERROR")
-                    # ! Insetar condiciones
+                    # ! Insertar condiciones
                     codigo += cond
                     codigo += list_trueLabel
                     if len(br['instrs']) > 1:

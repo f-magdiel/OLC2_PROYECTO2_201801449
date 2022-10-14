@@ -5,7 +5,8 @@ from General.General import Env_General
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
 from Instrucciones.Imprimir import Imprimir
-
+from Instrucciones.Asignacion import Asignacion
+from Instrucciones.Declaracion import Declaracion
 
 class If(Instruccion):
     def __init__(self, fila, sentencias, else_ins=None):
@@ -28,10 +29,10 @@ class If(Instruccion):
                     break
             # ! QUe sean de tipo BOOL
             if flag_correcto:
-                # ! Solo un if viene
-                flag_uno = len(self.sentencias) == 1 and self.else_ins is None
                 # ! Se genera código
                 codigo = f"\t/* SENTENCIA IF */\n"
+                # ! Solo un if viene
+                flag_uno = len(self.sentencias) == 1 and self.else_ins is None
                 # ! Recorrer la lista de sentencias
                 for i in range(len(valores)):
                     # ! Env de if
@@ -58,8 +59,12 @@ class If(Instruccion):
                             codigo += instruc.convertir(generador, env_if)
                         elif isinstance(instruc, If):
                             codigo += instruc.convertir(generador, env_if)
+                        elif isinstance(instruc, Declaracion):
+                            codigo += instruc.convertir(generador, env_if)
+                        elif isinstance(instruc, Asignacion):
+                            codigo += instruc.convertir(generador, env_if)
                         else:  # ! Errores sino es ninguno
-                            print("Error instruccines invalida en entorno")
+                            print("Error instruccines invalida en entorno if")
 
                     # ! Código para cambio de entorno
                     codigo += f"\t// Cambio de ámbito\n" \

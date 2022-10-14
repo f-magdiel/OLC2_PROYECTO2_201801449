@@ -5,23 +5,26 @@ class Entorno:
         self.variables = {}
         self.size = 0
 
-    def nueva_variable(self, var):
-        var.posicion = self.size
+    def nueva_variable(self, variable):
+        variable.posicion = self.size
         self.size += 1
-        self.variables[id] = var
+        self.variables[variable.id] = variable
+
 
     def existe_variable(self, id):
-        ent = self
-        while ent:
-            if id in ent.variables:
+        env = self
+        while env:
+            if id in env.variables:
                 return True
-            ent = ent.padre
+            env = env.padre
         return False
 
     def obtener_variable(self, id):
-        ent = self
-        while ent:
-            if id in ent.variables:
-                return ent.variables.get(id)
+        depth = 0
+        env = self
+        while env:
+            if id in env.variables:
+                return env.variables.get(id), depth
             else:
-                ent = ent.padre
+                env = env.padre
+                depth += env.size

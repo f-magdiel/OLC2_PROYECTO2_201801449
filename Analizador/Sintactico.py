@@ -69,6 +69,12 @@ from Instrucciones.Continue import Continue
 from Instrucciones.Loop import Loop
 from Expresiones.Arreglos import Arreglo
 from Instrucciones.Match import Match
+from Expresiones.NewArreglo import NewArreglo
+from Expresiones.Vectores import Vector
+from Expresiones.NewVector import NewVector
+from Expresiones.VectorUnico import VectorUnico
+from Expresiones.VectorNativa import VectorNativa
+from Instrucciones.Asignacion import Asignacion
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -140,7 +146,7 @@ def p_main(t):
 #             generadorGlob.codigo.append(instru.convertir(entornoGlob))
 #
 #     t[0] = generadorGlob.obtenerCodigo()
-
+# ! ---------------------------------------INSTRUCCIONES---------------------------------------
 def p_instrucciones1(t):
     'instrucciones : instrucciones instruccion'
     t[1].append(t[2])
@@ -167,9 +173,9 @@ def p_instrucion(t):
                     | break PTCOMA
                     | loop
                     | match
-                        '''
-    #                     | asignacion
-    #                     | declaracion
+                    | declaracion PTCOMA
+                    | asignacion PTCOMA
+                                        '''
     #                     | return
     #                     | funciones
     #                     | llamada_funciones PTCOMA
@@ -179,7 +185,6 @@ def p_instrucion(t):
     #                     | nativas_vector
     #     '''
     t[0] = t[1]
-
 
 
 #
@@ -206,29 +211,52 @@ def p_instrucion(t):
 #     t[0] = CreacionVector(t.lineno(1))
 #
 #
-# def p_vecto2(t):
+# def p_vector2(t):
 #     'expresion : VVEC DOSPT DOSPT WITH_CAPACITY PARIZQ expresion PARDER'
 #     t[0] = CreacionVector(t.lineno(1), t[6])
 #
 #
+def p_expresion_vector1(t):
+    'expresion : VEC NOT CORIZQ expresiones CORDER'
+    t[0] = Vector(t.lineno(1), t[4])
+
+
+def p_expresion_vector2(t):
+    'expresion : VEC NOT CORIZQ expresion PTCOMA expresion CORDER'
+    t[0] = NewVector(t.lineno(1), t[4], t[6])
+
+
+def p_expresion_vector3(t):
+    'expresion : VVEC DDOSPT NEW PARIZQ PARDER'
+    t[0] = VectorUnico(t.lineno(1))
+
+
+def p_expresion_vector4(t):
+    'expresion : VVEC DDOSPT WITH_CAPACITY PARIZQ expresion PARDER'
+    t[0] = VectorUnico(t.lineno(1), t[5])
+
+
 # # !-------------------------------------NATIVAS VECTORES-------------------------------------------
-# # * --------------------------------LEN-------------------------------------
-# def p_nativa_vec(t):
-#     'expresion : nativas_vec'
-#     t[0] = t[1]
-#
-#
-# def p_nativa_len(t):
-#     'nativas_vec : expresion PTO LEN PARIZQ PARDER'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.LEN)
+def p_nativa_vec(t):
+    'expresion : nativas_vec'
+    t[0] = t[1]
+
+
+# * --------------------------------LEN-------------------------------------
+
+def p_nativa_len(t):
+    'nativas_vec : expresion PTO LEN PARIZQ PARDER'
+    t[0] = VectorNativa(t.lineno(1), t[1], NATIVAS.LEN)
+
+
 #
 #
 # # * -------------------------------CAPACITY-------------------------------
-# def p_nativa_capacity(t):
-#     'expresion : expresion PTO CAPACITY PARIZQ PARDER '
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.CAPACITY)
+def p_nativa_capacity(t):
+    'nativas_vec : expresion PTO CAPACITY PARIZQ PARDER '
+    t[0] = VectorNativa(t.lineno(1), t[1], NATIVAS.CAPACITY)
+
+
 #
 #
 # # * ---------------------------------PUSH------------------------------------
@@ -259,10 +287,11 @@ def p_instrucion(t):
 #
 #
 # # * ---------------------------------CONTAINS----------------------------------
-# def p_nativa_contain(t):
-#     'expresion : expresion PTO CONTAINS PARIZQ SIGNOI expresion PARDER'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.CONTAINS, t[6])
+def p_nativa_contain(t):
+    'nativas_vec : expresion PTO CONTAINS PARIZQ SIGNOI expresion PARDER'
+    t[0] = VectorNativa(t.lineno(1), t[1], NATIVAS.CONTAINS, t[6])
+
+
 #
 #
 # # !----------------------------------------ARREGLOS---------------------------------------------------------------
@@ -390,39 +419,59 @@ def p_imprimir2(t):
 #
 # # !--------------------------------------------DECLARACION-------------------------------------------------------------
 #
-# def p_declaracion1(t):
-#     'declaracion : LET MUT ID DOSPT tipo IGUAL expresion PTCOMA'
-#     t[0] = Declaracion(t.lineno(2), t[5], t[3], t[7], True)
-#
-#
-# def p_declaracion2(t):
-#     'declaracion : LET MUT ID IGUAL expresion PTCOMA'
-#     t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[3], t[5], True)
-#
-#
-# def p_declaracion3(t):
-#     'declaracion : LET ID DOSPT tipo IGUAL expresion PTCOMA'
-#     t[0] = Declaracion(t.lineno(2), t[4], t[2], t[6], False)
-#
-#
-# def p_declaracion4(t):
-#     'declaracion : LET ID IGUAL expresion PTCOMA'
-#     t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, t[2], t[4], False)
+def p_declaracion1(t):
+    'declaracion : LET MUT ID DOSPT tipo IGUAL expresion '
+    t[0] = Declaracion(t.lineno(1), t[5], str(t[3]), t[7], True)
 
 
 #
+#
+def p_declaracion2(t):
+    'declaracion : LET MUT ID IGUAL expresion'
+    t[0] = Declaracion(t.lineno(1), TipoPrimitivo.NULO, str(t[3]), t[5], True)
+
+#
+#
+def p_declaracion3(t):
+    'declaracion : LET ID DOSPT tipo IGUAL expresion '
+    t[0] = Declaracion(t.lineno(1), t[4], str(t[2]), t[6], False)
+
+
+#
+#
+def p_declaracion4(t):
+    'declaracion : LET ID IGUAL expresion '
+    t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, str(t[2]), t[4], False)
+
+
 #
 # # !-----------------------------------------------ASIGNACION----------------------------------------------------------
-# def p_asignacion1(t):
-#     'asignacion : ID IGUAL expresion PTCOMA'
-#     t[0] = AsignacionVariable(t.lineno(1), t[1], t[3])
-#
-#
-# def p_asignacionarreglo(t):
-#     'asignacion : ID lindices IGUAL expresion PTCOMA'
-#     t[0] = AsignacionArreglo(t.lineno(1), t[1], t[2], t[4])
-#
-#
+def p_asignacion1(t):
+    'asignacion : ID IGUAL expresion'
+    t[0] = Asignacion(t.lineno(1), t[1], t[3])
+
+
+def p_asignacion2(t):
+    'asignacion : ID indices IGUAL expresion'
+    t[0] = Asignacion(t.lineno(1), t[1], t[4], t[2])
+
+
+def p_indices_1(t):
+    'indices : indices indice'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_indices_2(t):
+    'indices : indice'
+    t[0] = [t[1]]
+
+
+def p_indice(t):
+    'indice : CORIZQ expresion CORDER'
+    t[0] = t[2]
+
+
 # # !---------------------------------------------------IF------------------------------------------------------------
 def p_if(t):
     'if : IF expresion LLAVEIZQ instrucciones LLAVEDER '
@@ -612,7 +661,7 @@ def p_tipo1(t):
     elif (tipo == 'char'):
         t[0] = TipoPrimitivo.CHAR
     elif (tipo == 'String'):
-        t[0] = TipoPrimitivo.TOS
+        t[0] = TipoPrimitivo.STRING
     elif (tipo == 'usize'):
         t[0] = TipoPrimitivo.I64
 
@@ -801,9 +850,16 @@ def p_exp_agrupa(t):
 #     t[0] = t[1]
 #
 #
-def p_expresion_arreglo(t):
+
+# ! -----------------------------------EXPRESION ARREGLO---------------------------------
+def p_expresion_arreglo1(t):
     'expresion : CORIZQ expresiones CORDER '
     t[0] = Arreglo(t.lineno(1), t[2])
+
+
+def p_expresion_arreglo2(t):
+    'expresion : CORIZQ expresion PTCOMA expresion CORDER'
+    t[0] = NewArreglo(t.lineno(1), t[2], t[4])
 
 
 #
@@ -1017,14 +1073,33 @@ def p_error(t):
 parser = yacc.yacc()
 entrada = r'''
 fn main(){
-  //println!("Arreglo: {:?}, Valor: {}", [], 15 + 48 * 2);
- match "Simoon" {
-        "Adios" | "Simon" => {
-            println!("Danuko no es.");
-        }
-        "Siu" | "Danuko" | "Hola" => println!("Danny si es"),
-        _ => println!("Resto de casos"),
+    let mut arr1 = [[1,2],[3,4]];
+    
+    if (true) {
+        arr1[3 - 3][0] = 10 * 1;
     }
+   
+    //let mut var0 = 3;
+    //let mut var1 = 10 + 50;
+    
+    //if (true) {
+    //    let mut var2 = 1;
+    //    let mut var3 = 1;
+    //    let mut var4 = 1;
+    //    
+    //    if (true) {
+    //        var1 = - 1;
+    //    }
+    //}
+  // println!("Array: {}", vec!["Hola", "Mundo"].capacity() );
+  //println!("Arreglo: {:?}, Valor: {}", [], 15 + 48 * 2);
+     //match "Simoon" {
+    //        "Adios" | "Simon" => {
+    //            println!("Danuko no es.");
+    //        }
+    //        "Siu" | "Danuko" | "Hola" => println!("Danny si es"),
+    //        _ => println!("Resto de casos"),
+    //    }
     
    
 }

@@ -7,3 +7,8 @@ class NATIVAS(Enum):
     CLONE = 3
     TOSTRING = 4
     TOOWNED = 5
+    LEN = 6
+    PUSH = 7
+    CONTAINS = 8
+    INSERT = 9
+    CAPACITY = 10

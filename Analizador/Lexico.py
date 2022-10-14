@@ -120,31 +120,12 @@ t_PARDER = r'\)'
 t_ENTERO = r'\d+'
 t_DECIMAL = r'\d+\.\d+'
 
+
 # ?---------------FUNCIONES----------------------------
 def t_ID(t):
     r'([a-zA-Z]|_[a-zA-Z])[a-zA-Z_0-9]*'
     t.type = reservadas.get(t.value, 'ID')
     return t
-
-
-# def t_DECIMAL(t):
-#     r'\d+\.\d+'
-#     try:
-#         t.value = float(t.value)
-#     except ValueError:
-#         desc = f'Valor decimal incorrecto {t.value}'
-#         t.value = 0
-#     return t
-
-
-# def t_ENTERO(t):
-#     r'\d+'
-#     try:
-#         t.value = int(t.value)
-#     except ValueError:
-#         desc = f'Valor entero incorrecto {t.value}'
-#         t.value = 0
-#     return t
 
 
 def t_CARACTER(t):
