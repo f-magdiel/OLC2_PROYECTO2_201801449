@@ -62,9 +62,9 @@ class VectorNativa(Expresion):
                                                                       f"\t{tmp6} = {tmp5} + {tmp2}; // Dir. valor\n" \
                                                                       f"\t{tmp7} = HEAP[(int){tmp6}]; // Valor\n\n"
                                     # ! Validar tipos
-                                    if valor_arr.tipo[1] not in [TipoPrimitivo.STR, TipoPrimitivo.BOOL]:
-                                        valor.codigo += valor_cont.codigo
+                                    if valor_arr.tipo[1] not in [TipoPrimitivo.STR, TipoPrimitivo.STRING, TipoPrimitivo.BOOL]:
 
+                                        valor.codigo += valor_cont.codigo
                                         trueLabel = generador.nuevoLabel()
                                         falseLabel = generador.nuevoLabel()
 

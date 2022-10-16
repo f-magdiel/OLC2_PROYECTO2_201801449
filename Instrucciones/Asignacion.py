@@ -81,7 +81,7 @@ class Asignacion(Instruccion):
 
     def asignacion_val(self, generador, variable, depth, valor):
         if valor.tipo != TipoPrimitivo.BOOL:
-            if depth:
+            if depth == 0:
                 tmp1 = generador.nuevoTemp()
                 codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. var\n" \
                                                                   f"\tSTACK[(int){tmp1}] = {valor.reference}; // Asignar\n"
@@ -133,14 +133,14 @@ class Asignacion(Instruccion):
 
     def asignacion_arr(self, generador, codigo, dir, valor):
         if valor.tipo != TipoPrimitivo.BOOL:
-            codigo += valor.codigo + f"\tSTACK[(int){dir}] = {valor.reference}; // Asignar\n"
+            codigo += valor.codigo + f"\tHEAP[(int){dir}] = {valor.reference}; // Asignar\n"
             return codigo
         else:
             lbl1 = generador.nuevoLabel()
             codigo += valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                     f"\tSTACK[(int){dir}] = 1; // Asignar\n" \
+                                     f"\tHEAP[(int){dir}] = 1; // Asignar\n" \
                                      f"\tgoto {lbl1};\n" \
                                      f"\t{valor.falseLabel}:\n" \
-                                     f"\tSTACK[(int){dir}] = 0; // Asignar\n" \
+                                     f"\tHEAP[(int){dir}] = 0; // Asignar\n" \
                                      f"\t{lbl1}:\n"
             return codigo

@@ -32,7 +32,7 @@ class Declaracion(Instruccion):
         var = Variable(self.fila, self.id, self.mutable, tipo)
         entorno.nueva_variable(var)
 
-        if valor.tipo != TipoPrimitivo.BOOL:
+        if valor.tipo[0] != TipoPrimitivo.BOOL:
             tmp1 = generador.nuevoTemp()
             codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = {valor.reference};\n"

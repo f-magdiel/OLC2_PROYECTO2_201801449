@@ -76,6 +76,7 @@ from Expresiones.VectorUnico import VectorUnico
 from Expresiones.VectorNativa import VectorNativa
 from Instrucciones.Asignacion import Asignacion
 from Instrucciones.Forin import Forin
+from Expresiones.Acceso import Acceso
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -431,6 +432,7 @@ def p_declaracion2(t):
     'declaracion : LET MUT ID IGUAL expresion'
     t[0] = Declaracion(t.lineno(1), TipoPrimitivo.NULO, str(t[3]), t[5], True)
 
+
 #
 #
 def p_declaracion3(t):
@@ -616,6 +618,8 @@ def p_forin_inicio(t):
 def p_forin_2(t):
     'forin : FOR ID IN expresion PTO PTO expresion LLAVEIZQ instrucciones LLAVEDER'
     t[0] = Forin(t.lineno(1), t[2], t[4], t[9], t[7])
+
+
 #
 #
 # # * ---------------------------------------BREAK------------------------------------
@@ -1048,6 +1052,33 @@ def p_funciones_nat2(t):
 
 
 #
+# ! -------------------------------------------ACCESO VARIABLE--------------------------------------------
+def p_acceso_variable_1(t):
+    'expresion : ID'
+    t[0] = Acceso(t.lineno(1), t[1])
+
+
+def p_acceso_variable_2(t):
+    'expresion : ID a_indices'
+    t[0] = Acceso(t.lineno(1), t[1], t[2])
+
+
+def p_aindices_1(t):
+    'a_indices : a_indices a_indice'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_aindices_2(t):
+    'a_indices : a_indice'
+    t[0] = [t[1]]
+
+
+def p_aindice(t):
+    'a_indice : CORIZQ expresion CORDER'
+    t[0] = t[2]
+
+
 #
 # # !-----------------------------------------------ERROR----------------------------------------------------------------
 def p_error(t):
@@ -1077,43 +1108,156 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
-fn main(){
-    for i in vec![[1,2], [3,4], [5,6]]{
-        println!("Simon");
+fn main() {
+    let mut a: i64 = 909;
+
+    println!("=======================================================================");
+    println!("==================================IF===================================");
+    println!("=======================================================================");
+
+    if (a > 50) {
+        println!("IF CORRECTO");
+    }else if (a == 56) {
+        println!("IF INCORRECTO");
+    } else {
+        println!("IF INCORRECTO");
     }
-    //for i in vec![1,2,3,4]{
-   //     println!("{}","siu");
-    //}
-    
-   // let mut arr1 = [[1,2],[3,4]];
-    
-    //if (true) {
-    //    arr1[3 - 3][0] = 10 * 1;
-    //}
-   
-    //let mut var0 = 3;
-    //let mut var1 = 10 + 50;
-    
-    //if (true) {
-    //    let mut var2 = 1;
-    //    let mut var3 = 1;
-    //    let mut var4 = 1;
-    //    
-    //    if (true) {
-    //        var1 = - 1;
-    //    }
-    //}
-  // println!("Array: {}", vec!["Hola", "Mundo"].capacity() );
-  //println!("Arreglo: {:?}, Valor: {}", [], 15 + 48 * 2);
-     //match "Simoon" {
-    //        "Adios" | "Simon" => {
-    //            println!("Danuko no es.");
-    //        }
-    //        "Siu" | "Danuko" | "Hola" => println!("Danny si es"),
-    //        _ => println!("Resto de casos"),
-    //    }
-    
-   
+
+    println!("");
+    println!("=======================================================================");
+    println!("=============================IFs ANIDADOS==============================");
+    println!("=======================================================================");
+    let aux: i64 = 10;
+    if aux > 0 {
+        println!("PRIMER IF CORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
+        }
+    }else if aux <= 3 {
+        println!("PRIMER IF INCORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
+        } 
+    } else if aux == a {
+        println!("PRIMER IF INCORRECTO");
+        if true && (aux == 1) {
+            println!("SEGUNDO IF INCORRECTO");
+        } else if aux > 10 {
+            println!("SEGUNDO IF INCORRECTO");
+        } else {
+            println!("SEGUNDO IF CORRECTO");
+        } 
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=================================WHILE=================================");
+    println!("=======================================================================");
+
+    let mut index: i64 = 0;
+
+    while (index >= 0) {
+
+        if (index == 0) {
+            index = index + 100;
+        } else if (index > 50) {
+            index = ((index / 2) as i64) - 25;
+        } else {
+            index = ((index / 2) as i64) - 1;
+        } 
+
+        println!("{}",index);
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("================================WHILE-2================================");
+    println!("=======================================================================");
+
+    index = -2;
+    index = index + 1;
+
+    while (index != 12) {
+        index = index + 1;
+        if (index == 0 || index == 1 || index == 11 || index == 12) {
+            println!("*********************************************************************************************************");
+        } else if (index == 2) {
+            println!("**********  ***************  ******                 ******                 ******              **********");
+        } else if (index >= 3 && index <= 5) {
+            println!("**********  ***************  ******  *********************  *************  ******  **********************");
+        } else if (index == 6) {
+            println!("**********  ***************  ******                 ******                 ******  **********************");
+        } else if (index >= 7 && index <= 9) {
+            println!("**********  ***************  ********************   ******  *************  ******  **********************");
+        } else if (index == 10) {
+            println!("**********                   ******                 ******  *************  ******              **********");
+        } 
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=============================TRANSFERENCIA=============================");
+    println!("=======================================================================");
+
+    a = -1;
+    while (a < 5) {
+        a = a + 1;
+        if a == 3 {
+            println!("a");
+            continue;
+        } else if a == 4 {
+            println!("b");
+            break;
+        } 
+        println!("El valor de a es: {}, ", a);
+    }
+
+    println!("Se debiÃ³ imprimir");
+
+    println!("");
+    println!("=======================================================================");
+    println!("==================================FOR==================================");
+    println!("=======================================================================");
+
+    for i in 0..9 {
+        let mut output: String = "".to_string();
+        for j in 0..(10 - i) {
+            output = output + " ";
+        }
+        for k in 0..i {
+            output = output + "* ";
+        }
+        println!("{}",output);
+
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=================================FOR-2=================================");
+    println!("=======================================================================");
+
+    let arr = [1,2,3,4,5,6];
+    for i in [0,1,2,3,4,5] {
+        println!("{},{},{},{},{},{}", arr[i] == 1, arr[i] == 2, arr[i] == 3, arr[i] == 4, arr[i] == 5, arr[i] == 6);
+    }
+
+    println!("");
+    println!("=======================================================================");
+    println!("=================================FOR-3=================================");
+    println!("=======================================================================");
+    for e in [0,1,2,3,4,5] {
+        if (arr.len() > e) {
+            println!("{},{},{},{},{},{}", e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e]);
+        }
+    }
 }
 
 '''

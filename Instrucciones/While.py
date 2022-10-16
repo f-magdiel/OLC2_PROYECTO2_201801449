@@ -3,10 +3,9 @@ from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Entorno import Entorno
 from General.General import List_Errores
 from General.General import Env_General
-from Instrucciones.Imprimir import Imprimir
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
-from Instrucciones.If import If
+
 
 class While(Instruccion):
     def __init__(self, fila, expresion, instrucciones):
@@ -32,17 +31,13 @@ class While(Instruccion):
                           f"\tS = S + {entorno.size};\n\n"
                 # ! Recorrer instrucciones
                 for instruc in self.instrucciones:
-                    print("INSTRUCC",instruc)
-                    if isinstance(instruc, Imprimir):
-                        codigo += instruc.convertir(generador, env_while)
-                    elif isinstance(instruc, Break):
-                        codigo += instruc.convertir(generador, env_while)
-                    elif isinstance(instruc, Continue):
-                        codigo += instruc.convertir(generador, env_while)
-                    elif isinstance(instruc, If):
-                        codigo += instruc.convertir(generador, env_while)
+
+                    if isinstance(instruc, Break) and not env_while.flag_bucle:
+                        print("Error invalido en entorno while")
+                    elif isinstance(instruc, Continue) and not env_while.flag_bucle:
+                        print("Error invalido en entorno while")
                     else:
-                        print("Error invalido en entorno")
+                        codigo += instruc.convertir(generador, env_while)
 
                 # ! Generar código de cambio de entorno
                 codigo += f"\t// Cambio de ámbito\n" \

@@ -54,7 +54,7 @@ class Match(Instruccion):
                         else:
                             valor = expres.convertir(generador, entorno)
                             if valor:
-                                if valor.tipo[0] not in [TipoPrimitivo.STR, TipoPrimitivo.BOOL]:
+                                if valor.tipo[0] not in [TipoPrimitivo.STR, TipoPrimitivo.BOOL, TipoPrimitivo.STRING]:
                                     codigo += valor.codigo
                                     trueLabel = generador.nuevoLabel()
                                     falseLabel = generador.nuevoLabel()

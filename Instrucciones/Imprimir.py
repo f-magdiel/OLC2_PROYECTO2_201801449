@@ -17,6 +17,7 @@ class Imprimir(Instruccion):
             if valor_str:
                 if valor_str.tipo[0] == TipoPrimitivo.STR:
                     if len(self.expresiones) - 1 == valor_str.listTemp.count(-1):
+
                         codigo = f"\t/* IMPRIMIR */\n" + valor_str.codigo
                         flag_error = False
                         valores = []
@@ -28,6 +29,7 @@ class Imprimir(Instruccion):
                                 flag_error = True
                                 break
                         if not flag_error:
+
                             if len(valor_str.listTemp) > 1:
                                 for ele in valor_str.listTemp:
                                     if ele != -1:
@@ -79,7 +81,7 @@ class Imprimir(Instruccion):
                                                       f"\tprintf(\"%c\", 101);\n" \
                                                       f"\t{lbl1}:\n\n"
 
-                                        elif valor.tipo[0] == TipoPrimitivo.STR:
+                                        elif valor.tipo[0] in [TipoPrimitivo.STR, TipoPrimitivo.STRING]:
                                             tmp1 = generador.nuevoTemp()
                                             tmp2 = generador.nuevoTemp()
                                             # ! Se genera código
@@ -152,7 +154,7 @@ class Imprimir(Instruccion):
                     f"\tprintf(\"%c\", 101);\n" \
                     f"\t{lbl3}:\n\n"
 
-        elif tipo[0] == TipoPrimitivo.STR:
+        elif tipo[0] in [TipoPrimitivo.STR, TipoPrimitivo.STRING]:
             tmp1 = generador.nuevoTemp()
             tmp2 = generador.nuevoTemp()
 

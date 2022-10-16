@@ -41,12 +41,12 @@ class Aritmetica(Expresion):
                         tmp4 = generador.nuevoTemp()
                         # ! Se genera código
                         nuevo_valor.codigo = f"\t/* CONCATENAR */\n" + val_izq.codigo + \
-                                             f"\t{tmp1} = S + {entorno.tamanio};\n" \
+                                             f"\t{tmp1} = S + {entorno.size};\n" \
                                              f"\t{tmp2} = {tmp1} + 0;\n" \
-                                             f"\tSTACK[(int){tmp2}] = {val_izq.ref};\n\n" + val_der.codigo + \
-                                             f"\t{tmp3} = S + {entorno.tamanio};\n" \
+                                             f"\tSTACK[(int){tmp2}] = {val_izq.reference};\n\n" + val_der.codigo + \
+                                             f"\t{tmp3} = S + {entorno.size};\n" \
                                              f"\t{tmp4} = {tmp3} + 1;\n" \
-                                             f"\tSTACK[(int){tmp4}] = {val_der.ref};\n\n" \
+                                             f"\tSTACK[(int){tmp4}] = {val_der.reference};\n\n" \
                                              f"\t{nuevo_valor.reference} = H;\n" \
                                              f"\tS = S + {entorno.size};\n" \
                                              f"\tconcatenar();\n" \
@@ -205,8 +205,8 @@ class Aritmetica(Expresion):
                         # ! labels aux
                         lbl1 = generador.nuevoLabel()
                         lbl2 = generador.nuevoLabel()
-                        lbl3 = generador.nuevoLabelnuevo_valor.reference
-                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.ref} == 0) goto {lbl1};\n" \
+                        lbl3 = generador.nuevoLabel()
+                        nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\tif ({val_der.reference} == 0) goto {lbl1};\n" \
                                                                                f"\tgoto {lbl2};\n" \
                                                                                f"\t{lbl1}:\n" \
                                                                                f"\tprintf(\"%c\", 77); //M\n" \

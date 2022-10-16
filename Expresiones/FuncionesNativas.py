@@ -16,7 +16,7 @@ class FuncionNativa(Expresion):
 
         if valor:
             # ! ABSOLUTO
-            if valor.tipo == NATIVAS.ABS:
+            if self.funcion == NATIVAS.ABS:
                 # ! F64, I64
                 if valor.tipo[0] in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, valor.tipo)
@@ -26,7 +26,6 @@ class FuncionNativa(Expresion):
                     lbl1 = generador.nuevoLabel()
                     lbl2 = generador.nuevoLabel()
                     lbl3 = generador.nuevoLabel()
-                    lbl4 = generador.nuevoLabel()
                     # ! Se genera código
                     nuevo_valor.codigo = valor.codigo + f"\t/* ABS() */\n" \
                                                         f"\tif ({valor.reference} < 0) goto {lbl1};\n" \
@@ -75,11 +74,11 @@ class FuncionNativa(Expresion):
             # ! TOW, TOS
             elif self.funcion in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
                 # ! STR, STRING
-                if valor.tipo[0] in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
+                if valor.tipo[0] in [TipoPrimitivo.STRING, TipoPrimitivo.STR]:
                     valor.tipo[0] = TipoPrimitivo.STRING
                     return valor
                 else:
-                    print("Error")
+                    print("Error en tostring")
             # ! CLONE
             else:
                 # ! CUANDO NO ES ARREGLO/VECTOR

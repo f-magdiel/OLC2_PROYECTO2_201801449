@@ -4,9 +4,7 @@ from Entorno.Entorno import Entorno
 from General.General import Env_General
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
-from Instrucciones.Imprimir import Imprimir
-from Instrucciones.Asignacion import Asignacion
-from Instrucciones.Declaracion import Declaracion
+
 
 class If(Instruccion):
     def __init__(self, fila, sentencias, else_ins=None):
@@ -50,21 +48,13 @@ class If(Instruccion):
                     # ! Se recorren las instrucciones
                     for instruc in self.sentencias[i]['instrs']:
                         # ! Solo permitidos
-
-                        if isinstance(instruc, Break):
-                            codigo += instruc.convertir(generador, env_if)
-                        elif isinstance(instruc, Continue):
-                            codigo += instruc.convertir(generador, env_if)
-                        elif isinstance(instruc, Imprimir):
-                            codigo += instruc.convertir(generador, env_if)
-                        elif isinstance(instruc, If):
-                            codigo += instruc.convertir(generador, env_if)
-                        elif isinstance(instruc, Declaracion):
-                            codigo += instruc.convertir(generador, env_if)
-                        elif isinstance(instruc, Asignacion):
-                            codigo += instruc.convertir(generador, env_if)
-                        else:  # ! Errores sino es ninguno
+                        if isinstance(instruc, Break) and not env_if.flag_bucle:
                             print("Error instruccines invalida en entorno if")
+                        elif isinstance(instruc, Continue) and not env_if.flag_bucle:
+                            print("Error instruccines invalida en entorno if")
+                        else:
+                            codigo += instruc.convertir(generador, env_if)
+
 
                     # ! Código para cambio de entorno
                     codigo += f"\t// Cambio de ámbito\n" \
@@ -83,14 +73,12 @@ class If(Instruccion):
                               f"\tS = S + {entorno.size};\n\n"
                     # ! Recorrer instrucciones
                     for instruc in self.else_ins:
-                        if isinstance(instruc, Break):
-                            codigo += instruc.convertir(generador, env_if) + "\n"
-                        elif isinstance(instruc, Continue):
-                            codigo += instruc.convertir(generador, env_if) + "\n"
-                        elif isinstance(instruc, Imprimir):
-                            codigo += instruc.convertir(generador, env_if)
+                        if isinstance(instruc, Break) and not env_if.flag_bucle:
+                            print("Error instruccines invalida en entorno if")
+                        elif isinstance(instruc, Continue) and not env_if.flag_bucle:
+                            print("Error instruccines invalida en entorno if")
                         else:
-                            print("Error instrucciones invalida en entorno")
+                            codigo += instruc.convertir(generador, env_if)
 
                     # ! Código cambio de entorno
                     codigo += f"\t// Cambio de ámbito\n" \

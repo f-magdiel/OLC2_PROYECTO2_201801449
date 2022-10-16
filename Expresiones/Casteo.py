@@ -17,7 +17,7 @@ class Casteo(Expresion):
                 # ! a i64,f64,bool,char
                 if valor.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.BOOL, TipoPrimitivo.CHAR]:
 
-                    nuevo_valor = Valor(self.fila, self.tipo)
+                    nuevo_valor = Valor(self.fila, [self.tipo])
                     nuevo_valor.reference = generador.nuevoTemp()
                     if valor.tipo[0] == TipoPrimitivo.BOOL:
                         lbl1 = generador.nuevoLabel()

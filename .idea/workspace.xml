@@ -38,7 +38,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Python&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.intellij.sdk.settings.AppSettingsConfigurable&quot;
   }
 }</component>
   <component name="RunManager" selected="Python.Sintactico">
@@ -153,7 +153,12 @@
       <workItem from="1665690258808" duration="15417000" />
       <workItem from="1665712612385" duration="64000" />
       <workItem from="1665717954777" duration="3355000" />
-      <workItem from="1665769532846" duration="5483000" />
+      <workItem from="1665769532846" duration="5523000" />
+      <workItem from="1665812925896" duration="563000" />
+      <workItem from="1665813595453" duration="44000" />
+      <workItem from="1665813653798" duration="161000" />
+      <workItem from="1665871081001" duration="110000" />
+      <workItem from="1665871702929" duration="11368000" />
     </task>
     <servers />
   </component>
@@ -173,6 +178,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Generador.coverage" NAME="Generador Coverage Results" MODIFIED="1663718640894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Generador" />
-    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1665784952788" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
+    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1665883031671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
   </component>
 </project>

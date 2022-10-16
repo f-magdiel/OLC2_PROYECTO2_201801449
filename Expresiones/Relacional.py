@@ -16,9 +16,10 @@ class Relacional(Expresion):
         val_der = self.exp2.convertir(generador, entorno)
 
         if val_izq and val_der:
-            if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.STR]:
+
+            if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.STRING]:
                 nuevo_valor = Valor(self.fila, [TipoPrimitivo.BOOL])
-                if val_izq.tipo[0] != TipoPrimitivo.STR:
+                if val_izq.tipo[0] != TipoPrimitivo.STRING:
                     nuevo_valor.trueLabel = generador.nuevoLabel()
                     nuevo_valor.falseLabel = generador.nuevoLabel()
 
