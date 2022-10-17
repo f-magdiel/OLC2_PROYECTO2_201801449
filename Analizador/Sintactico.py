@@ -183,9 +183,10 @@ def p_instrucion(t):
                     | asignacion PTCOMA
                     | forin
                     | nativas_vector PTCOMA
+                    | funciones
                                         '''
     #                     | return
-    #                     | funciones
+    #
     #                     | llamada_funciones PTCOMA
     #                     | declaracion_arreglos
     #                     | declaracion_vector
@@ -305,86 +306,57 @@ def p_nativa_contain(t):
 
 #
 #
-# # !----------------------------------------ARREGLOS---------------------------------------------------------------
-# def p_arreglo_inicio(t):
-#     'declaracion_arreglos : LET MUT ID DOSPT tipo_arreglo IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionArreglos(t.lineno(1), t[3], t[5], t[7], True)
-#
-#
-# def p_arreglo_inicio2(t):
-#     'declaracion_arreglos : LET ID DOSPT tipo_arreglo IGUAL expresion PTCOMA'
-#     t[0] = DeclaracionArreglos(t.lineno(1), t[2], t[4], t[6], False)
-#
-#
-# def p_arreglo_tipo(t):
-#     'tipo_arreglo : CORIZQ tipo_arreglo PTCOMA expresion CORDER'
-#     t[2].append(t[4])
-#     t[0] = t[2]
-#
-#
-def p_arreglo_tipo2(t):
-    'tipo_arreglo : CORIZQ tipo PTCOMA expresion CORDER'
-    t[0] = ArrayTipo(t[2], True)
-
-
-def p_vector_tipo(t):
-    ' tipo_vector : VVEC MENORQUE tipo MAYORQUE'
-    t[0] = ArrayTipo(t[3])
-
-
-#
-#
 # # !----------------------------------------------FUNCIONES---------------------------------------------------------
+
+def p_funciones_3(t):
+    'funciones : FN ID PARIZQ lparametros PARDER MENOS MAYORQUE tipos LLAVEIZQ instrucciones LLAVEDER'
+    t[0] = Funcion(t.lineno(1), t[2], t[4], t[8], t[10])
+
+
+# fila, id, para, tipo, instruc
 #
-# def p_funciones_3(t):
-#     'funciones : FN ID PARIZQ lparametros PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = Funcion(t.lineno(1), t[2], t[4], t[8], t[10])
-#
-#
-# # fila, id, para, tipo, instruc
-# #
-# # def p_funciones_2(t):
-# #     'funciones : FN ID PARIZQ PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
-# #     t[0] = Funciones(t.lineno(1), t[7], t[2], [], t[9])
-# #
-# #
-# def p_funciones_1(t):
-#     'funciones : FN ID PARIZQ lparametros PARDER LLAVEIZQ instrucciones LLAVEDER '
-#     t[0] = Funcion(t.lineno(1), t[2], t[4], None, t[7])
+# def p_funciones_2(t):
+#     'funciones : FN ID PARIZQ PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
+#     t[0] = Funciones(t.lineno(1), t[7], t[2], [], t[9])
 #
 #
-# #
-# #
-# # def p_funciones_4(t):
-# #     'funciones : FN ID PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
-# #     t[0] = Funciones(t.lineno(1), tipoPrimitivo.NULO, t[2], [], t[6])
-# #
-# #
-# def p_parametros(t):
-#     'lparametros : lparametros COMA lparame'
-#     t[1].append(t[3])
-#     t[0] = t[1]
+def p_funciones_1(t):
+    'funciones : FN ID PARIZQ lparametros PARDER LLAVEIZQ instrucciones LLAVEDER '
+    t[0] = Funcion(t.lineno(1), t[2], t[4], None, t[7])
+
+
 #
 #
-# def p_parametro_1(t):
-#     'lparametros : lparame'
-#     t[0] = [t[1]]
+# def p_funciones_4(t):
+#     'funciones : FN ID PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
+#     t[0] = Funciones(t.lineno(1), tipoPrimitivo.NULO, t[2], [], t[6])
 #
 #
-# def p_parametro_2(t):
-#     'lparametros : '
-#     t[0] = []
-#
-#
-# def p_parametro_3(t):
-#     'lparame : ID DOSPT tipo'
-#     t[0] = Parametro(t.lineno(1), t[1], t[3])
-#
-#
-# def p_parametro_4(t):
-#     '''lparame : ID DOSPT SIGNOI MUT tipo_arreglo
-#                 | ID DOSPT SIGNOI MUT tipo_vector'''
-#     t[0] = Parametro(t.lineno(1), t[1], t[5])
+def p_parametros(t):
+    'lparametros : lparametros COMA lparame'
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
+def p_parametro_1(t):
+    'lparametros : lparame'
+    t[0] = [t[1]]
+
+
+def p_parametro_2(t):
+    'lparametros : '
+    t[0] = []
+
+
+def p_parametro_3(t):
+    'lparame : ID DOSPT tipos'
+    t[0] = Parametro(t.lineno(1), t[1], t[3])
+
+
+def p_parametro_4(t):
+    '''lparame : ID DOSPT SIGNOI MUT tipo_arreglo
+                | ID DOSPT SIGNOI MUT tipo_vector'''
+    t[0] = Parametro(t.lineno(1), t[1], t[5])
 
 
 #
@@ -426,7 +398,36 @@ def p_vector_tipo(t):
 #     li = [t[3], True]
 #     t[0] = li
 #
+
 #
+#
+# # !----------------------------------------ARREGLOS---------------------------------------------------------------
+# def p_arreglo_inicio(t):
+#     'declaracion_arreglos : LET MUT ID DOSPT tipo_arreglo IGUAL expresion PTCOMA'
+#     t[0] = DeclaracionArreglos(t.lineno(1), t[3], t[5], t[7], True)
+#
+#
+# def p_arreglo_inicio2(t):
+#     'declaracion_arreglos : LET ID DOSPT tipo_arreglo IGUAL expresion PTCOMA'
+#     t[0] = DeclaracionArreglos(t.lineno(1), t[2], t[4], t[6], False)
+#
+#
+# def p_arreglo_tipo(t):
+#     'tipo_arreglo : CORIZQ tipo_arreglo PTCOMA expresion CORDER'
+#     t[2].append(t[4])
+#     t[0] = t[2]
+#
+#
+def p_arreglo_tipo2(t):
+    'tipo_arreglo : CORIZQ tipos PTCOMA expresion CORDER'
+    t[0] = ArrayTipo(t[2], True)
+
+
+def p_vector_tipo(t):
+    ' tipo_vector : VVEC MENORQUE tipos MAYORQUE'
+    t[0] = ArrayTipo(t[3])
+
+
 # # !---------------------------------------------------IMPRIMIR---------------------------------------------------------
 #
 # def p_imprimir1(t):
@@ -450,7 +451,7 @@ def p_imprimir2(t):
 # # !--------------------------------------------DECLARACION-------------------------------------------------------------
 #
 def p_declaracion1(t):
-    'declaracion : LET MUT ID DOSPT tipo IGUAL expresion '
+    'declaracion : LET MUT ID DOSPT tipos IGUAL expresion '
     t[0] = Declaracion(t.lineno(1), t[5], str(t[3]), t[7], True)
 
 
@@ -464,7 +465,7 @@ def p_declaracion2(t):
 #
 #
 def p_declaracion3(t):
-    'declaracion : LET ID DOSPT tipo IGUAL expresion '
+    'declaracion : LET ID DOSPT tipos IGUAL expresion '
     t[0] = Declaracion(t.lineno(1), t[4], str(t[2]), t[6], False)
 
 
@@ -680,13 +681,19 @@ def p_continue_inicio(t):
 #
 # # !----------------------------------------------------TIPO-----------------------------------------------------------
 #
+def p_tipo2(t):
+    '''tipos : tipo_primitivo
+            | tipo_arreglo
+            | tipo_vector '''
+    t[0] = t[1]
+
 def p_tipo1(t):
-    '''tipo : I64
-            | F64
-            | BOOL
-            | CHAR
-            | STRING
-            | USIZE
+    '''tipo_primitivo : I64
+                    | F64
+                    | BOOL
+                    | CHAR
+                    | STRING
+                    | USIZE
     '''
     tipo = t[1]
     if (tipo == 'i64'):
@@ -1051,7 +1058,7 @@ def p_expresion_arreglo2(t):
 #
 # # !------------------------------------CASTEO---------------------------------------------------------------------
 def p_casteo(t):
-    'expresion : PARIZQ expresion AS tipo PARDER'
+    'expresion : PARIZQ expresion AS tipos PARDER'
     t[0] = Casteo(t.lineno(1), t[2], t[4])
 
 
@@ -1136,14 +1143,18 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
+fn funcion1(p1: i64, p2: &mut [i64; 2]) -> Vec<i64> {
+    println!("p1 = {}", p1);
+    println!("p2 = {:?}", p2);
+}
 
 fn main() {
-    let mut vec1 = vec![[1, 2], [3, 4]];
-    vec1.push([5, 6]);
-    vec1.insert(0 * 1, [-1, 0]);
-    println!("{:?}", vec1);
-    println!("{:?}", vec1.remove(0 + 1));
-    println!("{:?}", vec1);
+    //let mut vec1 = vec![[1, 2], [3, 4]];
+    //vec1.push([5, 6]);
+    //vec1.insert(0 * 1, [-1, 0]);
+    //println!("{:?}", vec1);
+    //println!("{:?}", vec1.remove(0 + 1));
+    //println!("{:?}", vec1);
     
 }
 

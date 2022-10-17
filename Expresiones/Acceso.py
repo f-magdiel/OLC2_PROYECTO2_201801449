@@ -50,6 +50,7 @@ class Acceso(Expresion):
 
                         else:
                             # ! Validar el tipo
+
                             if variable.tipo[0] not in [TipoPrimitivo.BOOL, TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                                 # ! Temporales y valor referenia
                                 tmp1 = generador.nuevoTemp()

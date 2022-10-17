@@ -29,29 +29,26 @@ class Entorno:
                 env = env.padre
                 depth += env.size
 
+    # ! -------------------------FUNCIONES--------------------------------------
+    def agregar_fun(self, funcion):
+        self.funciones[funcion.id] = funcion
 
-# ! -------------------------FUNCIONES--------------------------------------
-def agregar_fun(self, funcion):
-    self.funciones[funcion.id] = funcion
+    def existe_fun(self, id, local):
+        if local:
+            return id in self.funciones
+        else:
+            entorno = self
+            while entorno:
+                if id in self.funciones:
+                    return True
+                else:
+                    entorno = entorno.padre
+            return False
 
-
-def existe_fun(self, id, local):
-    if local:
-        return id in self.funciones
-    else:
+    def obtener_fun(self, id):
         entorno = self
         while entorno:
             if id in self.funciones:
-                return True
+                return entorno.funciones.get(id)
             else:
                 entorno = entorno.padre
-        return False
-
-
-def obtener_fun(self, id):
-    entorno = self
-    while entorno:
-        if id in self.funciones:
-            return entorno.funciones.get(id)
-        else:
-            entorno = entorno.padre

@@ -161,7 +161,7 @@
       <workItem from="1665871702929" duration="14408000" />
       <workItem from="1665960396089" duration="3000" />
       <workItem from="1665983752745" duration="272000" />
-      <workItem from="1666034019559" duration="10938000" />
+      <workItem from="1666034019559" duration="12514000" />
     </task>
     <servers />
   </component>
@@ -181,6 +181,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Generador.coverage" NAME="Generador Coverage Results" MODIFIED="1663718640894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Generador" />
-    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1666045036131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
+    <SUITE FILE_PATH="coverage/OLC2_PROYECTO2_201801449$Sintactico.coverage" NAME="Sintactico Coverage Results" MODIFIED="1666046644186" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Analizador" />
   </component>
 </project>

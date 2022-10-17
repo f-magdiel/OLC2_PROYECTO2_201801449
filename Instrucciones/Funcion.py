@@ -29,7 +29,7 @@ class Funcion(Instruccion):
 
     def convertir(self, generador, entorno):
         # ! Validar que el id no exista en la tabla de funciones del entorno local
-        if not entorno.existe_funcion(self.id, True):
+        if not entorno.existe_fun(self.id, True):
             # ! Obtener los id's de los parámetros
             parametros_list = []
             for param in self.parametros:
@@ -46,7 +46,7 @@ class Funcion(Instruccion):
                         # ! Ajustar el tipo
                         self.parametros[i].tipo = self.parametros[i].tipo.obtener_tipo()
                     # ! Crear la variable
-                    var = Variable(self.parametros[i].fila, self.parametros[i].columna, True, self.parametros[i].id, self.parametros[i].tipo)
+                    var = Variable(self.parametros[i].fila, self.parametros[i].id, True, [self.parametros[i].tipo])
                     env_funcion.nueva_variable(var)
                 # ! Verificar si el tipo de la función es array
                 if isinstance(self.tipo, ArrayTipo):
@@ -54,7 +54,7 @@ class Funcion(Instruccion):
                     self.tipo = self.tipo.obtener_tipo()
                 # ! Guardar la función en la tabla de funciones
                 func = SymbFun(self.fila, self.id, self.parametros, self.tipo, env_funcion)
-                entorno.agregar_funcion(func)
+                entorno.agregar_fun(func)
                 # ! Crear código de las instrucciones
                 codigo = ""
                 # ! Recorrer las instrucciones
@@ -73,7 +73,8 @@ class Funcion(Instruccion):
                                                              f"}}"
                 # ! TODO: ETIQUETA RETURN
                 # ! Agregar código de la función al generador
-                generador.funciones.append(codigo)
+                generador.funciones_predef.append(codigo)
+
             else:
                 print("Identificador duplicado en la lista deparametros.")
 
