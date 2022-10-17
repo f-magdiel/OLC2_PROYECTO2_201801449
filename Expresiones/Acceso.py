@@ -175,7 +175,7 @@ class Acceso(Expresion):
 
                         # ! Validar bandera
                         if flag_correcto:
-                            print("SIIIII")
+
                             valor = Valor(self.fila, variable.tipo[len(self.indices):])
                             valor.codigo = f"\t// Acceso array (indices)\n"
 

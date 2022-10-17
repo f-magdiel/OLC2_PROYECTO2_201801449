@@ -77,6 +77,10 @@ from Expresiones.VectorNativa import VectorNativa
 from Instrucciones.Asignacion import Asignacion
 from Instrucciones.Forin import Forin
 from Expresiones.Acceso import Acceso
+from Instrucciones.NativaVector import NativaVector
+from Instrucciones.Funcion import Parametro, Funcion
+from Expresiones.Remove import Remove
+from Tipo.ArrayTipo import ArrayTipo
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -178,6 +182,7 @@ def p_instrucion(t):
                     | declaracion PTCOMA
                     | asignacion PTCOMA
                     | forin
+                    | nativas_vector PTCOMA
                                         '''
     #                     | return
     #                     | funciones
@@ -262,30 +267,34 @@ def p_nativa_capacity(t):
 #
 #
 # # * ---------------------------------PUSH------------------------------------
-# def p_nativa_push(t):
-#     'nativas_vector : expresion PTO PUSH PARIZQ expresion PARDER PTCOMA'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.PUSH, t[5])
+def p_nativa_push(t):
+    'nativas_vector : ID PTO PUSH PARIZQ expresion PARDER '
+    t[0] = NativaVector(t.lineno(1), t[1], NATIVAS.PUSH, t[5], None)
+
+
 #
 #
 # # * -------------------------------INSERT--------------------------------------
-# def p_nativa_insert(t):
-#     'nativas_vector : expresion PTO INSERT PARIZQ expresion COMA expresion PARDER PTCOMA'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.INSERT, t[5], t[7])
+def p_nativa_insert(t):
+    'nativas_vector : ID PTO INSERT PARIZQ expresion COMA expresion PARDER '
+    t[0] = NativaVector(t.lineno(1), t[1], NATIVAS.INSERT, t[5], t[7])
+
+
 #
 #
 # # * --------------------------REMOVE-------------------------------------------
-# def p_nativa_remove(t):
-#     'nativas_vector : expresion PTO REMOVE PARIZQ expresion PARDER PTCOMA'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.REMOVE, t[5])
+def p_nativa_remove(t):
+    'nativas_vector : ID PTO REMOVE PARIZQ expresion PARDER'
+    t[0] = NativaVector(t.lineno(1), t[1], NATIVAS.REMOVE, t[5], None)
+
+
 #
 #
-# def p_nativa_remove_expre(t):
-#     'expresion : expresion PTO REMOVE PARIZQ expresion PARDER'
-#     # nat = Id(t.lineno(1), t[1])
-#     t[0] = NativasVectores(t.lineno(1), t[1], NATIVE_VECTORES.REMOVE_EXPRE, t[5])
+def p_nativa_remove_expre(t):
+    'expresion : ID PTO REMOVE PARIZQ expresion PARDER'
+    t[0] = Remove(t.lineno(1), t[1], t[5])
+
+
 #
 #
 # # * ---------------------------------CONTAINS----------------------------------
@@ -313,33 +322,44 @@ def p_nativa_contain(t):
 #     t[0] = t[2]
 #
 #
-# def p_arreglo_tipo2(t):
-#     'tipo_arreglo : CORIZQ tipo PTCOMA expresion CORDER'
-#     t[0] = [t[2], t[4]]
+def p_arreglo_tipo2(t):
+    'tipo_arreglo : CORIZQ tipo PTCOMA expresion CORDER'
+    t[0] = ArrayTipo(t[2], True)
+
+
+def p_vector_tipo(t):
+    ' tipo_vector : VVEC MENORQUE tipo MAYORQUE'
+    t[0] = ArrayTipo(t[3])
+
+
 #
 #
 # # !----------------------------------------------FUNCIONES---------------------------------------------------------
 #
-# def p_funciones_2(t):
-#     'funciones : FN ID PARIZQ lparametros PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = Funciones(t.lineno(2), t[8], t[2], t[4], t[10])
-#
-#
 # def p_funciones_3(t):
-#     'funciones : FN ID PARIZQ PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = Funciones(t.lineno(1), t[7], t[2], [], t[9])
+#     'funciones : FN ID PARIZQ lparametros PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
+#     t[0] = Funcion(t.lineno(1), t[2], t[4], t[8], t[10])
 #
 #
+# # fila, id, para, tipo, instruc
+# #
+# # def p_funciones_2(t):
+# #     'funciones : FN ID PARIZQ PARDER MENOS MAYORQUE tipo LLAVEIZQ instrucciones LLAVEDER'
+# #     t[0] = Funciones(t.lineno(1), t[7], t[2], [], t[9])
+# #
+# #
 # def p_funciones_1(t):
 #     'funciones : FN ID PARIZQ lparametros PARDER LLAVEIZQ instrucciones LLAVEDER '
-#     t[0] = Funciones(t.lineno(1), tipoPrimitivo.NULO, t[2], t[4], t[7])
+#     t[0] = Funcion(t.lineno(1), t[2], t[4], None, t[7])
 #
 #
-# def p_funciones_4(t):
-#     'funciones : FN ID PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
-#     t[0] = Funciones(t.lineno(1), tipoPrimitivo.NULO, t[2], [], t[6])
-#
-#
+# #
+# #
+# # def p_funciones_4(t):
+# #     'funciones : FN ID PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
+# #     t[0] = Funciones(t.lineno(1), tipoPrimitivo.NULO, t[2], [], t[6])
+# #
+# #
 # def p_parametros(t):
 #     'lparametros : lparametros COMA lparame'
 #     t[1].append(t[3])
@@ -352,13 +372,21 @@ def p_nativa_contain(t):
 #
 #
 # def p_parametro_2(t):
-#     'lparame : ID DOSPT tipo'
-#     t[0] = Parametros(t[3], t[1], False, None)
+#     'lparametros : '
+#     t[0] = []
 #
 #
 # def p_parametro_3(t):
-#     'lparame : ID DOSPT SIGNOI MUT tipo_arreglo'
-#     t[0] = Parametros(tipoPrimitivo.ARREGLO, t[1], True, t[5])
+#     'lparame : ID DOSPT tipo'
+#     t[0] = Parametro(t.lineno(1), t[1], t[3])
+#
+#
+# def p_parametro_4(t):
+#     '''lparame : ID DOSPT SIGNOI MUT tipo_arreglo
+#                 | ID DOSPT SIGNOI MUT tipo_vector'''
+#     t[0] = Parametro(t.lineno(1), t[1], t[5])
+
+
 #
 #
 # def p_parametro_4(t):
@@ -588,7 +616,7 @@ def p_instrs_match(t):
                    | declaracion
                    | asignacion
                    | forin
-                                '''
+                   | nativas_vector            '''
     t[0] = t[1]
 
 
@@ -1108,156 +1136,15 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
+
 fn main() {
-    let mut a: i64 = 909;
-
-    println!("=======================================================================");
-    println!("==================================IF===================================");
-    println!("=======================================================================");
-
-    if (a > 50) {
-        println!("IF CORRECTO");
-    }else if (a == 56) {
-        println!("IF INCORRECTO");
-    } else {
-        println!("IF INCORRECTO");
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("=============================IFs ANIDADOS==============================");
-    println!("=======================================================================");
-    let aux: i64 = 10;
-    if aux > 0 {
-        println!("PRIMER IF CORRECTO");
-        if true && (aux == 1) {
-            println!("SEGUNDO IF INCORRECTO");
-        } else if aux > 10 {
-            println!("SEGUNDO IF INCORRECTO");
-        } else {
-            println!("SEGUNDO IF CORRECTO");
-        }
-    }else if aux <= 3 {
-        println!("PRIMER IF INCORRECTO");
-        if true && (aux == 1) {
-            println!("SEGUNDO IF INCORRECTO");
-        } else if aux > 10 {
-            println!("SEGUNDO IF INCORRECTO");
-        } else {
-            println!("SEGUNDO IF CORRECTO");
-        } 
-    } else if aux == a {
-        println!("PRIMER IF INCORRECTO");
-        if true && (aux == 1) {
-            println!("SEGUNDO IF INCORRECTO");
-        } else if aux > 10 {
-            println!("SEGUNDO IF INCORRECTO");
-        } else {
-            println!("SEGUNDO IF CORRECTO");
-        } 
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("=================================WHILE=================================");
-    println!("=======================================================================");
-
-    let mut index: i64 = 0;
-
-    while (index >= 0) {
-
-        if (index == 0) {
-            index = index + 100;
-        } else if (index > 50) {
-            index = ((index / 2) as i64) - 25;
-        } else {
-            index = ((index / 2) as i64) - 1;
-        } 
-
-        println!("{}",index);
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("================================WHILE-2================================");
-    println!("=======================================================================");
-
-    index = -2;
-    index = index + 1;
-
-    while (index != 12) {
-        index = index + 1;
-        if (index == 0 || index == 1 || index == 11 || index == 12) {
-            println!("*********************************************************************************************************");
-        } else if (index == 2) {
-            println!("**********  ***************  ******                 ******                 ******              **********");
-        } else if (index >= 3 && index <= 5) {
-            println!("**********  ***************  ******  *********************  *************  ******  **********************");
-        } else if (index == 6) {
-            println!("**********  ***************  ******                 ******                 ******  **********************");
-        } else if (index >= 7 && index <= 9) {
-            println!("**********  ***************  ********************   ******  *************  ******  **********************");
-        } else if (index == 10) {
-            println!("**********                   ******                 ******  *************  ******              **********");
-        } 
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("=============================TRANSFERENCIA=============================");
-    println!("=======================================================================");
-
-    a = -1;
-    while (a < 5) {
-        a = a + 1;
-        if a == 3 {
-            println!("a");
-            continue;
-        } else if a == 4 {
-            println!("b");
-            break;
-        } 
-        println!("El valor de a es: {}, ", a);
-    }
-
-    println!("Se debiÃ³ imprimir");
-
-    println!("");
-    println!("=======================================================================");
-    println!("==================================FOR==================================");
-    println!("=======================================================================");
-
-    for i in 0..9 {
-        let mut output: String = "".to_string();
-        for j in 0..(10 - i) {
-            output = output + " ";
-        }
-        for k in 0..i {
-            output = output + "* ";
-        }
-        println!("{}",output);
-
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("=================================FOR-2=================================");
-    println!("=======================================================================");
-
-    let arr = [1,2,3,4,5,6];
-    for i in [0,1,2,3,4,5] {
-        println!("{},{},{},{},{},{}", arr[i] == 1, arr[i] == 2, arr[i] == 3, arr[i] == 4, arr[i] == 5, arr[i] == 6);
-    }
-
-    println!("");
-    println!("=======================================================================");
-    println!("=================================FOR-3=================================");
-    println!("=======================================================================");
-    for e in [0,1,2,3,4,5] {
-        if (arr.len() > e) {
-            println!("{},{},{},{},{},{}", e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e],e*arr[e]);
-        }
-    }
+    let mut vec1 = vec![[1, 2], [3, 4]];
+    vec1.push([5, 6]);
+    vec1.insert(0 * 1, [-1, 0]);
+    println!("{:?}", vec1);
+    println!("{:?}", vec1.remove(0 + 1));
+    println!("{:?}", vec1);
+    
 }
 
 '''

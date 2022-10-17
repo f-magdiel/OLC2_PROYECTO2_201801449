@@ -12,3 +12,4 @@ class NATIVAS(Enum):
     CONTAINS = 8
     INSERT = 9
     CAPACITY = 10
+    REMOVE = 11
