@@ -3,10 +3,6 @@ from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Entorno import Entorno
 from Entorno.Variable import Variable
 from General.General import Env_General
-from Instrucciones.Asignacion import Asignacion
-from Instrucciones.Declaracion import Declaracion
-from Instrucciones.If import If
-from Instrucciones.Imprimir import Imprimir
 from Instrucciones.Continue import Continue
 from Instrucciones.Break import Break
 
@@ -35,22 +31,12 @@ class Forin(Instruccion):
                         codigo = ""
 
                         for instruc in self.instrucciones:
-                            if isinstance(instruc, Imprimir):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Declaracion):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Asignacion):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, If):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Forin):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Continue):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Break):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
+                            if isinstance(instruc, Break) and not env_forin.flag_bucle:
+                                print("Error invalido en entorno while")
+                            elif isinstance(instruc, Continue) and not env_forin.flag_bucle:
+                                print("Error invalido en entorno while")
                             else:
-                                print("Error en entorno Forin")
+                                codigo += instruc.convertir(generador, env_forin)
 
                         # ! Temporales aux
                         tmp0 = generador.nuevoTemp()
@@ -135,22 +121,12 @@ class Forin(Instruccion):
                         codigo = ""
 
                         for instruc in self.instrucciones:
-                            if isinstance(instruc, Imprimir):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Declaracion):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Asignacion):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, If):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Forin):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Continue):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
-                            elif isinstance(instruc, Break):
-                                codigo += instruc.convertir(generador, env_forin) + "\n"
+                            if isinstance(instruc, Break) and not env_forin.flag_bucle:
+                                print("Error invalido en entorno while")
+                            elif isinstance(instruc, Continue) and not env_forin.flag_bucle:
+                                print("Error invalido en entorno while")
                             else:
-                                print("Error en entorno Forin")
+                                codigo += instruc.convertir(generador, env_forin)
 
                         # ! Temporales aux
                         tmp1 = generador.nuevoTemp()

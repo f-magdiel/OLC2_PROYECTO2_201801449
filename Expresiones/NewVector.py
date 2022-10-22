@@ -40,8 +40,8 @@ class NewVector(Expresion):
                                 f"\t{tmp1} = {val_der.reference} + 2;\n" \
                                 f"\tH = H + {tmp1}; // Reservar espacio\n" \
                                 f"\t{tmp2} = {valor.reference} + 0;\n" \
-                                f"\tHEAP[(int){tmp2}] = {val_der.referece}; // len\n" \
-                                f"\t{tmp3} = {val_der.referece} + 1;\n" \
+                                f"\tHEAP[(int){tmp2}] = {val_der.reference}; // len\n" \
+                                f"\t{tmp3} = {val_der.reference} + 1;\n" \
                                 f"\t{tmp4} = {valor.reference} + 1;\n" \
                                 f"\tHEAP[(int){tmp4}] = {tmp3}; // capacity\n\n" \
                                 f"\t// Generar elementos\n" \
@@ -60,7 +60,7 @@ class NewVector(Expresion):
                                     f"\tHEAP[(int){tmp9}] = {val_izq.reference}; // Valor\n\n"
                 else:
                     lbl1 = generador.nuevoLabel()
-
+                    # ! Se genera código
                     valor.codigo += f"\t// Elemento\n" + val_izq.codigo + \
                                     f"\t{val_izq.trueLabel}:\n" \
                                     f"\t{tmp8} = {valor.reference} + 2; // Puntero valores\n" \

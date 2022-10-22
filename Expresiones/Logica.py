@@ -36,6 +36,6 @@ class Logica(Expresion):
 
                 return nuevo_valor
             else:
-                print("Error")
+                print("Error no es tipo bool")
         else:
             print("Error EN EXPRESIONES")

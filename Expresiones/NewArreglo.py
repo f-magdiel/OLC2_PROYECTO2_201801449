@@ -56,7 +56,7 @@ class NewArreglo(Expresion):
                                     f"\tHEAP[(int){tmp7}] = {val_izq.reference}; // Valor\n\n"
                 else:
                     lbl1 = generador.nuevoLabel()
-
+                    #  ! Se genera código
                     valor.codigo += f"\t// Elemento\n" + val_izq.codigo + \
                                     f"\t{val_izq.trueLabel}:\n" \
                                     f"\t{tmp6} = {valor.reference} + 1; // Puntero valores\n" \

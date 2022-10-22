@@ -39,7 +39,7 @@ class Entorno:
         else:
             entorno = self
             while entorno:
-                if id in self.funciones:
+                if id in entorno.funciones:
                     return True
                 else:
                     entorno = entorno.padre
@@ -48,7 +48,7 @@ class Entorno:
     def obtener_fun(self, id):
         entorno = self
         while entorno:
-            if id in self.funciones:
+            if id in entorno.funciones:
                 return entorno.funciones.get(id)
             else:
                 entorno = entorno.padre

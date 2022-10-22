@@ -32,7 +32,7 @@ class Aritmetica(Expresion):
                     # ! STRIGN + STR
                     elif val_izq.tipo[0] == TipoPrimitivo.STRING and val_der.tipo[0] == TipoPrimitivo.STR:
                         # ! valor a retornar
-                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.STR])
+                        nuevo_valor = Valor(self.fila, [TipoPrimitivo.STRING])
                         nuevo_valor.reference = generador.nuevoTemp()
                         # ! Temp auxiliares
                         tmp1 = generador.nuevoTemp()

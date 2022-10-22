@@ -14,7 +14,6 @@ reservadas = {
     'mut': 'MUT',
     'let': 'LET',
     'fn': 'FN',
-    'main': 'MAIN',
     'println': 'PRINTLN',
     'to_string': 'TOSTRING',
     'to_owned': 'TOOWNED',

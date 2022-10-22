@@ -13,6 +13,7 @@ class Acceso(Expresion):
     def convertir(self, generador, entorno):
         if entorno.existe_variable(self.id):
             variable, depth = entorno.obtener_variable(self.id)
+
             if self.indices is None:
                 # ! Se genera valor
                 valor = Valor(self.fila, variable.tipo)
@@ -89,7 +90,7 @@ class Acceso(Expresion):
                             # ! Temporales y valor referencia
                             tmp1 = generador.nuevoTemp()
                             tmp2 = generador.nuevoTemp()
-                            valor.reference = generador.nuevoLabel()
+                            valor.reference = generador.nuevoTemp()
                             # ! Se genera código
                             valor.codigo = f"\t// Acceso array (es_ref/argumento) \n" \
                                            f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
@@ -98,12 +99,12 @@ class Acceso(Expresion):
                         else:
                             # ! Temporales y valor referencia
                             tmp1 = generador.nuevoTemp()
-                            tmp2 = generador.nuevoTemp()
+
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera códgio
                             valor.codigo = f"\t// Acceso array (argumento) \n" \
                                            f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                           f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n\n"
+                                           f"\t{valor.reference} = {tmp1} + {variable.posicion}; // Dir. array\n\n"
 
                     else:
                         # ! Validar referencia
@@ -149,7 +150,7 @@ class Acceso(Expresion):
                                                f"\tif ({tmp3}) goto {valor.trueLabel};\n" \
                                                f"\tgoto {valor.falseLabel};\n"
                             else:
-                                # ! Temporales y valor referecia
+                                # ! Temporales y valor referencia
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
                                 valor.reference = generador.nuevoTemp()
@@ -161,6 +162,7 @@ class Acceso(Expresion):
                 return valor
             else:
                 # ! Validar si var es tipo array
+
                 if variable.tipo[0] in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                     valores = []
                     for index in self.indices:

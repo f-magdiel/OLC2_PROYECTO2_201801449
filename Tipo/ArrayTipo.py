@@ -8,7 +8,7 @@ class ArrayTipo:
 
     def obtener_tipo(self):
         if self.flag_arreglo:
-            if self.tipo not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
+            if not isinstance(self.tipo, ArrayTipo):
                 return [TipoPrimitivo.ARREGLO, self.tipo]
             else:
                 tipo = self.tipo.obtener_tipo()
@@ -16,13 +16,9 @@ class ArrayTipo:
                 return tipo
 
         else:
-            if self.tipo not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
+            if not isinstance(self.tipo, ArrayTipo):
                 return [TipoPrimitivo.VECTOR, self.tipo]
-
             else:
-                if self.tipo not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
-                    return [TipoPrimitivo.VECTOR, self.tipo]
-                else:
-                    tipo = self.tipo.obtener_tipo()
-                    tipo.insert(0, TipoPrimitivo.VECTOR)
-                    return tipo
+                tipo = self.tipo.obtener_tipo()
+                tipo.insert(0, TipoPrimitivo.VECTOR)
+                return tipo

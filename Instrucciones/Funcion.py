@@ -39,26 +39,41 @@ class Funcion(Instruccion):
                 # ! Crear el entorno de la función
                 env_funcion = Entorno(entorno)
                 Env_General.append(env_funcion)
-                # ! Recorrer los parámetros para declarar las variables
-                for i in range(len(self.parametros)):
-                    # ! Verificar si el tipo es array
-                    if isinstance(self.parametros[i].tipo, ArrayTipo):
-                        # ! Ajustar el tipo
-                        self.parametros[i].tipo = self.parametros[i].tipo.obtener_tipo()
-                    # ! Crear la variable
-                    var = Variable(self.parametros[i].fila, self.parametros[i].id, True, [self.parametros[i].tipo])
-                    env_funcion.nueva_variable(var)
                 # ! Verificar si el tipo de la función es array
                 if isinstance(self.tipo, ArrayTipo):
                     # ! Ajustar el tipo
                     self.tipo = self.tipo.obtener_tipo()
+                else:
+                    self.tipo = [self.tipo]
+
+                # ! Crear variable return
+                variable_return = Variable(-1, 'return', True, self.tipo)
+                env_funcion.nueva_variable(variable_return)
+                # ! Recorrer los parámetros para declarar las variables
+                for i in range(len(self.parametros)):
+                    flag_reference = False
+                    # ! Verificar si el tipo es array
+                    if isinstance(self.parametros[i].tipo, ArrayTipo):
+                        # ! Ajustar el tipo
+                        self.parametros[i].tipo = self.parametros[i].tipo.obtener_tipo()
+                        flag_reference = True
+
+                    # ! Crear la variable
+
+                    var = Variable(self.parametros[i].fila, self.parametros[i].id, True, self.parametros[i].tipo, flag_reference)
+                    env_funcion.nueva_variable(var)
+
                 # ! Guardar la función en la tabla de funciones
                 func = SymbFun(self.fila, self.id, self.parametros, self.tipo, env_funcion)
                 entorno.agregar_fun(func)
-                # ! Crear código de las instrucciones
-                codigo = ""
+
+                # ! Crear código de las instrucciones y temporal
+                tmp1 = generador.nuevoTemp()
+                codigo = f"\t// Auxiliar para restaurar ámbito\n" \
+                         f"\t{tmp1} = S;\n\n"
                 # ! Recorrer las instrucciones
                 for instruccion in self.instrucciones:
+
                     # ! Validar si la instrucción es aceptada en el entorno
                     if isinstance(instruccion, Break) and env_funcion.flag_bucle:
                         print("El ambito de la funcion no acepta la instruccion.")
@@ -69,10 +84,18 @@ class Funcion(Instruccion):
                         codigo += instruccion.convertir(generador, env_funcion) + "\n"
 
                 # ! Generar código de la función
-                codigo = f"void {self.id}() {{\n" + codigo + f"\treturn;\n" \
-                                                             f"}}"
-                # ! TODO: ETIQUETA RETURN
-                # ! Agregar código de la función al generador
+                codigo = f"void {self.id}() {{\n" + codigo
+
+                # ! Validar codigo de la funicon
+                if codigo.count("ETIQUETA_RETURN") > 0:
+                    lbl1 = generador.nuevoLabel()
+                    codigo = codigo.replace("TEMPORAL_RETURN", tmp1)
+                    codigo = codigo.replace("ETIQUETA_RETURN", lbl1)
+
+                    codigo += f"\t{lbl1}:\n"
+
+                codigo += f"\treturn;\n" \
+                          f"}}"
                 generador.funciones_predef.append(codigo)
 
             else:

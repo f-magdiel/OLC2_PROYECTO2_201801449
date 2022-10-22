@@ -202,7 +202,7 @@ class Asignacion(Instruccion):
 
     def asignar_valor_array(self, generador, codigo, direccion, valor):
         # ! Validar si no es booleano
-        if valor.tipo != TipoPrimitivo.BOOL:
+        if valor.tipo[0] != TipoPrimitivo.BOOL:
             # ! Generar código
             codigo += valor.codigo + f"\tHEAP[(int){direccion}] = {valor.reference}; // Asignar\n"
         else:

@@ -81,6 +81,9 @@ from Instrucciones.NativaVector import NativaVector
 from Instrucciones.Funcion import Parametro, Funcion
 from Expresiones.Remove import Remove
 from Tipo.ArrayTipo import ArrayTipo
+from Expresiones.LLamadaFuncion import LlamadaFuncion as LLamadaFuncionExpres
+from Instrucciones.Return import Return
+from Instrucciones.LlamadaFuncion import LlamadaFuncion
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -97,13 +100,9 @@ precedence = (
 )
 
 
-#
-#
 # # ?--------------------------------------------PRODUCCIONES------------------------------------------------------------
 def p_inicio_inicio(t):
-    'inicio : instrucciones main instrucciones'
-    t[1] += t[3]
-    t[1].append(t[2])
+    'inicio : instrucciones'
     t[0] = t[1]
 
 
@@ -132,9 +131,6 @@ def p_inicio_inicio(t):
 #     t[0] = [t[1]]  # ? ----> como una lista
 #
 #
-def p_main(t):
-    'main : FN MAIN PARIZQ PARDER LLAVEIZQ instrucciones LLAVEDER'
-    t[0] = Main(t.lineno(1), t[6])
 
 
 #
@@ -184,8 +180,9 @@ def p_instrucion(t):
                     | forin
                     | nativas_vector PTCOMA
                     | funciones
-                                        '''
-    #                     | return
+                    | return PTCOMA
+                    | llamada_funciones PTCOMA   '''
+    #
     #
     #                     | llamada_funciones PTCOMA
     #                     | declaracion_arreglos
@@ -292,8 +289,8 @@ def p_nativa_remove(t):
 #
 #
 def p_nativa_remove_expre(t):
-    'expresion : ID PTO REMOVE PARIZQ expresion PARDER'
-    t[0] = Remove(t.lineno(1), t[1], t[5])
+    'expresion : expresion PTO REMOVE PARIZQ expresion PARDER'
+    t[0] = Remove(t.lineno(1), t[1].id, t[5])
 
 
 #
@@ -308,7 +305,7 @@ def p_nativa_contain(t):
 #
 # # !----------------------------------------------FUNCIONES---------------------------------------------------------
 
-def p_funciones_3(t):
+def p_funciones_2(t):
     'funciones : FN ID PARIZQ lparametros PARDER MENOS MAYORQUE tipos LLAVEIZQ instrucciones LLAVEDER'
     t[0] = Funcion(t.lineno(1), t[2], t[4], t[8], t[10])
 
@@ -322,7 +319,10 @@ def p_funciones_3(t):
 #
 def p_funciones_1(t):
     'funciones : FN ID PARIZQ lparametros PARDER LLAVEIZQ instrucciones LLAVEDER '
-    t[0] = Funcion(t.lineno(1), t[2], t[4], None, t[7])
+    if t[2] == 'main':
+        t[0] = Main(t.lineno(1), t[7])
+    else:
+        t[0] = Funcion(t.lineno(1), t[2], t[4], None, t[7])
 
 
 #
@@ -346,11 +346,12 @@ def p_parametro_1(t):
 def p_parametro_2(t):
     'lparametros : '
     t[0] = []
+    print("SI")
 
 
 def p_parametro_3(t):
-    'lparame : ID DOSPT tipos'
-    t[0] = Parametro(t.lineno(1), t[1], t[3])
+    'lparame : ID DOSPT tipo_primitivo'
+    t[0] = Parametro(t.lineno(1), t[1], [t[3]])
 
 
 def p_parametro_4(t):
@@ -366,31 +367,40 @@ def p_parametro_4(t):
 #     t[0] = Parametros(tipoPrimitivo.VECTOR, t[1], False, [t[7]])
 #
 #
-# def p_llamada_funcion_inicio(t):
-#     'llamada_funciones : ID PARIZQ largumentos PARDER'
-#     t[0] = LlamadaFunciones(t.lineno(1), t[1], t[3])
-#
-#
-# def p_llamada_funcion_1(t):
-#     'llamada_funciones : ID PARIZQ PARDER'
-#     t[0] = LlamadaFunciones(t.lineno(1), t[1], [])
-#
-#
-# def p_argumentos_0(t):
-#     'largumentos : largumentos COMA largumento'  # se quito expresion por largunto
-#     t[1].append(t[3])
-#     t[0] = t[1]
-#
-#
-# def p_argumentos_2(t):
-#     'largumentos : largumento'
-#     t[0] = [t[1]]
-#
-#
-# def p_argumentos_3(t):
-#     'largumento : expresion'
-#     li = [t[1], False]
-#     t[0] = li
+def p_llamada_funcion_inicio(t):
+    'llamada_funciones : ID PARIZQ largumentos PARDER'
+    t[0] = LlamadaFuncion(t.lineno(1), t[1], t[3])
+
+
+def p_argumentos_0(t):
+    'largumentos : largumentos COMA largumento'
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
+def p_argumentos_1(t):
+    'largumentos : largumento'
+    t[0] = [t[1]]
+
+
+def p_argumentos_2(t):
+    'largumentos : '
+    t[0] = []
+
+
+def p_argumentos_4(t):
+    'largumento : SIGNOI MUT expresion'
+    if isinstance(t[3], Acceso):
+        t[3].flag_argumento = True
+
+    t[0] = t[3]
+
+
+def p_argumentos_5(t):
+    'largumento : expresion'
+    t[0] = t[1]
+
+
 #
 #
 # def p_argumentos_4(t):
@@ -617,7 +627,9 @@ def p_instrs_match(t):
                    | declaracion
                    | asignacion
                    | forin
-                   | nativas_vector            '''
+                   | nativas_vector
+                   | funciones
+                   | return'''
     t[0] = t[1]
 
 
@@ -674,9 +686,11 @@ def p_continue_inicio(t):
 #
 # # * -------------------------------------------RETURN-----------------------------------
 #
-# def p_instruccion_return(t):
-#     'return : RETURN expresion PTCOMA'
-#     t[0] = Return(t.lineno(1), t[2])
+def p_instruccion_return(t):
+    'return : RETURN expresion '
+    t[0] = Return(t.lineno(1), t[2])
+
+
 #
 #
 # # !----------------------------------------------------TIPO-----------------------------------------------------------
@@ -686,6 +700,7 @@ def p_tipo2(t):
             | tipo_arreglo
             | tipo_vector '''
     t[0] = t[1]
+
 
 def p_tipo1(t):
     '''tipo_primitivo : I64
@@ -712,9 +727,11 @@ def p_tipo1(t):
 
 #
 #
-# def p_tipo2(t):
-#     'tipo : SIGNOI STR'
-#     t[0] = tipoPrimitivo.STR
+def p_tiposino(t):
+    'tipo_primitivo : SIGNOI STR'
+    t[0] = TipoPrimitivo.STR
+
+
 #
 #
 # # !------------------------------------------------EXPRESIONES---------------------------------------------------------
@@ -787,24 +804,16 @@ def p_expresion_toowned(t):
     t[0] = FuncionNativa(t.lineno(2), NATIVAS.TOOWNED, t[1])
 
 
-#
-#
-#
-#
 def p_expresion_cadena1(t):
     'expresion : CADENA'
     t[0] = Primitiva(t.lineno(1), TipoPrimitivo.STR, str(t[1]))
 
 
-#
-#
 def p_expresion_caracter(t):
     'expresion : CARACTER'
     t[0] = Primitiva(t.lineno(1), TipoPrimitivo.CHAR, str(t[1]))
 
 
-#
-#
 def p_expresion_aritmetica1(t):
     '''expresion : expresion MAS expresion
                     | expresion MENOS expresion
@@ -1055,7 +1064,17 @@ def p_expresion_arreglo2(t):
 #     'loop_asig : LOOP LLAVEIZQ instrucciones LLAVEDER'
 #     t[0] = Loop(t.lineno(2), t[3])
 #
-#
+# ! ----------------------------------LLAMADA FUNCIONES EXPRESIONES--------------------------------------------
+def p_llamada_funcion_expres(t):
+    'expresion : llamada_fun_expres'
+    t[0] = t[1]
+
+
+def p_llamada_fun_exp1(t):
+    'llamada_fun_expres : ID PARIZQ largumentos PARDER'
+    t[0] = LLamadaFuncionExpres(t.lineno(1), t[1], t[3])
+
+
 # # !------------------------------------CASTEO---------------------------------------------------------------------
 def p_casteo(t):
     'expresion : PARIZQ expresion AS tipos PARDER'
@@ -1143,21 +1162,120 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
-fn funcion1(p1: i64, p2: &mut [i64; 2]) -> Vec<i64> {
-    println!("p1 = {}", p1);
-    println!("p2 = {:?}", p2);
+// PILA
+fn pila_vacia(vec1: &mut Vec<i64>) -> bool {
+    return vec1.len() == 0;
+}
+
+fn apilar(capacidad: usize, vec1: &mut Vec<i64>, value: i64) {
+    if vec1.len() < capacidad {
+        vec1.insert(vec1.len(), value);
+    } else {
+        println!("La pila ha llegado a su maxima capacidad");
+    }
+}
+
+fn desapilar(vec1: &mut Vec<i64>) -> i64 {
+    if !pila_vacia(&mut vec1) {
+        return vec1.remove(vec1.len()-1);
+    } else {
+        println!("La pila no tiene elementos");
+    }
+    return 0;
+}
+
+// COLA
+fn cola_vacia(vec1: &mut Vec<i64>) -> bool {
+    return vec1.len() == 0;
+}
+
+fn encolar(capacidad: usize, vec1: &mut Vec<i64>, value: i64) {
+    if vec1.len() < capacidad {
+        vec1.push(value);
+    } else {
+        println!("La cola ha llegado a su maxima capacidad");
+    }
+}
+
+fn desencolar(vec1: &mut Vec<i64>) -> i64 {
+    if !cola_vacia(&mut vec1) {
+        return vec1.remove(0);
+    } else {
+        println!("La cola no tiene elementos");
+    }
+    return 0;
 }
 
 fn main() {
-    //let mut vec1 = vec![[1, 2], [3, 4]];
-    //vec1.push([5, 6]);
-    //vec1.insert(0 * 1, [-1, 0]);
-    //println!("{:?}", vec1);
-    //println!("{:?}", vec1.remove(0 + 1));
-    //println!("{:?}", vec1);
-    
-}
+    let capacidad: usize = 10;
+    let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
+    let mut cola: Vec<i64> = vec![1,2,3,4,5];
 
+    let datos: [i64; 5] = [10,20,30,40,50];
+
+    for dato in datos {
+        apilar(capacidad, &mut pila, dato);
+    }
+    
+    println!("{:?}", pila);
+    println!("{}", desapilar(&mut pila));
+    apilar(capacidad, &mut pila, 100);
+    apilar(capacidad, &mut pila, 200);
+    apilar(capacidad, &mut pila, 300);
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{:?}", pila);
+    println!("Capacidad de pila");
+    println!("{}", pila.capacity());
+    println!("");
+
+    encolar(capacidad, &mut cola, 800);
+    println!("{:?}", cola);
+    println!("{}", desencolar(&mut cola));
+    encolar(capacidad, &mut cola, 100);
+    encolar(capacidad, &mut cola, 200);
+    encolar(capacidad, &mut cola, 300);
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{:?}", cola);
+    println!("Capacidad de cola");
+    println!("{}", cola.capacity());
+    println!("");
+
+    // vectores entre vectores
+    let mut lista: Vec<Vec<i64>> = Vec::new();
+    lista.push(vec![0; 10]);
+    lista.push(vec![1; 10]);
+    lista.push(vec![2; 10]);
+    lista.push(vec![3; 10]);
+    lista.push(vec![75,23,10,29,30,12,49,10,93]);
+    println!("{:?}", lista);
+    println!("");
+    println!("{:?}", lista[0]);
+    println!("{:?}", lista[1]);
+    println!("{:?}", lista[2]);
+    println!("{:?}", lista[3]);
+    println!("{:?}", lista[4]);
+    println!("{}", lista[4][8]);
+    println!("");
+
+    let vec1 = vec!["Hola", "!", "Sale", "Este", "Semestre", "2022"];
+    println!("{}", vec1.contains(&"Semestre") || vec1.contains(&"2023"));
+    println!("{}", vec1.contains(&"Semestre") && vec1.contains(&"2023"));
+    println!("{}", vec1.contains(&"Hola"));
+}
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)

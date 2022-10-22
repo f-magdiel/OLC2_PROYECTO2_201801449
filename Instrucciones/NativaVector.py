@@ -41,8 +41,8 @@ class NativaVector(Instruccion):
                                     tmp3 = generador.nuevoTemp()
                                     # ! Crear código a retornar
                                     codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                                 f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                                 f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp2
                                     tmpv = tmp3
@@ -52,7 +52,7 @@ class NativaVector(Instruccion):
                                     tmp2 = generador.nuevoTemp()
                                     # ! Crear código a retornar
                                     codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                                 f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
+                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp1
                                     tmpv = tmp2
@@ -66,9 +66,9 @@ class NativaVector(Instruccion):
                                     tmp4 = generador.nuevoTemp()
                                     # ! Crear código a retornar
                                     codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                 f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                                 f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                                 f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
+                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
+                                                                                f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp3
                                     tmpv = tmp4
@@ -79,8 +79,8 @@ class NativaVector(Instruccion):
                                     tmp3 = generador.nuevoTemp()
                                     # ! Crear código a retornar
                                     codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                 f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                                 f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp2
                                     tmpv = tmp3
@@ -149,13 +149,13 @@ class NativaVector(Instruccion):
                                 lbl1 = generador.nuevoLabel()
                                 # ! Generar código
                                 codigo += valor_1.codigo + f"\t{valor_1.trueLabel}:\n" \
-                                                          f"\tHEAP[(int)H] = 1;\n" \
-                                                          f"\tH = H + 1;\n" \
-                                                          f"\tgoto {lbl1};\n" \
-                                                          f"\t{valor_1.falseLabel}:\n" \
-                                                          f"\tHEAP[(int)H] = 0;\n" \
-                                                          f"\tH = H + 1;\n" \
-                                                          f"\t{lbl1}:\n\n"
+                                                           f"\tHEAP[(int)H] = 1;\n" \
+                                                           f"\tH = H + 1;\n" \
+                                                           f"\tgoto {lbl1};\n" \
+                                                           f"\t{valor_1.falseLabel}:\n" \
+                                                           f"\tHEAP[(int)H] = 0;\n" \
+                                                           f"\tH = H + 1;\n" \
+                                                           f"\t{lbl1}:\n\n"
                             # ! Generar código para cambio de referencia
                             codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; // Cambio de referencia\n"
                             # ! Retornar código
@@ -251,6 +251,8 @@ class NativaVector(Instruccion):
                                 lbl6 = generador.nuevoLabel()
                                 lbl7 = generador.nuevoLabel()
                                 lbl8 = generador.nuevoLabel()
+                                lbl9 = generador.nuevoLabel()
+                                lbl10 = generador.nuevoLabel()
                                 # ! Generar código
                                 codigo += f"\t{tmp1} = H; // Nueva referencia\n\n" \
                                           f"\t// Migrar len\n" \
@@ -295,20 +297,43 @@ class NativaVector(Instruccion):
                                     lbla = generador.obtener_label()
                                     # ! Generar código
                                     codigo += valor_2.codigo + f"\t{valor_2.trueLabel}:\n" \
-                                                              f"\tHEAP[(int)H] = 1;\n" \
-                                                              f"\tH = H + 1;\n" \
-                                                              f"\tgoto {lbla};\n" \
-                                                              f"\t{valor_2.falseLabel}:\n" \
-                                                              f"\tHEAP[(int)H] = 0;\n" \
-                                                              f"\tH = H + 1;\n" \
-                                                              f"\t{lbla}:\n"
+                                                               f"\tHEAP[(int)H] = 1;\n" \
+                                                               f"\tH = H + 1;\n" \
+                                                               f"\tgoto {lbla};\n" \
+                                                               f"\t{valor_2.falseLabel}:\n" \
+                                                               f"\tHEAP[(int)H] = 0;\n" \
+                                                               f"\tH = H + 1;\n" \
+                                                               f"\t{lbla}:\n"
                                 # ! Generar código
                                 codigo += f"\t{lbl8}:\n\n" \
                                           f"\tHEAP[(int)H] = {tmp11};\n" \
                                           f"\tH = H + 1;\n\n" \
                                           f"\t{tmp8} = {tmp8} + 1; // i++\n" \
                                           f"\tgoto {lbl6};\n" \
-                                          f"\t{lbl5}:\n\n"
+                                          f"\t{lbl5}:\n\n" \
+                                          f"\t// Verificar si era insert al final\n" \
+                                          f"\tif ({valor_1.reference} == {tmp3}) goto {lbl9};\n" \
+                                          f"\tgoto {lbl10};\n" \
+                                          f"\t{lbl9}:\n"
+
+                                if valor_1.tipo[0] != TipoPrimitivo.BOOL:
+                                    # ! Generar código
+                                    codigo += f"\tHEAP[(int)H] = {valor_2.reference};\n" \
+                                              f"\tH = H + 1;\n"
+                                else:
+                                    # ! Labels auxiliares
+                                    lbla = generador.nuevoLabel()
+                                    # ! Generar código
+                                    codigo += valor_2.codigo + f"\t{valor_2.trueLabel}:\n" \
+                                                               f"\tHEAP[(int)H] = 1;\n" \
+                                                               f"\tH = H + 1;\n" \
+                                                               f"\tgoto {lbla};\n" \
+                                                               f"\t{valor_2.falseLabel}:\n" \
+                                                               f"\tHEAP[(int)H] = 0;\n" \
+                                                               f"\tH = H + 1;\n" \
+                                                               f"\t{lbla}:\n"
+
+                                codigo += f"\t{lbl10}:\n\n"
                                 # ! Generar código para cambio de referencia
                                 codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; // Cambio de referencia\n"
                                 # ! Retornar código
@@ -337,8 +362,8 @@ class NativaVector(Instruccion):
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
                                         codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                                         f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                                         f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3
@@ -348,7 +373,7 @@ class NativaVector(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         # ! Crear código a retornar
                                         codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                                         f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
+                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp1
                                         tmpv = tmp2
@@ -362,9 +387,9 @@ class NativaVector(Instruccion):
                                         tmp4 = generador.nuevoTemp()
                                         # ! Crear código a retornar
                                         codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                         f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                                         f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                                         f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
+                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
+                                                                                          f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp3
                                         tmpv = tmp4
@@ -375,8 +400,8 @@ class NativaVector(Instruccion):
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
                                         codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                         f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                                         f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3

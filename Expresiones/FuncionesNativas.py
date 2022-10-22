@@ -70,7 +70,7 @@ class FuncionNativa(Expresion):
                                                         f"\t{lbl2}:\n"
                     return nuevo_valor
                 else:
-                    print("Error")
+                    print("Error no tiene la función nativa sqrt")
             # ! TOW, TOS
             elif self.funcion in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
                 # ! STR, STRING
@@ -90,4 +90,4 @@ class FuncionNativa(Expresion):
                     # ? Falta implementarlo
 
         else:
-            print("Erro en expresion")
+            print("Error en expresion")

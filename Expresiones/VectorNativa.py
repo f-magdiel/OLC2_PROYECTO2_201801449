@@ -29,7 +29,6 @@ class VectorNativa(Expresion):
                 # ! Aplica a CONTAINS
                 elif self.funcion == NATIVAS.CONTAINS:
                     if valor_arr.tipo[0] == TipoPrimitivo.VECTOR:
-
                         if len(valor_arr.tipo) > 1 and valor_arr.tipo[1] not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                             valor_cont = self.exp2.convertir(generador, entorno)
                             if valor_cont:
@@ -154,27 +153,27 @@ class VectorNativa(Expresion):
                                                         f"\tgoto {valor.falseLabel};\n"
                                         return valor
                                 else:
-                                    pass
+                                    print("Error Solo se permite un tipo primitivo en el dato del contains.")
                             else:
-                                pass
+                                print("Error en la expresion")
                         else:
-                            pass
+                            print("El vector debe tener un tipo primitivo internamente")
                     else:
-                        pass
+                        print("Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
                 else:
                     # ! CAPACITY
                     if valor_arr.tipo[0] == TipoPrimitivo.VECTOR:
                         valor = Valor(self.fila, [TipoPrimitivo.I64])
                         tmp1 = generador.nuevoTemp()
-
                         valor.reference = generador.nuevoTemp()
+                        # ! Se genera código
                         valor.codigo = valor_arr.codigo + f"\t// len()\n" \
                                                           f"\t{tmp1} = {valor_arr.reference} + 1;\n" \
                                                           f"\t{valor.reference} = HEAP[(int){tmp1}];\n\n"
                         return valor
                     else:
-                        print("Error")
+                        print("Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
             else:
-                pass
+                print("Se esperaba un dato de tipo 'ARREGLO' o 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
         else:
-            pass
+            print("Error en la expresion")

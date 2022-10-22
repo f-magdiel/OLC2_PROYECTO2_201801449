@@ -14,9 +14,9 @@ class Declaracion(Instruccion):
 
     def convertir(self, generador, entorno):
         valor = self.expresion.convertir(generador, entorno)
+
         if valor:
             # ! Cuando el tipo no viene especificado
-
             if self.tipo == TipoPrimitivo.NULO:
                 return self.declarar_variable(generador, entorno, valor, valor.tipo)
             else:
@@ -26,7 +26,7 @@ class Declaracion(Instruccion):
                 else:
                     return self.declarar_variable(generador, entorno, valor, [self.tipo])
         else:
-            print("Error en valor")
+            print("Error en expresion declaracion")
 
     def declarar_variable(self, generador, entorno, valor, tipo):
         var = Variable(self.fila, self.id, self.mutable, tipo)
@@ -40,7 +40,7 @@ class Declaracion(Instruccion):
         else:
             tmp1 = generador.nuevoTemp()
             lbl1 = generador.nuevoLabel()
-
+            # ! Se genera código
             codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
                                                                f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = 1;\n" \

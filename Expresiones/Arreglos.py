@@ -31,7 +31,6 @@ class Arreglo(Expresion):
                 tipo = valores[0].tipo
                 flag_correcto = True
                 for valor in valores:
-
                     if len(valor.tipo) == len(tipo):
                         # ! Recorrer tipos
                         for i in range(len(tipo)):
@@ -61,7 +60,7 @@ class Arreglo(Expresion):
                                     f"\tHEAP[(int){tmp1}] = {len(valores)}; // len\n\n"
 
                     for i in range(len(valores)):
-                        if tipo[0] == TipoPrimitivo.BOOL:
+                        if tipo[1] == TipoPrimitivo.BOOL:
                             tmp1 = generador.nuevoTemp()
                             lbl1 = generador.nuevoLabel()
 
