@@ -36,6 +36,14 @@ class Declaracion(Instruccion):
             tmp1 = generador.nuevoTemp()
             codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = {valor.reference};\n"
+
+            if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                # ! Obtener etiqueta de salida
+                lbl1 = generador.nuevoLabel()
+                # ! Reemplazar etiquetas
+                codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                # ! Agregar etiqueta al final
+                codigo += f"\t{lbl1}:\n"
             return codigo
         else:
             tmp1 = generador.nuevoTemp()
@@ -49,4 +57,11 @@ class Declaracion(Instruccion):
                                                                f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = 0;\n" \
                                                                f"\t{lbl1}:\n"
+            if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                # ! Obtener etiqueta de salida
+                lbl1 = generador.nuevoLabel()
+                # ! Reemplazar etiquetas
+                codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                # ! Agregar etiqueta al final
+                codigo += f"\t{lbl1}:\n"
             return codigo

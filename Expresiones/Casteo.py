@@ -12,8 +12,10 @@ class Casteo(Expresion):
     def convertir(self, generador, entorno):
         valor = self.expresion.convertir(generador, entorno)
         if valor:
+
             # ! DE I64
             if self.tipo == TipoPrimitivo.I64:
+
                 # ! a i64,f64,bool,char
                 if valor.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64, TipoPrimitivo.BOOL, TipoPrimitivo.CHAR]:
 
@@ -33,6 +35,7 @@ class Casteo(Expresion):
                         # ! Se genera códig
                         nuevo_valor.codigo = valor.codigo + f"\t/* CASTEO */\n" \
                                                             f"\t{nuevo_valor.reference} = (int){valor.reference};\n"
+
                     return nuevo_valor
 
                 else:
@@ -47,7 +50,7 @@ class Casteo(Expresion):
                     nuevo_valor.codigo = valor.codigo + f"\t/* CASTEO */\n" \
                                                         f"\t{nuevo_valor.reference} = (float){valor.reference};\n"
 
-                    return valor
+                    return nuevo_valor
                 else:
                     print("Error")
             # ! DE BOOL

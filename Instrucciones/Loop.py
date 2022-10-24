@@ -19,16 +19,14 @@ class Loop(Instruccion):
         codigo = ""
 
         for instruc in self.instrucciones:
-            if isinstance(instruc, Imprimir):
-                codigo += instruc.convertir(generador, env_loop)
-            elif isinstance(instruc, Break):
-                codigo += instruc.convertir(generador, env_loop)
-            elif isinstance(instruc, Continue):
-                codigo += instruc.convertir(generador, env_loop)
-            elif isinstance(instruc, If):
-                codigo += instruc.convertir(generador, env_loop)
+            if isinstance(instruc, Break) and not env_loop.flag_bucle:
+                print("Error el entorno de loop")
+            elif isinstance(instruc, Continue) and not env_loop.flag_bucle:
+                print("Error el entorno de loop")
             else:
-                print("Error invalido en entorno loop")
+                code = instruc.convertir(generador, env_loop)
+                if code:
+                    codigo += code + "\n"
 
         codigo = f"\t// Cambio de ámbito\n" \
                  f"\tS = S + {entorno.size};\n\n" + codigo + \
@@ -57,5 +55,13 @@ class Loop(Instruccion):
             codigo = codigo.replace("ETIQUETA_BREAK", lbl2)
             # Agregar etiqueta al final
             codigo += f"\t{lbl2}:\n"
+
+        if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+            # ! Obtener etiqueta de salida
+            lbl1 = generador.nuevoLabel()
+            # ! Reemplazar etiquetas
+            codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+            # ! Agregar etiqueta al final
+            codigo += f"\t{lbl1}:\n"
 
         return codigo

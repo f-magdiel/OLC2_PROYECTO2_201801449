@@ -197,6 +197,13 @@ class Asignacion(Instruccion):
                                                                  f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
                                                                  f"\tSTACK[(int){tmp2}] = 0; // Asignar\n" \
                                                                  f"\t{lbl1}:\n"
+        if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+            # ! Obtener etiqueta de salida
+            lbl1 = generador.nuevoLabel()
+            # ! Reemplazar etiquetas
+            codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+            # ! Agregar etiqueta al final
+            codigo += f"\t{lbl1}:\n"
         # ! Retornar código
         return codigo
 
@@ -216,5 +223,12 @@ class Asignacion(Instruccion):
                                     f"\tHEAP[(int){direccion}] = 0; // Asignar\n" \
                                     f"\t{lbl1}:\n"
         # ! Retornar código
+        if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+            # ! Obtener etiqueta de salida
+            lbl1 = generador.nuevoLabel()
+            # ! Reemplazar etiquetas
+            codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+            # ! Agregar etiqueta al final
+            codigo += f"\t{lbl1}:\n"
         return codigo
 

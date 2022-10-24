@@ -51,7 +51,6 @@ class Acceso(Expresion):
 
                         else:
                             # ! Validar el tipo
-
                             if variable.tipo[0] not in [TipoPrimitivo.BOOL, TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                                 # ! Temporales y valor referenia
                                 tmp1 = generador.nuevoTemp()
@@ -99,7 +98,6 @@ class Acceso(Expresion):
                         else:
                             # ! Temporales y valor referencia
                             tmp1 = generador.nuevoTemp()
-
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera códgio
                             valor.codigo = f"\t// Acceso array (argumento) \n" \
@@ -114,7 +112,6 @@ class Acceso(Expresion):
                             tmp2 = generador.nuevoTemp()
                             tmp3 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
-
                             # ! Se genera código
                             valor.codigo = f"\t// Acceso array (es_ref) \n" \
                                            f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
@@ -128,7 +125,6 @@ class Acceso(Expresion):
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
                                 valor.reference = generador.nuevoTemp()
-
                                 # ! Se generá código
                                 valor.codigo = f"\t// Acceso variable\n" \
                                                f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
@@ -162,7 +158,6 @@ class Acceso(Expresion):
                 return valor
             else:
                 # ! Validar si var es tipo array
-
                 if variable.tipo[0] in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                     valores = []
                     for index in self.indices:
@@ -178,14 +173,13 @@ class Acceso(Expresion):
 
                         # ! Validar bandera
                         if flag_correcto:
-
                             valor = Valor(self.fila, variable.tipo[len(self.indices):])
                             valor.codigo = f"\t// Acceso array (indices)\n"
 
                             if depth == 0:
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
-
+                                # ! Se genera código
                                 valor.codigo += f"\t{tmp1} = S + {variable.posicion}; // Dir. array\n" \
                                                 f"\t{tmp2} = STACK[(int){tmp1}]; // Acceso 1\n"
                                 tmp = tmp2
@@ -194,11 +188,12 @@ class Acceso(Expresion):
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
                                 tmp3 = generador.nuevoTemp()
+                                # ! Se genera código
                                 valor.codigo += f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
                                                 f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n" \
                                                 f"\t{tmp3} = STACK[(int){tmp2}]; // Acceso 1\n"
                                 tmp = tmp3
-
+                            # ! Validar si es referencia
                             if variable.flag_reference:
                                 tmp1 = generador.nuevoTemp()
                                 valor.codigo += f"\t{tmp1} = STACK[(int){tmp}]; // Acceso 2\n"
@@ -210,12 +205,55 @@ class Acceso(Expresion):
                                 else:
                                     v = 2
 
-                                # ! Temporales y código
+                                # ! Temporales
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
+                                tmp3 = generador.nuevoTemp()
+                                tmp4 = generador.nuevoTemp()
+                                tmp5 = generador.nuevoTemp()
+                                tmp6 = generador.nuevoTemp()
+                                tmp7 = generador.nuevoTemp()
+                                tmp8 = generador.nuevoTemp()
+                                tmp9 = generador.nuevoTemp()
+                                tmp10 = generador.nuevoTemp()
+                                tmp11 = generador.nuevoTemp()
+                                tmp12 = generador.nuevoTemp()
+
+                                # ! Labels
+                                lbl1 = generador.nuevoLabel()
+                                lbl2 = generador.nuevoLabel()
+                                lbl3 = generador.nuevoLabel()
+                                lbl4 = generador.nuevoLabel()
+                                lbl5 = generador.nuevoLabel()
+                                lbl6 = generador.nuevoLabel()
+
+                                # Generar código
                                 valor.codigo += f"\n\t// Indice\n" + valores[i].codigo + \
                                                 f"\t{tmp1} = {tmp} + {v}; // Pivote valores\n" \
-                                                f"\t{tmp2} = {tmp1} + {valores[i].reference}; // Indice en C3D\n"
+                                                f"\t{tmp2} = {tmp1} + {valores[i].reference}; // Indice en C3D\n\n" \
+                                                f"\t{tmp3} = {tmp} + 0; // Dir. len\n" \
+                                                f"\t{tmp4} = HEAP[(int){tmp3}]; // len\n" \
+                                                f"\tif ({valores[i].reference} < 0) goto {lbl1}; // indice < 0\n" \
+                                                f"\tgoto {lbl2};\n" \
+                                                f"\t{lbl2}:\n" \
+                                                f"\tif ({valores[i].reference} >= {tmp4}) goto {lbl3}; // indice >= len\n" \
+                                                f"\tgoto {lbl4};\n" \
+                                                f"\t{lbl1}:\n" \
+                                                f"\t{lbl3}:\n" \
+                                                f"\tprintf(\"%c\", 66); //B\n" \
+                                                f"\tprintf(\"%c\", 111); //o\n" \
+                                                f"\tprintf(\"%c\", 117); //u\n" \
+                                                f"\tprintf(\"%c\", 110); //n\n" \
+                                                f"\tprintf(\"%c\", 100); //d\n" \
+                                                f"\tprintf(\"%c\", 115); //s\n" \
+                                                f"\tprintf(\"%c\", 69); //E\n" \
+                                                f"\tprintf(\"%c\", 114); //r\n" \
+                                                f"\tprintf(\"%c\", 114); //r\n" \
+                                                f"\tprintf(\"%c\", 111); //o\n" \
+                                                f"\tprintf(\"%c\", 114); //r\n" \
+                                                f"\tprintf(\"%c\", 10);\n" \
+                                                f"\tgoto ETIQUETA_FUERA_LIMITE;\n" \
+                                                f"\t{lbl4}:\n"
 
                                 # ! Validar si es el ultimo a acceder
                                 if i == (len(valores) - 1):
@@ -250,12 +288,11 @@ class Acceso(Expresion):
                                                    f"\tif ({tmp1}) goto {valor.trueLabel};\n" \
                                                    f"\tgoto {valor.falseLabel};\n"
                             return valor
-
                         else:
                             print("Error indices incorrectos")
                     else:
                         print("Error en los indices")
                 else:
-                    print("NO se puede indexar")
+                    print("No se puede indexar un valor de tipo '{}'.".format(variable.tipo[0].value))
         else:
-            print("Error varible no disponible")
+            print("Variable '{}' no encontrada.".format(self.id))

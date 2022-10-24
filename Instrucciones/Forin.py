@@ -36,7 +36,9 @@ class Forin(Instruccion):
                             elif isinstance(instruc, Continue) and not env_forin.flag_bucle:
                                 print("Error invalido en entorno while")
                             else:
-                                codigo += instruc.convertir(generador, env_forin)
+                                code = instruc.convertir(generador, env_forin)
+                                if code:
+                                    codigo += code + "\n"
 
                         # ! Temporales aux
                         tmp0 = generador.nuevoTemp()
@@ -97,12 +99,19 @@ class Forin(Instruccion):
                             # ! Agregar etiqueta al final
                             codigo += f"\t{lbl2}:\n"
 
-                        return codigo
+                        if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                            # ! Obtener etiqueta de salida
+                            lbl1 = generador.nuevoLabel()
+                            # ! Reemplazar etiquetas
+                            codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                            # ! Agregar etiqueta al final
+                            codigo += f"\t{lbl1}:\n"
 
+                        return codigo
                     else:
                         print("Errro en dato imcopatible")
                 else:
-                    print("error en expresion")
+                    print("error en la expresion")
             else:
                 # ! Cuando no viene expresion 2
                 if valor1.tipo[0] in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
@@ -126,7 +135,9 @@ class Forin(Instruccion):
                             elif isinstance(instruc, Continue) and not env_forin.flag_bucle:
                                 print("Error invalido en entorno while")
                             else:
-                                codigo += instruc.convertir(generador, env_forin)
+                                code = instruc.convertir(generador, env_forin)
+                                if code:
+                                    codigo += code + "\n"
 
                         # ! Temporales aux
                         tmp1 = generador.nuevoTemp()
@@ -190,6 +201,15 @@ class Forin(Instruccion):
                             # ! Agregar etiqueta al final
                             codigo += f"\t{lbl2}:\n"
                             # ! Retornar el código
+
+                        if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                            # ! Obtener etiqueta de salida
+                            lbl1 = generador.nuevoLabel()
+                            # ! Reemplazar etiquetas
+                            codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                            # ! Agregar etiqueta al final
+                            codigo += f"\t{lbl1}:\n"
+
                         return codigo
                     else:
                         print("Errr en tipo exp2")

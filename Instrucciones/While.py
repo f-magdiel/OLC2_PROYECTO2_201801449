@@ -31,13 +31,14 @@ class While(Instruccion):
                           f"\tS = S + {entorno.size};\n\n"
                 # ! Recorrer instrucciones
                 for instruc in self.instrucciones:
-
                     if isinstance(instruc, Break) and not env_while.flag_bucle:
                         print("Error invalido en entorno while")
                     elif isinstance(instruc, Continue) and not env_while.flag_bucle:
                         print("Error invalido en entorno while")
                     else:
-                        codigo += instruc.convertir(generador, env_while)
+                        code = instruc.convertir(generador, env_while)
+                        if code:
+                            codigo += code + "\n"
 
                 # ! Generar código de cambio de entorno
                 codigo += f"\t// Cambio de ámbito\n" \
@@ -66,6 +67,14 @@ class While(Instruccion):
                     codigo = codigo.replace("ETIQUETA_BREAK", lbl2)
                     # ! Agregar etiqueta al final
                     codigo += f"\t{lbl2}:\n"
+
+                if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                    # ! Obtener etiqueta de salida
+                    lbl1 = generador.nuevoLabel()
+                    # ! Reemplazar etiquetas
+                    codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                    # ! Agregar etiqueta al final
+                    codigo += f"\t{lbl1}:\n"
 
                 return codigo
             else:

@@ -39,10 +39,10 @@ class FuncionNativa(Expresion):
                                                         f"\t{lbl3}:\n"
                     return nuevo_valor
                 else:
-                    print("Error")
+                    print("El tipo '{}' no posee la funcion nativa 'abs()'.".format(valor.tipo[0].value))
             # ! SQRT
             elif self.funcion == NATIVAS.SQRT:
-                # F64, I64
+                # ! F64, I64
                 if valor.tipo[0] in [TipoPrimitivo.F64, TipoPrimitivo.I64]:
                     nuevo_valor = Valor(self.fila, [TipoPrimitivo.F64])
                     nuevo_valor.reference = generador.nuevoTemp()
@@ -85,9 +85,7 @@ class FuncionNativa(Expresion):
                 if valor.tipo[0] not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
                     return valor
                 else:
-                    pass
-                    # TODO: falta
-                    # ? Falta implementarlo
+                    return valor
 
         else:
-            print("Error en expresion")
+            print("Error en la expresion")

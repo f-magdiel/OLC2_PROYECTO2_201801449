@@ -11,5 +11,6 @@ class Main(Instruccion):
     def convertir(self, generador, entorno):
         env_main = Entorno(entorno, entorno.flag_bucle)
         for instr in self.instrucciones:
-            codigo = instr.convertir(generador, env_main)
-            generador.codigo.append(codigo)
+            code = instr.convertir(generador, env_main)
+            if code:
+                generador.codigo.append(code + "\n")

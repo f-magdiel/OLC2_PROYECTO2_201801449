@@ -53,8 +53,9 @@ class If(Instruccion):
                         elif isinstance(instruc, Continue) and not env_if.flag_bucle:
                             print("Error instruccines invalida en entorno if")
                         else:
-                            codigo += instruc.convertir(generador, env_if)
-
+                            code = instruc.convertir(generador, env_if)
+                            if code:
+                                codigo += code + "\n"
 
                     # ! Código para cambio de entorno
                     codigo += f"\t// Cambio de ámbito\n" \
@@ -78,7 +79,9 @@ class If(Instruccion):
                         elif isinstance(instruc, Continue) and not env_if.flag_bucle:
                             print("Error instruccines invalida en entorno if")
                         else:
-                            codigo += instruc.convertir(generador, env_if)
+                            code = instruc.convertir(generador, env_if)
+                            if code:
+                                codigo += code + "\n"
 
                     # ! Código cambio de entorno
                     codigo += f"\t// Cambio de ámbito\n" \
@@ -87,6 +90,14 @@ class If(Instruccion):
                 if not flag_uno:
                     lbl1 = generador.nuevoLabel()
                     codigo = codigo.replace("ETIQUETA_IF", lbl1)
+                    codigo += f"\t{lbl1}:\n"
+
+                if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                    # ! Obtener etiqueta de salida
+                    lbl1 = generador.nuevoLabel()
+                    # ! Reemplazar etiquetas
+                    codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                    # ! Agregar etiqueta al final
                     codigo += f"\t{lbl1}:\n"
 
                 return codigo

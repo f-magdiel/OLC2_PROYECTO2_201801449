@@ -2,9 +2,8 @@ from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Entorno import Entorno
 from General.General import Env_General
-from Instrucciones.Imprimir import Imprimir
-from Instrucciones.While import While
-from Instrucciones.If import If
+from Instrucciones.Break import Break
+from Instrucciones.Continue import Continue
 
 
 class Match(Instruccion):
@@ -151,14 +150,15 @@ class Match(Instruccion):
                               f"\tS = S + {entorno.size};\n\n"
 
                     for instruc in br['instrs']:
-                        if isinstance(instruc, Imprimir):
-                            codigo += instruc.convertir(generador, env_match) + "\n"
-                        elif isinstance(instruc, If):
-                            codigo += instruc.convertir(generador, env_match) + "\n"
-                        elif isinstance(instruc, While):
-                            codigo += instruc.convertir(generador, env_match) + "\n"
-                        else:
+                        if isinstance(instruc, Break) and not env_match.flag_bucle:
                             print("Error en entonro match")
+                        elif isinstance(instruc, Continue) and not env_match.flag_bucle:
+                            print("Error en entonro match")
+                        else:
+                            code = instruc.convertir(generador, env_match)
+                            if code:
+                                codigo += code + "\n"
+
                     # ! Generar código de cambio de ámbito
                     codigo += f"\t// Cambio de ámbito\n" \
                               f"\tS = S - {entorno.size};\n\n"
@@ -173,6 +173,22 @@ class Match(Instruccion):
                 # Colocar etiqueta de salida
                 codigo += f"\t{lbl1}:\n"
                 # Retornar código
+                if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                    # ! Obtener etiqueta de salida
+                    lbl1 = generador.nuevoLabel()
+                    # ! Reemplazar etiquetas
+                    codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                    # ! Agregar etiqueta al final
+                    codigo += f"\t{lbl1}:\n"
+
+                if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                    # ! Obtener etiqueta de salida
+                    lbl1 = generador.nuevoLabel()
+                    # ! Reemplazar etiquetas
+                    codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                    # ! Agregar etiqueta al final
+                    codigo += f"\t{lbl1}:\n"
+
                 return codigo
             else:
                 print("Solo se permite un tipo primitivo en el dato de prueba")

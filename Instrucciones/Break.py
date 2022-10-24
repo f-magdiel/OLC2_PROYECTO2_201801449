@@ -7,14 +7,15 @@ class Break(Instruccion):
         self.expresion = expresion
 
     def convertir(self, generador, entorno):
-        if not self.expresion:
-            tmp1 = generador.nuevoTemp()
-            # ! Se genera código
-            codigo = f"\t/* SENTENCIA BREAK */\n" \
-                     f"\t{tmp1} = S - TEMPORAL_BREAK;\n" \
-                     f"\tS = S - {tmp1};\n" \
-                     f"\tgoto ETIQUETA_BREAK;\n"
-            return codigo
-        else:
-            # TODO: falta expresion
-            pass
+        # if not self.expresion:
+        tmp1 = generador.nuevoTemp()
+        # ! Se genera código
+        codigo = f"\t/* SENTENCIA BREAK */\n" \
+                 f"\t{tmp1} = S - TEMPORAL_BREAK;\n" \
+                 f"\tS = S - {tmp1};\n" \
+                 f"\tgoto ETIQUETA_BREAK;\n"
+
+        return codigo
+        # else:
+        #     # TODO: falta expresion
+        #     pass

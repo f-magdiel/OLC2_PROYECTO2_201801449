@@ -82,6 +82,13 @@ class Return(Instruccion):
                                                                   f"\tS = S - {tmp3};\n" \
                                                                   f"\tgoto ETIQUETA_RETURN; // Fin de la función\n"
             # ! Retornar código
+            if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                # ! Obtener etiqueta de salida
+                lbl1 = generador.nuevoLabel()
+                # ! Reemplazar etiquetas
+                codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                # ! Agregar etiqueta al final
+                codigo += f"\t{lbl1}:\n"
             return codigo
         else:
             print("Error en la expresion.")

@@ -17,7 +17,6 @@ class Imprimir(Instruccion):
             if valor_str:
                 if valor_str.tipo[0] == TipoPrimitivo.STR:
                     if len(self.expresiones) - 1 == valor_str.listTemp.count(-1):
-
                         codigo = f"\t/* IMPRIMIR */\n" + valor_str.codigo
                         flag_error = False
                         valores = []
@@ -112,6 +111,14 @@ class Imprimir(Instruccion):
                                           f"\tS = S - {entorno.size};\n"
 
                             codigo += f"\tprintf(\"%c\", 10);\n"
+                            if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                                # ! Obtener etiqueta de salida
+                                lbl1 = generador.nuevoLabel()
+                                # ! Reemplazar etiquetas
+                                codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                                # ! Agregar etiqueta al final
+                                codigo += f"\t{lbl1}:\n"
+
                             return codigo
                         else:
                             print("Error")

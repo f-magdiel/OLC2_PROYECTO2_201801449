@@ -1,48 +1,6 @@
 import ply.yacc as yacc
 from Analizador.Lexico import tokens
 from Enum.TipoPrimitivo import TipoPrimitivo
-# from Instrucciones.Arreglo import Arreglo
-# from Instrucciones.Declaracion import DeclaracionVariable
-# from Instrucciones.Imprimir import Imprimir
-# from Entorno.Entorno import Entorno
-# from Expresiones.Id import Id
-# from Expresiones.Primitiva import Primitiva
-# from Enumeradas.Primitivo import tipoPrimitivo
-# from Instrucciones.Asignacion import AsignacionVariable, AsignacionArreglo
-# from Expresiones.Aritmetica import Aritmetica
-# from Enumeradas.OperadorAritmetica import OPERADOR_ARITMETICO
-# from Enumeradas.OperadorUnario import OPERADOR_UNARIO
-# from Enumeradas.OperadorRelacional import OPERADOR_RELACIONAL
-# from Enumeradas.OperadorLogico import OPERADOR_LOGICO
-# from Expresiones.Unaria import Unaria
-# from Expresiones.Relacional import Relacional
-# from Expresiones.Logica import Logica
-# from Instrucciones.If import If
-# from Instrucciones.ElseIf import ElseIf
-# from Instrucciones.IfAsignacion import IfAsignacion, ElseIfAsignacion
-# from Enumeradas.TipoMatch import TIPO_MATCH
-# from Instrucciones.Match import Match
-# from Instrucciones.MatchAsignacion import MatchAsignacion
-# from Instrucciones.Loop import Loop
-# from Instrucciones.While import While
-# from Instrucciones.Break import Break
-# from Instrucciones.BreakExpresion import BreakExpresion
-# from Instrucciones.Continue import Continue
-# from Instrucciones.MainInstru import MainInstru
-# from Funciones.Funciones import Funciones, Parametros
-# from Instrucciones.LLamadaFunciones import LlamadaFunciones
-# from Instrucciones.Return import Return
-# from Instrucciones.DeclaracionArreglos import DeclaracionArreglos
-# from Instrucciones.Arregloacceso import Arregloacceso
-# from Instrucciones.ForIn import ForIn
-# from Instrucciones.Vector import Vector
-# from Instrucciones.CreacionVector import CreacionVector
-# from Instrucciones.DeclaracionVector import DeclaracionVector
-# from Instrucciones.NativasVectores import NativasVectores
-# from Enumeradas.NativeVectores import NATIVE_VECTORES
-# from Expresiones.Casteos import Casteos
-# from Expresiones.FuncionesNativas import FuncionesNativas
-# from Enumeradas.Nativas import NATIVAS
 from Reporte.TipoError import TIPIN_ERROR
 from Reporte.Contenido import Tabla_Errorres, Errores
 from Instrucciones.Imprimir import Imprimir
@@ -84,6 +42,7 @@ from Tipo.ArrayTipo import ArrayTipo
 from Expresiones.LLamadaFuncion import LlamadaFuncion as LLamadaFuncionExpres
 from Instrucciones.Return import Return
 from Instrucciones.LlamadaFuncion import LlamadaFuncion
+from Expresiones.IfExpresion import IfExpresion
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -346,7 +305,6 @@ def p_parametro_1(t):
 def p_parametro_2(t):
     'lparametros : '
     t[0] = []
-    print("SI")
 
 
 def p_parametro_3(t):
@@ -479,14 +437,11 @@ def p_declaracion3(t):
     t[0] = Declaracion(t.lineno(1), t[4], str(t[2]), t[6], False)
 
 
-#
-#
 def p_declaracion4(t):
     'declaracion : LET ID IGUAL expresion '
     t[0] = Declaracion(t.lineno(2), TipoPrimitivo.NULO, str(t[2]), t[4], False)
 
 
-#
 # # !-----------------------------------------------ASIGNACION----------------------------------------------------------
 def p_asignacion1(t):
     'asignacion : ID IGUAL expresion'
@@ -629,7 +584,8 @@ def p_instrs_match(t):
                    | forin
                    | nativas_vector
                    | funciones
-                   | return'''
+                   | return
+                   | llamada_funciones '''
     t[0] = t[1]
 
 
@@ -936,51 +892,62 @@ def p_expresion_arreglo2(t):
 # # *----------------------------------------------- IF ASIGNACION--------------------------------------------------
 #
 #
-# def p_if_asignacion_inicio(t):
-#     'expresion : if_asig'
-#     t[0] = t[1]
-#
-#
-# def p_if_asig(t):
-#     'if_asig : IF expresion LLAVEIZQ bloque_expresion LLAVEDER'
-#     t[0] = IfAsignacion(t.lineno(1), t[2], t[4], [])
-#
-#
-# def p_if_else_asig(t):
-#     'if_asig : IF expresion LLAVEIZQ bloque_expresion LLAVEDER elsea'
-#     t[0] = IfAsignacion(t.lineno(1), t[2], t[4], t[6])
-#
-#
-# def p_else_if_else_if_asignacion(t):
-#     'if_asig : IF expresion LLAVEIZQ bloque_expresion LLAVEDER elseifa'
-#     t[0] = ElseIfAsignacion(t.lineno(1), t[2], t[4], t[6], [])
-#
-#
-# def p_else_if_else_asignacion(t):
-#     'if_asig : IF expresion LLAVEIZQ bloque_expresion LLAVEDER elseifa elsea'
-#     t[0] = ElseIfAsignacion(t.lineno(1), t[2], t[4], t[6], t[7])
-#
-#
-# def p_elseif1_asig(t):
-#     'elseifa : elseifa lif'
-#     t[1].append(t[2])
-#     t[0] = t[1]
-#     print(t[0])
-#
-#
-# def p_elseif2_asig(t):
-#     'elseifa : lif'
-#     t[0] = [t[1]]
-#
-#
-# def p_lif_asig(t):
-#     'lif : ELSE IF expresion LLAVEIZQ bloque_expresion LLAVEDER'
-#     t[0] = [t[3], t[5]]
-#
-#
-# def p_else_asig(t):
-#     'elsea : ELSE LLAVEIZQ bloque_expresion LLAVEDER'
-#     t[0] = t[3]
+def p_if_asignacion_inicio(t):
+    'expresion : if_asig'
+    t[0] = t[1]
+
+
+def p_else_if_else_asignacion(t):
+    'if_asig : IF expresion LLAVEIZQ expresion LLAVEDER elseifa elsea'
+    sentencia = {'exp1': t[2], 'exp2': t[4]}
+    sentencias = [sentencia]
+    sentencias += t[6]
+    t[0] = IfExpresion(t.lineno(1), sentencias, t[7])
+
+
+def p_else_if_else_if_asignacion(t):
+    'if_asig : IF expresion LLAVEIZQ expresion LLAVEDER elseifa'
+    sentencia = {'exp1': t[2], 'exp2': t[4]}
+    sentencias = [sentencia]
+    sentencias += t[6]
+    t[0] = IfExpresion(t.lineno(1), sentencias)
+
+
+def p_if_else_asig(t):
+    'if_asig : IF expresion LLAVEIZQ expresion LLAVEDER elsea'
+    sentencia = {'exp1': t[2], 'exp2': t[4]}
+    sentencias = [sentencia]
+    t[0] = IfExpresion(t.lineno(1), sentencias, t[6])
+
+
+def p_if_asig(t):
+    'if_asig : IF expresion LLAVEIZQ expresion LLAVEDER'
+    sentencia = {'exp1': t[2], 'exp2': t[4]}
+    sentencias = [sentencia]
+    t[0] = IfExpresion(t.lineno(1), sentencias)
+
+
+def p_elseif1_asig(t):
+    'elseifa : elseifa lif'
+    t[1].append(t[2])
+    t[0] = t[1]
+
+
+def p_elseif2_asig(t):
+    'elseifa : lif'
+    t[0] = [t[1]]
+
+
+def p_lif_asig(t):
+    'lif : ELSE IF expresion LLAVEIZQ expresion LLAVEDER'
+    t[0] = {'exp1': t[3], 'exp2': t[5]}
+
+
+def p_else_asig(t):
+    'elsea : ELSE LLAVEIZQ expresion LLAVEDER'
+    t[0] = t[3]
+
+
 #
 #
 # def p_bloque_expre_asig(t):
@@ -1162,120 +1129,16 @@ def p_error(t):
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
 entrada = r'''
-// PILA
-fn pila_vacia(vec1: &mut Vec<i64>) -> bool {
-    return vec1.len() == 0;
-}
-
-fn apilar(capacidad: usize, vec1: &mut Vec<i64>, value: i64) {
-    if vec1.len() < capacidad {
-        vec1.insert(vec1.len(), value);
-    } else {
-        println!("La pila ha llegado a su maxima capacidad");
-    }
-}
-
-fn desapilar(vec1: &mut Vec<i64>) -> i64 {
-    if !pila_vacia(&mut vec1) {
-        return vec1.remove(vec1.len()-1);
-    } else {
-        println!("La pila no tiene elementos");
-    }
-    return 0;
-}
-
-// COLA
-fn cola_vacia(vec1: &mut Vec<i64>) -> bool {
-    return vec1.len() == 0;
-}
-
-fn encolar(capacidad: usize, vec1: &mut Vec<i64>, value: i64) {
-    if vec1.len() < capacidad {
-        vec1.push(value);
-    } else {
-        println!("La cola ha llegado a su maxima capacidad");
-    }
-}
-
-fn desencolar(vec1: &mut Vec<i64>) -> i64 {
-    if !cola_vacia(&mut vec1) {
-        return vec1.remove(0);
-    } else {
-        println!("La cola no tiene elementos");
-    }
-    return 0;
-}
-
 fn main() {
-    let capacidad: usize = 10;
-    let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
-    let mut cola: Vec<i64> = vec![1,2,3,4,5];
+    let a: i64 = 25 - 25;
+    let b: i64 = ((((1 + 1) / 2) as i64) * 10) / a;
+    println!("{}", b);
 
-    let datos: [i64; 5] = [10,20,30,40,50];
-
-    for dato in datos {
-        apilar(capacidad, &mut pila, dato);
-    }
-    
-    println!("{:?}", pila);
-    println!("{}", desapilar(&mut pila));
-    apilar(capacidad, &mut pila, 100);
-    apilar(capacidad, &mut pila, 200);
-    apilar(capacidad, &mut pila, 300);
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{}", desapilar(&mut pila));
-    println!("{:?}", pila);
-    println!("Capacidad de pila");
-    println!("{}", pila.capacity());
-    println!("");
-
-    encolar(capacidad, &mut cola, 800);
-    println!("{:?}", cola);
-    println!("{}", desencolar(&mut cola));
-    encolar(capacidad, &mut cola, 100);
-    encolar(capacidad, &mut cola, 200);
-    encolar(capacidad, &mut cola, 300);
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{}", desencolar(&mut cola));
-    println!("{:?}", cola);
-    println!("Capacidad de cola");
-    println!("{}", cola.capacity());
-    println!("");
-
-    // vectores entre vectores
-    let mut lista: Vec<Vec<i64>> = Vec::new();
-    lista.push(vec![0; 10]);
-    lista.push(vec![1; 10]);
-    lista.push(vec![2; 10]);
-    lista.push(vec![3; 10]);
-    lista.push(vec![75,23,10,29,30,12,49,10,93]);
-    println!("{:?}", lista);
-    println!("");
-    println!("{:?}", lista[0]);
-    println!("{:?}", lista[1]);
-    println!("{:?}", lista[2]);
-    println!("{:?}", lista[3]);
-    println!("{:?}", lista[4]);
-    println!("{}", lista[4][8]);
-    println!("");
-
-    let vec1 = vec!["Hola", "!", "Sale", "Este", "Semestre", "2022"];
-    println!("{}", vec1.contains(&"Semestre") || vec1.contains(&"2023"));
-    println!("{}", vec1.contains(&"Semestre") && vec1.contains(&"2023"));
-    println!("{}", vec1.contains(&"Hola"));
+    let x: usize = 10 + 2 - (a as usize);
+    let arr: [i64; 2] = [1,2];
+    println!("{}", arr[x * 2 + 10 - ((a as usize) * 20)]);
 }
+
 '''
 print("Inicia analizador...")
 instruc = parser.parse(entrada)

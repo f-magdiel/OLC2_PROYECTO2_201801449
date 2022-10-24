@@ -7,7 +7,7 @@ class LlamadaFuncion(Instruccion):
         super().__init__(fila)
         self.id = id
         self.argumentos = argumentos
-        print("ARGU",self.argumentos)
+
 
     def convertir(self, generador, entorno):
         # ! Validar si existe la función en la tabla de símbolos
@@ -58,6 +58,15 @@ class LlamadaFuncion(Instruccion):
                               f"\t{self.id}(); // Llamar función\n" \
                               f"\tS = S - {entorno.size}; // Cambio de ámbito\n"
                     # ! Retornar código
+
+                    if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
+                        # ! Obtener etiqueta de salida
+                        lbl1 = generador.nuevoLabel()
+                        # ! Reemplazar etiquetas
+                        codigo = codigo.replace("ETIQUETA_FUERA_LIMITE", lbl1)
+                        # ! Agregar etiqueta al final
+                        codigo += f"\t{lbl1}:\n"
+
                     return codigo
                 else:
                     print("Error en los argumentos.")

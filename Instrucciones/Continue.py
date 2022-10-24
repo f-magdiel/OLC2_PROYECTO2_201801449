@@ -13,4 +13,5 @@ class Continue(Instruccion):
                  f"\t{tmp1} = S - TEMPORAL_CONTINUE;\n" \
                  f"\tS = S - {tmp1};\n" \
                  f"\tgoto ETIQUETA_CONTINUE;\n"
+
         return codigo
