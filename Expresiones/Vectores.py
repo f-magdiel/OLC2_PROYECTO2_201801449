@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Vector(Expresion):
@@ -67,8 +69,11 @@ class Vector(Expresion):
 
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error tipos incompatibles en VECTOR"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("Error")
+                alert = "Error no puede venir tipos NULOS en VECTOR"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error")
+            alert = "Error en expresiones de VECTOR"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

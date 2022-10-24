@@ -4,6 +4,8 @@ from Entorno.Entorno import Entorno
 from General.General import Env_General
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class If(Instruccion):
@@ -37,6 +39,7 @@ class If(Instruccion):
                     env_if = Entorno(entorno, entorno.flag_bucle)
                     # ! Se agrega entorno a la lista Env
                     Env_General.append(env_if)
+
                     # ! Se obtiene el valor
                     valor = valores[i]
                     # ! Se genera código
@@ -80,6 +83,7 @@ class If(Instruccion):
                             print("Error instruccines invalida en entorno if")
                         else:
                             code = instruc.convertir(generador, env_if)
+
                             if code:
                                 codigo += code + "\n"
 
@@ -102,6 +106,8 @@ class If(Instruccion):
 
                 return codigo
             else:
-                print("Error no es tipo bool")
+                alert = "Error no es tipo bool en IF"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en las condicionales")
+            alert = "Error en las condicionales del IF"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

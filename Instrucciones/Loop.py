@@ -5,6 +5,8 @@ from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
 from Instrucciones.Imprimir import Imprimir
 from Instrucciones.If import If
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Loop(Instruccion):
@@ -20,9 +22,11 @@ class Loop(Instruccion):
 
         for instruc in self.instrucciones:
             if isinstance(instruc, Break) and not env_loop.flag_bucle:
-                print("Error el entorno de loop")
+                alert = "Error en entorno de LOOP, instruccion no aceptable"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             elif isinstance(instruc, Continue) and not env_loop.flag_bucle:
-                print("Error el entorno de loop")
+                alert = "Error en entorno de LOOP, instruccion no aceptable"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
                 code = instruc.convertir(generador, env_loop)
                 if code:

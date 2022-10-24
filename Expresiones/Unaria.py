@@ -1,8 +1,9 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Enum.OpUnario import OPERADOR_UNARIO
-
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Unaria(Expresion):
@@ -24,7 +25,8 @@ class Unaria(Expresion):
                     nuevo_valor.codigo = valor.codigo + f"\t{nuevo_valor.reference} = - {valor.reference};\n"
                     return nuevo_valor
                 else:
-                    print("Error al operar")
+                    alert = "Error no coinciden los tipos al operar el menos en unaria"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! not
             else:
                 # ! Bool
@@ -37,6 +39,8 @@ class Unaria(Expresion):
                     nuevo_valor.falseLabel = valor.trueLabel
                     return nuevo_valor
                 else:
-                    print("Error al operar")
+                    alert = "Error no es de tipo BOOL en unaria"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en la expresion")
+            alert = "Error en la expresion de unarias"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

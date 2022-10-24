@@ -1,6 +1,8 @@
 from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Enum.Nativas import NATIVAS
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class NativaVector(Instruccion):
@@ -168,7 +170,8 @@ class NativaVector(Instruccion):
                                 codigo += f"\t{lbl1}:\n"
                             return codigo
                         else:
-                            print("Error en la expresion.")
+                            alert = "Error en la expresion."
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                     # ! INSERT
                     elif self.funcion == NATIVAS.INSERT:
@@ -354,10 +357,12 @@ class NativaVector(Instruccion):
 
                                 return codigo
                             else:
-                                print("Se esperaba un dato de tipo 'USIZE' y se encontro '{}'.".format(valor_1.tipo[0].value))
+                                alert = "Se esperaba un dato de tipo 'USIZE' y se encontro '{}'.".format(valor_1.tipo[0].value)
+                                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                         else:
-                            print("Error en las expresiones.")
+                            alert = "Error en las expresiones."
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                     # ! REMOVE
                     else:
@@ -480,16 +485,20 @@ class NativaVector(Instruccion):
                                     codigo += f"\t{lbl1}:\n"
                                 return codigo
                             else:
-                                print("Se esperaba un dato de tipo 'USIZE' y se encontro '{}'.".format(valor_1.tipo[0].value))
+                                alert = "Se esperaba un dato de tipo 'USIZE' y se encontro '{}'.".format(valor_1.tipo[0].value)
+                                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                         else:
-                            print("Error en la expresion.")
-
+                            alert = "Error en la expresion."
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(variable.tipo[0].value))
+                    alert = "Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(variable.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
             else:
-                print("No se puede cambiar el valor de una variable inmutable.")
+                alert = "No se puede cambiar el valor de una variable inmutable."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         else:
-            print("Variable '{}' no encontrada.".format(self.id))
+            alert = "Variable '{}' no encontrada.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

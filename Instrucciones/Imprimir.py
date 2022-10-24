@@ -1,5 +1,7 @@
 from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Imprimir(Instruccion):
@@ -121,13 +123,17 @@ class Imprimir(Instruccion):
 
                             return codigo
                         else:
-                            print("Error")
+                            alert = "Error en las expresiones el IMPRIMIR"
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                     else:
-                        print("Error")
+                        alert = "La cantidad de expreisones no coincide con la cantidad formateada"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("Error")
+                    alert = "Se esperaba un dato de tipo '&STR'"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("Error")
+                alert = "Error en la expresion."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
     def imprimir_arreglo_vector(self, generador, env, code, tmp, tipo):
         # ! Validar el tipo de entrada

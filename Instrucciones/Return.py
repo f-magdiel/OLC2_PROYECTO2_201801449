@@ -1,5 +1,7 @@
 from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Return(Instruccion):
@@ -91,4 +93,5 @@ class Return(Instruccion):
                 codigo += f"\t{lbl1}:\n"
             return codigo
         else:
-            print("Error en la expresion.")
+            alert = "Error en la expresion en RETURN"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

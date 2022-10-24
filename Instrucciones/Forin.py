@@ -5,6 +5,8 @@ from Entorno.Variable import Variable
 from General.General import Env_General
 from Instrucciones.Continue import Continue
 from Instrucciones.Break import Break
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Forin(Instruccion):
@@ -109,9 +111,11 @@ class Forin(Instruccion):
 
                         return codigo
                     else:
-                        print("Errro en dato imcopatible")
+                        alert = "Error en FORIN por datos incompatibles"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("error en la expresion")
+                    alert = "Error en la expresion en FORIN"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
                 # ! Cuando no viene expresion 2
                 if valor1.tipo[0] in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
@@ -212,8 +216,11 @@ class Forin(Instruccion):
 
                         return codigo
                     else:
-                        print("Errr en tipo exp2")
+                        alert = "Error en tipo expresion en FORIN"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("Error tipo de dato invalido arr o vec")
+                    alert = "Error tipo de dato invalido ARREGLO o VECTOR"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en expresiones")
+            alert = "Error en expresiones en FORIN"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

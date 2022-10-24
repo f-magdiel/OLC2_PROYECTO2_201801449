@@ -2,7 +2,8 @@ from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Variable import Variable
 from Tipo.ArrayTipo import ArrayTipo
-
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 class Declaracion(Instruccion):
     def __init__(self, fila, tipo, id, expresion, mutable):
@@ -26,7 +27,8 @@ class Declaracion(Instruccion):
                 else:
                     return self.declarar_variable(generador, entorno, valor, [self.tipo])
         else:
-            print("Error en expresion declaracion")
+            alert = "Error en expresion declaracion"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
     def declarar_variable(self, generador, entorno, valor, tipo):
         var = Variable(self.fila, self.id, self.mutable, tipo)

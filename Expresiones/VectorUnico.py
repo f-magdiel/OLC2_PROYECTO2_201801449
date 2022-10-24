@@ -1,7 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
-
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 class VectorUnico(Expresion):
     def __init__(self, fila, expresion=None):
@@ -45,6 +46,8 @@ class VectorUnico(Expresion):
                                     f"\tHEAP[(int){tmp2}] = {valor_cap.reference}; // capacity\n\n"
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error tipos incompatibles en VECTOR"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("Error en exp")
+                alert = "Error en expresiones en VECTOR"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

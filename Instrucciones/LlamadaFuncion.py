@@ -1,5 +1,7 @@
 from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class LlamadaFuncion(Instruccion):
@@ -7,7 +9,6 @@ class LlamadaFuncion(Instruccion):
         super().__init__(fila)
         self.id = id
         self.argumentos = argumentos
-
 
     def convertir(self, generador, entorno):
         # ! Validar si existe la función en la tabla de símbolos
@@ -69,10 +70,12 @@ class LlamadaFuncion(Instruccion):
 
                     return codigo
                 else:
-                    print("Error en los argumentos.")
+                    alert = "Error en los argumentos."
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
             else:
-                print("La cantidad de parametros '{}' no coincide con la cantidad de argumentos '{}'.".format(len(funcion.parametros), len(self.argumentos)))
-
+                alert = "La cantidad de parametros '{}' no coincide con la cantidad de argumentos '{}'.".format(len(funcion.parametros), len(self.argumentos))
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Funcion '{}' no encontrada.".format(self.id))
+            alert = "Funcion '{}' no encontrada.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

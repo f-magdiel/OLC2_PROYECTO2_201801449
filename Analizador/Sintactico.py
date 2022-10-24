@@ -43,6 +43,9 @@ from Expresiones.LLamadaFuncion import LlamadaFuncion as LLamadaFuncionExpres
 from Instrucciones.Return import Return
 from Instrucciones.LlamadaFuncion import LlamadaFuncion
 from Expresiones.IfExpresion import IfExpresion
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
+from General.General import Env_General
 
 #
 # # ?--------------------------------------------------PRECEDENCIAS-----------------------------------------------------
@@ -1105,8 +1108,8 @@ def p_aindice(t):
 def p_error(t):
     if t:
         alert = "El token '{}' es inválido en está posición".format(t.value)
-        error_syntaxis = Errores(t.lexer.lineno, alert, TIPIN_ERROR.SINTACITO)
-        Tabla_Errorres.append(error_syntaxis)
+        error_syntaxis = Errores(t.lexer.lineno, alert, TIPO_ERROR.SINTACITO)
+        List_Errores.append(error_syntaxis)
         while True:
             car = parser.token()
             if not car or car.type in ['LLAVEDER', 'PTCOMA']:
@@ -1116,41 +1119,125 @@ def p_error(t):
     else:
         alert = "Se detecto un error al final"
         error_syntaxis = Errores(0, alert, TIPIN_ERROR.SINTACITO)
-        Tabla_Errorres.append(error_syntaxis)
+        List_Errores.append(error_syntaxis)
         print(alert)
 
 
 #
 #
-# def report(self):
-#     return self.errors
+def report(self):
+    return self.errors
 #
 #
 # # !---------------------------------------Se ejecuta el parser---------------------------------------------------------
 parser = yacc.yacc()
-entrada = r'''
-fn main() {
-    let a: i64 = 25 - 25;
-    let b: i64 = ((((1 + 1) / 2) as i64) * 10) / a;
-    println!("{}", b);
-
-    let x: usize = 10 + 2 - (a as usize);
-    let arr: [i64; 2] = [1,2];
-    println!("{}", arr[x * 2 + 10 - ((a as usize) * 20)]);
-}
-
-'''
-print("Inicia analizador...")
-instruc = parser.parse(entrada)
-
-if instruc:
-    generador = Generador()
-    env = Entorno(None, None)
-    for inst in instruc:
-        inst.convertir(generador, env)
-    codigo = generador.obtenerCodigo()
-    print(codigo)
-else:
-    print("Error no hay main")
-
-print("Finaliza analizador...")
+# entrada = r'''
+# fn main() {
+#
+#     println!("-----------------------------------");
+#     println!("----ARCHIVO BASICO SALIDA EN 3D----");
+#     println!("-----------------------------------");
+#
+#     let bo1: bool = false;
+#     let bol21: bool = !bo1;
+#     let cad1: String = "imprimir".to_string();
+#     let cad21: String = "cadena valida".to_string();
+#     let letra1: char = 'c';
+#
+#     let val11 = 10 - (5 + 10 * (9 + 4 * (1 + 2 * 3)) - 8 * 3 * 6) + 5 * (2 * 2);
+#     let val21 = (2 * 9 * 2 * 2) - 9 - (8 - 16 + (3 * 3 - 6 * 5 - 7 - (9 + 7 * 7 * 7) + 10) - 5) + 8 - (6 - 5 * (2 * 3));
+#     let val31 = val11 + ((2 + val21 * 3) + 1 - ((2 * 2 * 2) - 2) * 2) - 2;
+#
+#     let a:i64 = 100;
+#     let b:i64 = 100;
+#     let c:i64 = 7;
+#     let f:bool = true;
+#     let j:f64 = 10.0;
+#     let k:f64 = 10.0;
+#
+#     let val1:i64 = 5;
+#     let resp:i64 = 5;
+#     let mut valorVerdadero : i64 = 100;
+#
+#     let x1: i64 = 15;
+#
+#     let abs1:i64 = 7-11;
+#     let abs2:f64 = 10.0;
+#     let raiz1:i64 = 9;
+#     let raiz2:f64 = 100.0;
+#
+#     println!("El valor de val11 es:              {}",val11);
+#     println!("El valor de val21 es:              {}",val21);
+#     println!("El valor de val31 es:              {}",val31);
+#     println!("El resultado de la operación es:  {}",val31);
+#     println!("El valor de bo1 es:                {}",bo1);
+#     println!("El valor de cad1 es:               {}",cad1);
+#     println!("El valor de cad21 es:               {}",cad21);
+#     println!("El valor de letra1 es:             {}",letra1);
+#     println!("El valor de bol21:            {}",bol21);
+#     println!("");
+#
+#     println!("");
+#     println!("");
+#     if (a > b || b < c ){
+#         println!(">>>>>> Esto no debería de imprimirse");
+#     }else{
+#         println!(">>>>>> Esto debería de imprimirse");
+#     }
+#
+#     if (a == b && j == k || 14 != c) {
+#         println!(">>>>>> Esto debería de imprimirse");
+#     }else{
+#         println!(">>>>>> Esto no debería de imprimirse");
+#     }
+#
+#     if((valorVerdadero == (50 + 50 + (val1 - val1))) && ! ! ! ! ! ! ! ! ! ! true) {
+#         println!(">>>>>> En este lugar deberia de entrar :)");
+#         valorVerdadero = 50;
+#     }
+#     else if (f || (valorVerdadero > 50)) && ((resp != 100) && ! ! ! ! ! f){
+#         println!(">>>>>> Aca no deberia de entrar :ccc");
+#         valorVerdadero = 70;
+#     }
+#     else{
+#         println!(">>>>>> Aca no deberia de entrar :cccc");
+#     }
+#
+#     if x1 % 2 == 0 {
+#         println!(">>>>> numeroPar ingreso a if verdadero, {} es par",x1);
+#     }
+#     else {
+#         println!(">>>>> numeroPar ingreso a if falso, {} no es par",x1);
+#     }
+#
+#     println!("");
+#     println!("*************PRUEBA DE NATIVAS");
+#     println!(" valor de b: {:?}",b);
+#
+#     println!(" valor absoluto1: {}",abs1.abs());
+#     println!(" valor absoluto2: {}",abs2.abs());
+#     println!(" valor raiz1: {}",(raiz1 as f64).sqrt());
+#     println!(" valor raiz2: {}",raiz2.sqrt());
+#
+# }
+#
+# '''
+# print("Inicia analizador...")
+# instruc = parser.parse(entrada)
+#
+# if instruc:
+#     generador = Generador()
+#     env = Entorno(None, None)
+#     Env_General.append(env)
+#     for inst in instruc:
+#         inst.convertir(generador, env)
+#     codigo = generador.obtenerCodigo()
+#     print(codigo)
+#
+#     for i in Env_General:
+#         print("IVN,",i.variables)
+#
+# else:
+#     print("Error no hay main")
+#
+# print("Finaliza analizador...")

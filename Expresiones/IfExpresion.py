@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class IfExpresion(Expresion):
@@ -28,7 +30,6 @@ class IfExpresion(Expresion):
                 # ! Validar que el valor de la condición sea de tipo BOOL
                 if val_cond.tipo[0] == TipoPrimitivo.BOOL:
                     # ! Traducir la expresión a asignar y obtener el valor resultante
-                    print("SENT",sentencia['exp2'])
                     val_asig = sentencia['exp2'].convertir(generador, entorno)
                     # ! Validar que no haya ocurrido un error al traducir la expresión
 
@@ -51,8 +52,8 @@ class IfExpresion(Expresion):
                         if val_asig.tipo[0] != TipoPrimitivo.BOOL:
                             # ! Generar código
                             valor.codigo += f"\t// Condición\n" + val_cond.codigo + \
-                                           f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
-                                           f"\t{valor.reference} = {val_asig.reference};\n\n"
+                                            f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
+                                            f"\t{valor.reference} = {val_asig.reference};\n\n"
                             # ! Verificar si no viene solo un if
                             if not flag_unico:
                                 valor.codigo += f"\tgoto ETIQUETA_IF; // Salir del if\n"
@@ -63,26 +64,29 @@ class IfExpresion(Expresion):
                             lbl1 = generador.nuevoLabel()
                             # ! Generar código
                             valor.codigo += f"\t// Condición\n" + val_cond.codigo + \
-                                           f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
-                                           f"\t{val_asig.trueLabel}:\n" \
-                                           f"\t{tmpv} = 1;\n" \
-                                           f"\tgoto {lbl1};\n" \
-                                           f"\t{val_asig.falseLabel}:\n" \
-                                           f"\t{tmpv} = 0;\n" \
-                                           f"\t{lbl1}:\n\n"
+                                            f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
+                                            f"\t{val_asig.trueLabel}:\n" \
+                                            f"\t{tmpv} = 1;\n" \
+                                            f"\tgoto {lbl1};\n" \
+                                            f"\t{val_asig.falseLabel}:\n" \
+                                            f"\t{tmpv} = 0;\n" \
+                                            f"\t{lbl1}:\n\n"
                             # ! Verificar si no viene solo un if
                             if not flag_unico:
                                 valor.codigo += f"\tgoto ETIQUETA_IF; // Salir del if\n"
                             # ! Colocar etiqueta falsa
                             valor.codigo += f"\t{val_cond.falseLabel}:\n\n"
                     else:
-                        print("Error en la expresion interna if expres.")
+                        alert = "Error en la expresion interna if expresion"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                 else:
-                    print("La condicion debe ser de tipo 'BOOL'.")
+                    alert = "La condicion debe ser de tipo 'BOOL'"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
             else:
-                print("Error en la condicion if expresion.")
+                alert = "Error en la condicion if expresion."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         # ! Verificar si viene un else
         if self.else_expres:
@@ -99,13 +103,14 @@ class IfExpresion(Expresion):
                     lbl1 = generador.nuevoLabel()
                     # ! Generar código
                     valor.codigo += val_asig.codigo + f"\t{val_asig.trueLabel}:\n" \
-                                                     f"\t{tmpv} = 1;\n" \
-                                                     f"\tgoto {lbl1};\n" \
-                                                     f"\t{val_asig.falseLabel}:\n" \
-                                                     f"\t{tmpv} = 0;\n" \
-                                                     f"\t{lbl1}:\n\n"
+                                                      f"\t{tmpv} = 1;\n" \
+                                                      f"\tgoto {lbl1};\n" \
+                                                      f"\t{val_asig.falseLabel}:\n" \
+                                                      f"\t{tmpv} = 0;\n" \
+                                                      f"\t{lbl1}:\n\n"
             else:
-                print("Error en la expresion interna.")
+                alert = "Error en la expresion interna"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         # ! Verificar si no viene solo un if
         if not flag_unico:
@@ -123,6 +128,6 @@ class IfExpresion(Expresion):
             valor.falseLabel = generador.nuevoLabel()
             # ! Generar código
             valor.codigo += f"\tif ({tmpv}) goto {valor.trueLabel};\n" \
-                           f"\tgoto {valor.falseLabel};\n"
+                            f"\tgoto {valor.falseLabel};\n"
         # ! Retornar el valor
         return valor

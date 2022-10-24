@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Casteo(Expresion):
@@ -39,7 +41,8 @@ class Casteo(Expresion):
                     return nuevo_valor
 
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de i64"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! DE F64
             elif self.tipo == TipoPrimitivo.F64:
                 # ! a i64,f64
@@ -52,14 +55,16 @@ class Casteo(Expresion):
 
                     return nuevo_valor
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de f64"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! DE BOOL
             elif self.tipo == TipoPrimitivo.BOOL:
                 # ! A BOOL
                 if valor.tipo[0] == TipoPrimitivo.BOOL:
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de bool"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! DE CHAR
             elif self.tipo == TipoPrimitivo.CHAR:
                 # ! A I64, CHAR
@@ -67,19 +72,23 @@ class Casteo(Expresion):
                     valor.tipo[0] = self.tipo
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de char"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! DE STR
             elif self.tipo == TipoPrimitivo.STR:
                 if valor.tipo[0] == TipoPrimitivo.STR:
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de str"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! DE STRING
             else:
                 if valor.tipo[0] == TipoPrimitivo.STRING:
                     return valor
                 else:
-                    print("Error")
+                    alert = "Error al realizar casteo de string"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         else:
-            print("Error en expresion")
+            alert = "Error en expresion de casteo"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

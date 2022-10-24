@@ -2,7 +2,8 @@ from Abstracta.Expresion import Expresion
 from Enum.OpAritmetico import OPERADOR_ARITMETICO
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
-
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 class Aritmetica(Expresion):
     def __init__(self, fila, exp1, operador, exp2):
@@ -54,7 +55,8 @@ class Aritmetica(Expresion):
 
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en suma"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 # ! RESTA
                 elif self.operador == OPERADOR_ARITMETICO.MENOS:
                     # ! resta para i64, f64
@@ -65,7 +67,8 @@ class Aritmetica(Expresion):
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{nuevo_valor.reference} = {val_izq.reference} - {val_der.reference};\n"
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en resta"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                 # ! MULTIPLICACIÓN
                 elif self.operador == OPERADOR_ARITMETICO.POR:
@@ -77,7 +80,8 @@ class Aritmetica(Expresion):
                         nuevo_valor.codigo = val_izq.codigo + val_der.codigo + f"\t{nuevo_valor.reference} = {val_izq.reference} * {val_der.reference};\n"
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en multiplicacion"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 # ! DIVISIÓN
                 elif self.operador == OPERADOR_ARITMETICO.DIVIDIDO:
                     # ! división para f64, i64
@@ -108,7 +112,8 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl3}:\n"
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en division"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 # ! POTENCIA
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIA:
                     if val_izq.tipo[0] == TipoPrimitivo.I64 and val_der.tipo[0] == TipoPrimitivo.I64:
@@ -151,7 +156,8 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en potencia de enteros"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 # ! POTENCIAF
                 elif self.operador == OPERADOR_ARITMETICO.POTENCIAF:
                     if val_izq.tipo[0] == TipoPrimitivo.F64 and val_der.tipo[0] == TipoPrimitivo.F64:
@@ -195,7 +201,8 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor
                     else:
-                        print("Error")
+                        alert = "Error tipos incompatibles en la potencia de flotantes"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 # ! MODULO
                 else:
                     if val_izq.tipo[0] == val_der.tipo[0] and val_izq.tipo[0] in [TipoPrimitivo.I64, TipoPrimitivo.F64]:
@@ -225,6 +232,8 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl3}:\n"
                         return nuevo_valor
                     else:
-                        print("error")
+                        alert = "Error tipos incompatibles en modulo"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("error de expresion")
+                alert = "Error de expresion en aritmetica"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

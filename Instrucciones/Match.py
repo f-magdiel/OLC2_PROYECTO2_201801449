@@ -4,6 +4,8 @@ from Entorno.Entorno import Entorno
 from General.General import Env_General
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Match(Instruccion):
@@ -136,7 +138,8 @@ class Match(Instruccion):
                                     ult_falseLabel = falseLabel
                                     list_trueLabel += f"\t{trueLabel}:\n"
                             else:
-                                print("ERROR")
+                                alert = "Error en la coincidencia  de brazos"
+                                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                     # ! Insertar condiciones
                     codigo += cond
                     codigo += list_trueLabel
@@ -191,6 +194,8 @@ class Match(Instruccion):
 
                 return codigo
             else:
-                print("Solo se permite un tipo primitivo en el dato de prueba")
+                alert = "Solo se permite un tipo primitivo en el dato de prueba"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en expresion")
+            alert = "Error en expresion de MATCH"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

@@ -2,6 +2,8 @@ from Abstracta.Expresion import Expresion
 from Enum.Nativas import NATIVAS
 from Entorno.Valor import Valor
 from Enum.TipoPrimitivo import TipoPrimitivo
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class VectorNativa(Expresion):
@@ -153,13 +155,17 @@ class VectorNativa(Expresion):
                                                         f"\tgoto {valor.falseLabel};\n"
                                         return valor
                                 else:
-                                    print("Error Solo se permite un tipo primitivo en el dato del contains.")
+                                    alert = "Error Solo se permite un tipo primitivo en el dato del contains."
+                                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                             else:
-                                print("Error en la expresion")
+                                alert = "Error en la expresion"
+                                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                         else:
-                            print("El vector debe tener un tipo primitivo internamente")
+                            alert = "El vector debe tener un tipo primitivo internamente"
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                     else:
-                        print("Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
+                        alert = "Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value)
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
                     # ! CAPACITY
                     if valor_arr.tipo[0] == TipoPrimitivo.VECTOR:
@@ -172,8 +178,11 @@ class VectorNativa(Expresion):
                                                           f"\t{valor.reference} = HEAP[(int){tmp1}];\n\n"
                         return valor
                     else:
-                        print("Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
+                        alert = "Se esperaba un dato de tipo 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value)
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("Se esperaba un dato de tipo 'ARREGLO' o 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value))
+                alert = "Se esperaba un dato de tipo 'ARREGLO' o 'VECTOR' y se encontro '{}'.".format(valor_arr.tipo[0].value)
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en la expresion")
+            alert = "Error en la expresion de VECTOR NATIVA"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

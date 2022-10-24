@@ -1,7 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
-
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 class Relacional(Expresion):
     def __init__(self, fila, exp1, operador, exp2):
@@ -75,6 +76,8 @@ class Relacional(Expresion):
                                                                       f"\tgoto {nuevo_valor.falseLabel};\n"
                 return nuevo_valor
             else:
-                print("Error expresiones incompatibles")
+                alert = "Error expresiones incompatibles en relacionales"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error en expresiones")
+            alert = "Error en expresiones relacionales"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

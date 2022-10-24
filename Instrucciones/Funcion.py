@@ -10,6 +10,8 @@ from Tipo.ArrayTipo import ArrayTipo
 from Instrucciones.Break import Break
 from Instrucciones.Continue import Continue
 from General.General import Env_General
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Parametro():
@@ -47,7 +49,7 @@ class Funcion(Instruccion):
                     self.tipo = [self.tipo]
 
                 # ! Crear variable return
-                variable_return = Variable(-1, 'return', True, self.tipo)
+                variable_return = Variable("-", 'return', True, self.tipo)
                 env_funcion.nueva_variable(variable_return)
                 # ! Recorrer los parámetros para declarar las variables
                 for i in range(len(self.parametros)):
@@ -212,7 +214,9 @@ class Funcion(Instruccion):
 
                     generador.funciones_predef.append(codigo)
             else:
-                print("Identificador duplicado en la lista de parametros.")
+                alert = "Identificador duplicado en la lista de parametros."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         else:
-            print("Funcion '{}' ya declarada en el ambito.".format(self.id))
+            alert = "Funcion '{}' ya declarada en el ambito.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

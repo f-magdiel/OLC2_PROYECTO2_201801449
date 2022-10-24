@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Arreglo(Expresion):
@@ -81,6 +83,8 @@ class Arreglo(Expresion):
 
                     return valor
                 else:
-                    print("Error ")
+                    alert = "Error tipos incompatibles en arreglos"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("Error en valores")
+                alert = "Error en valores del arreglo"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

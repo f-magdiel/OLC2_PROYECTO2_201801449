@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class LlamadaFuncion(Expresion):
@@ -84,10 +86,12 @@ class LlamadaFuncion(Expresion):
                     # ! Retornar dato
                     return valor
                 else:
-                    print("Error en los argumentos.")
+                    alert = "Error en los argumentos de la funcion"
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
             else:
-                print("La cantidad de parametros '{}' no coincide con la cantidad de argumentos '{}'.".format(len(funcion.parametros), len(self.argumentos)))
-
+                alert = "La cantidad de parametros '{}' no es igual con la cantidad de argumentos '{}'.".format(len(funcion.parametros), len(self.argumentos))
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Funcion '{}' no encontrada.".format(self.id))
+            alert = "Funcion '{}' no encontrada.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

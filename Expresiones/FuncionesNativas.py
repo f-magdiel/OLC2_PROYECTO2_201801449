@@ -2,6 +2,8 @@ from Abstracta.Expresion import Expresion
 from Enum.Nativas import NATIVAS
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class FuncionNativa(Expresion):
@@ -39,7 +41,8 @@ class FuncionNativa(Expresion):
                                                         f"\t{lbl3}:\n"
                     return nuevo_valor
                 else:
-                    print("El tipo '{}' no posee la funcion nativa 'abs()'.".format(valor.tipo[0].value))
+                    alert = "El tipo '{}' no posee la funcion nativa 'abs()'.".format(valor.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! SQRT
             elif self.funcion == NATIVAS.SQRT:
                 # ! F64, I64
@@ -70,7 +73,8 @@ class FuncionNativa(Expresion):
                                                         f"\t{lbl2}:\n"
                     return nuevo_valor
                 else:
-                    print("Error no tiene la función nativa sqrt")
+                    alert = "Error no tiene la función nativa 'sqrt()'.".format(valor.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! TOW, TOS
             elif self.funcion in [NATIVAS.TOOWNED, NATIVAS.TOSTRING]:
                 # ! STR, STRING
@@ -78,7 +82,8 @@ class FuncionNativa(Expresion):
                     valor.tipo[0] = TipoPrimitivo.STRING
                     return valor
                 else:
-                    print("Error en tostring")
+                    alert = "Error no tiene la función nativa 'tostring'".format(valor.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             # ! CLONE
             else:
                 # ! CUANDO NO ES ARREGLO/VECTOR
@@ -88,4 +93,5 @@ class FuncionNativa(Expresion):
                     return valor
 
         else:
-            print("Error en la expresion")
+            alert = "Error en las expresiones de funciones nativas"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

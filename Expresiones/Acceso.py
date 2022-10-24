@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Acceso(Expresion):
@@ -289,10 +291,14 @@ class Acceso(Expresion):
                                                    f"\tgoto {valor.falseLabel};\n"
                             return valor
                         else:
-                            print("Error indices incorrectos")
+                            alert = "Error indices incorrectos"
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                     else:
-                        print("Error en los indices")
+                        alert = "Error en los indices"
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("No se puede indexar un valor de tipo '{}'.".format(variable.tipo[0].value))
+                    alert = "No se puede indexar un valor de tipo '{}'.".format(variable.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Variable '{}' no encontrada.".format(self.id))
+            alert = "Variable '{}' no encontrada.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

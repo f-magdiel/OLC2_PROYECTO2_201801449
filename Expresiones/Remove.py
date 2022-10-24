@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Remove(Expresion):
@@ -149,16 +151,21 @@ class Remove(Expresion):
                             # ! Retornar el valor
                             return valor
                         else:
-                            desc = "Se esperaba un valor de tipo 'USIZE' y se encontro '{}'.".format(valor_del.tipo[0].value)
+                            alert = "Se esperaba un valor de tipo 'USIZE' y se encontro '{}'.".format(valor_del.tipo[0].value)
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                     else:
-                        print("Error en la expresion.")
+                        alert = "Error en la expresion remove "
+                        List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                 else:
-                    print("Se esperaba un valor de tipo 'VECTOR' y se encontro '{}'.".format(variable.tipo[0].value))
+                    alert = "Se esperaba un valor de tipo 'VECTOR' y se encontro '{}'.".format(variable.tipo[0].value)
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
             else:
-                print("No se puede cambiar el valor de una variable inmutable.")
+                alert = "No se puede cambiar el valor de una variable inmutable."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
         else:
-            print("Variable '{}' no encontrada.".format(self.id))
+            alert = "Variable '{}' no fue encontrada".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

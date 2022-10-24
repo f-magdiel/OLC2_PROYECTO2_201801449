@@ -1,5 +1,7 @@
 from Abstracta.Instruccion import Instruccion
 from Enum.TipoPrimitivo import TipoPrimitivo
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Asignacion(Instruccion):
@@ -8,7 +10,6 @@ class Asignacion(Instruccion):
         self.id = id
         self.expresion = expresion
         self.indices = indices
-
 
     def convertir(self, generador, entorno):
         # ! Validar si existe la variable en la tabla de símbolos
@@ -104,24 +105,24 @@ class Asignacion(Instruccion):
                                     # ! Asignar el valor en el array y retornar el código generado
                                     return self.asignar_valor_array(generador, codigo, tmpn, valor)
                                 else:
-                                    print("Indices inflag_correcto.")
+                                    alert = "Indices inflag_correcto."
+                                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
 
                             else:
-                                print("Error en los indices.")
-
+                                alert = "Error en los indices."
+                                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                         else:
-                            print("No se puede indexar un valor de tipo '{}'.".format(variable.tipo[0].value))
-
+                            alert = "No se puede indexar un valor de tipo '{}'.".format(variable.tipo[0].value)
+                            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
                 else:
-                    print("Error en la expresion.")
-
+                    alert = "Error en la expresion."
+                    List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
             else:
-                print("No se puede cambiar el valor de una variable inmutable.")
-
+                alert = "No se puede cambiar el valor de una variable inmutable."
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Variable '{}' no encontrada.".format(self.id))
-
-
+            alert = "Variable '{}' no encontrada.".format(self.id)
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         # -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     def asignar_valor(self, generador, variable, depth, valor):
@@ -136,14 +137,14 @@ class Asignacion(Instruccion):
                     tmp2 = generador.nuevoTemp()
                     # ! Generar código
                     codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                     f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                     f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
+                                                                      f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
+                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
                     # ! Generar código
                     codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                     f"\tSTACK[(int){tmp1}] = {valor.reference}; // Asignar\n"
+                                                                      f"\tSTACK[(int){tmp1}] = {valor.reference}; // Asignar\n"
             else:
                 # ! Verificar si es referencia
                 if variable.flag_reference:
@@ -153,17 +154,17 @@ class Asignacion(Instruccion):
                     tmp3 = generador.nuevoTemp()
                     # ! Generar código
                     codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                     f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                     f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                     f"\tSTACK[(int){tmp3}] = {valor.reference}; // Asignar\n"
+                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
+                                                                      f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
+                                                                      f"\tSTACK[(int){tmp3}] = {valor.reference}; // Asignar\n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     # Generar código
                     codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                     f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                     f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
+                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
+                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
         else:
             # ! Verificar depth
             if depth == 0:
@@ -173,13 +174,13 @@ class Asignacion(Instruccion):
                 lbl1 = generador.nuevoLabel()
                 # ! Generar código
                 codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                 f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                 f"\tSTACK[(int){tmp1}] = 1; // Asignar\n" \
-                                                                 f"\tgoto {lbl1};\n" \
-                                                                 f"\t{valor.falseLabel}:\n" \
-                                                                 f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                 f"\tSTACK[(int){tmp1}] = 0; // Asignar\n" \
-                                                                 f"\t{lbl1}:\n"
+                                                                  f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 1; // Asignar\n" \
+                                                                  f"\tgoto {lbl1};\n" \
+                                                                  f"\t{valor.falseLabel}:\n" \
+                                                                  f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 0; // Asignar\n" \
+                                                                  f"\t{lbl1}:\n"
             else:
                 # ! Temporales auxiliares
                 tmp1 = generador.nuevoTemp()
@@ -188,15 +189,15 @@ class Asignacion(Instruccion):
                 lbl1 = generador.nuevoLabel()
                 # ! Generar código
                 codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                 f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                 f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                 f"\tSTACK[(int){tmp2}] = 1; // Asignar\n" \
-                                                                 f"\tgoto {lbl1};\n" \
-                                                                 f"\t{valor.falseLabel}:\n" \
-                                                                 f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                 f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                 f"\tSTACK[(int){tmp2}] = 0; // Asignar\n" \
-                                                                 f"\t{lbl1}:\n"
+                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
+                                                                  f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 1; // Asignar\n" \
+                                                                  f"\tgoto {lbl1};\n" \
+                                                                  f"\t{valor.falseLabel}:\n" \
+                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
+                                                                  f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 0; // Asignar\n" \
+                                                                  f"\t{lbl1}:\n"
         if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
             # ! Obtener etiqueta de salida
             lbl1 = generador.nuevoLabel()
@@ -217,11 +218,11 @@ class Asignacion(Instruccion):
             lbl1 = generador.nuevoTemp()
             # ! Generar código
             codigo += valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                    f"\tHEAP[(int){direccion}] = 1; // Asignar\n" \
-                                    f"\tgoto {lbl1};\n" \
-                                    f"\t{valor.falseLabel}:\n" \
-                                    f"\tHEAP[(int){direccion}] = 0; // Asignar\n" \
-                                    f"\t{lbl1}:\n"
+                                     f"\tHEAP[(int){direccion}] = 1; // Asignar\n" \
+                                     f"\tgoto {lbl1};\n" \
+                                     f"\t{valor.falseLabel}:\n" \
+                                     f"\tHEAP[(int){direccion}] = 0; // Asignar\n" \
+                                     f"\t{lbl1}:\n"
         # ! Retornar código
         if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
             # ! Obtener etiqueta de salida
@@ -231,4 +232,3 @@ class Asignacion(Instruccion):
             # ! Agregar etiqueta al final
             codigo += f"\t{lbl1}:\n"
         return codigo
-

@@ -1,6 +1,8 @@
 from Abstracta.Expresion import Expresion
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class NewVector(Expresion):
@@ -79,6 +81,8 @@ class NewVector(Expresion):
 
                 return valor
             else:
-                print("Error")
+                alert = "Error en los tipos del vector"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error")
+            alert = "Error en los valores del arreglo"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

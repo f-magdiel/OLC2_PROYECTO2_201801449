@@ -2,6 +2,8 @@ from Abstracta.Expresion import Expresion
 from Enum.OpLogico import OPERADOR_LOGICO
 from Enum.TipoPrimitivo import TipoPrimitivo
 from Entorno.Valor import Valor
+from General.General import List_Errores, Errores
+from Enum.TipoError import TIPO_ERROR
 
 
 class Logica(Expresion):
@@ -36,6 +38,8 @@ class Logica(Expresion):
 
                 return nuevo_valor
             else:
-                print("Error no es tipo bool")
+                alert = "Error no es de tipo BOOL"
+                List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))
         else:
-            print("Error EN EXPRESIONES")
+            alert = "Error en las expresiones logica"
+            List_Errores.append(Errores(self.fila, alert, TIPO_ERROR.SEMANTICO))

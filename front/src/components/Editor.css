@@ -1,0 +1,23 @@
+#div1{
+    position: relative;
+    margin-left: 0px;
+    margin-top: 15px;
+   
+}
+
+#div2{
+    position: absolute;
+    top: 70px;
+    left: 700px;
+    width: 200px;
+    height: 100px;
+
+    
+}
+
+#btnAnalizar{
+    position: absolute;
+    top: 600px;
+    left: 50px;
+    
+}
