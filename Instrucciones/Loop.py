@@ -32,19 +32,19 @@ class Loop(Instruccion):
                 if code:
                     codigo += code + "\n"
 
-        codigo = f"\t// Cambio de ámbito\n" \
+        codigo = f"\t \n" \
                  f"\tS = S + {entorno.size};\n\n" + codigo + \
-                 f"\t// Cambio de ámbito\n" \
+                 f"\t \n" \
                  f"\tS = S - {entorno.size};\n\n"
 
         tmp1 = generador.nuevoTemp()
-        codigo = f"\t// Auxiliar para restaurar ámbito\n" \
+        codigo = f"\t \n" \
                  f"\t{tmp1} = S;\n" + codigo
 
         lbl1 = generador.nuevoLabel()
-        codigo = f"\t/* SENTENCIA LOOP */\n" \
+        codigo = f"\t// LOOP \n" \
                  f"\t{lbl1}:\n" + codigo + \
-                 f"\tgoto {lbl1}; // Volver al loop\n"
+                 f"\tgoto {lbl1}; \n"
 
         if codigo.count("ETIQUETA_CONTINUE") > 0:
             # Reemplazar etiquetas

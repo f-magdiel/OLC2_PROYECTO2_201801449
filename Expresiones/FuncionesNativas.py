@@ -29,7 +29,7 @@ class FuncionNativa(Expresion):
                     lbl2 = generador.nuevoLabel()
                     lbl3 = generador.nuevoLabel()
                     # ! Se genera código
-                    nuevo_valor.codigo = valor.codigo + f"\t/* ABS() */\n" \
+                    nuevo_valor.codigo = valor.codigo + f"\t// ABSOLUTO\n" \
                                                         f"\tif ({valor.reference} < 0) goto {lbl1};\n" \
                                                         f"\tgoto {lbl2};\n" \
                                                         f"\t{lbl1}:\n" \
@@ -58,7 +58,7 @@ class FuncionNativa(Expresion):
                     lbl2 = generador.nuevoLabel()
                     lbl3 = generador.nuevoLabel()
 
-                    nuevo_valor.codigo = valor.codigo + f"\t/* SQRT() */\n" \
+                    nuevo_valor.codigo = valor.codigo + f"\t// SQRT\n" \
                                                         f"\t{nuevo_valor.reference} = {valor.reference} / 2;\n" \
                                                         f"\t{tmp1} = 0;\n" \
                                                         f"\t{lbl3}:\n" \

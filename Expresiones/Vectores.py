@@ -39,20 +39,20 @@ class Vector(Expresion):
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
 
-                    valor.codigo += f"\t// Vector\n" \
-                                    f"\t{valor.reference} = H; // ref\n" \
-                                    f"\tH = H + {len(valores) + 2}; // Reservar espacio\n" \
+                    valor.codigo += f"\t// VECTOR\n" \
+                                    f"\t{valor.reference} = H; \n" \
+                                    f"\tH = H + {len(valores) + 2}; \n" \
                                     f"\t{tmp1} = {valor.reference} + 0;\n" \
-                                    f"\tHEAP[(int){tmp1}] = {len(valores)}; // len\n" \
+                                    f"\tHEAP[(int){tmp1}] = {len(valores)}; \n" \
                                     f"\t{tmp2} = {valor.reference} + 1;\n" \
-                                    f"\tHEAP[(int){tmp2}] = {len(valores) + 1}; // capacity\n\n"
+                                    f"\tHEAP[(int){tmp2}] = {len(valores) + 1}; \n\n"
 
                     for i in range(len(valores)):
                         if tipo[1] == TipoPrimitivo.BOOL:
                             tmp1 = generador.nuevoTemp()
                             lbl1 = generador.nuevoLabel()
 
-                            valor.codigo += f"\t// Elemento\n" + valores[i].codigo + \
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
                                             f"\t{valores[i].lt}:\n" \
                                             f"\t{tmp1} = {valor.reference} + {i + 2};\n" \
                                             f"\tHEAP[(int){tmp1}] = 1;\n" \
@@ -63,7 +63,7 @@ class Vector(Expresion):
                                             f"\t{lbl1}:\n\n"
                         else:
                             tmp1 = generador.nuevoTemp()
-                            valor.codigo += f"\t// Elemento\n" + valores[i].codigo + \
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
                                             f"\t{tmp1} = {valor.reference} + {i + 2};\n" \
                                             f"\tHEAP[(int){tmp1}] = {valores[i].reference};\n\n"
 

@@ -9,7 +9,7 @@ class Continue(Instruccion):
         # ! Se genera tmp
         tmp1 = generador.nuevoTemp()
         # ! Se genera código
-        codigo = f"\t/* SENTENCIA CONTINUE */\n" \
+        codigo = f"\t// CONTINUE \n" \
                  f"\t{tmp1} = S - TEMPORAL_CONTINUE;\n" \
                  f"\tS = S - {tmp1};\n" \
                  f"\tgoto ETIQUETA_CONTINUE;\n"

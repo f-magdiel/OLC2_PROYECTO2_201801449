@@ -42,9 +42,9 @@ class NativaVector(Instruccion):
                                     tmp2 = generador.nuevoTemp()
                                     tmp3 = generador.nuevoTemp()
                                     # ! Crear código a retornar
-                                    codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                    codigo = f"\t// PUSH \n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; \n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp2
                                     tmpv = tmp3
@@ -53,8 +53,8 @@ class NativaVector(Instruccion):
                                     tmp1 = generador.nuevoTemp()
                                     tmp2 = generador.nuevoTemp()
                                     # ! Crear código a retornar
-                                    codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
+                                    codigo = f"\t// PUSH \n" + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                f"\t{tmp2} = STACK[(int){tmp1}]; \n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp1
                                     tmpv = tmp2
@@ -67,10 +67,10 @@ class NativaVector(Instruccion):
                                     tmp3 = generador.nuevoTemp()
                                     tmp4 = generador.nuevoTemp()
                                     # ! Crear código a retornar
-                                    codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                                f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
+                                    codigo = f"\t// PUSH \n" + aux_codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
+                                                                                f"\t{tmp4} = STACK[(int){tmp3}]; \n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp3
                                     tmpv = tmp4
@@ -80,9 +80,9 @@ class NativaVector(Instruccion):
                                     tmp2 = generador.nuevoTemp()
                                     tmp3 = generador.nuevoTemp()
                                     # ! Crear código a retornar
-                                    codigo = f"\t/* PUSH() */\n" + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                    codigo = f"\t// PUSH \n" + aux_codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                     # ! Temporales de dirección
                                     tmpd = tmp2
                                     tmpv = tmp3
@@ -106,20 +106,20 @@ class NativaVector(Instruccion):
                             lbl5 = generador.nuevoLabel()
                             lbl6 = generador.nuevoLabel()
                             # ! Generar código
-                            codigo += f"\t{tmp1} = H; // Nueva referencia\n\n" \
-                                      f"\t// Migrar len\n" \
-                                      f"\t{tmp2} = {tmpv} + 0; // Dir. len anterior\n" \
-                                      f"\t{tmp3} = HEAP[(int){tmp2}]; // len anterior\n" \
-                                      f"\t{tmp4} = {tmp3} + 1; // len anterior + 1\n" \
+                            codigo += f"\t{tmp1} = H; \n\n" \
+                                      f"\t \n" \
+                                      f"\t{tmp2} = {tmpv} + 0; \n" \
+                                      f"\t{tmp3} = HEAP[(int){tmp2}]; \n" \
+                                      f"\t{tmp4} = {tmp3} + 1; \n" \
                                       f"\tHEAP[(int)H] = {tmp4};\n" \
                                       f"\tH = H + 1;\n\n" \
-                                      f"\t// Migrar capacity\n" \
-                                      f"\t{tmp5} = {tmpv} + 1; // Dir. capacity anterior\n" \
-                                      f"\t{tmp6} = HEAP[(int){tmp5}]; // capacity anterior\n" \
-                                      f"\tif ({tmp6} <= {tmp4}) goto {lbl1}; // capacity anterior <= len\n" \
+                                      f"\t \n" \
+                                      f"\t{tmp5} = {tmpv} + 1; \n" \
+                                      f"\t{tmp6} = HEAP[(int){tmp5}]; \n" \
+                                      f"\tif ({tmp6} <= {tmp4}) goto {lbl1}; \n" \
                                       f"\tgoto {lbl2};\n" \
                                       f"\t{lbl1}:\n" \
-                                      f"\t{tmp7} = {tmp6} * 2; // capacity anterior * 2\n" \
+                                      f"\t{tmp7} = {tmp6} * 2; \n" \
                                       f"\tHEAP[(int)H] = {tmp7};\n" \
                                       f"\tH = H + 1;\n" \
                                       f"\tgoto {lbl3};\n" \
@@ -127,18 +127,18 @@ class NativaVector(Instruccion):
                                       f"\tHEAP[(int)H] = {tmp6};\n" \
                                       f"\tH = H + 1;\n" \
                                       f"\t{lbl3}:\n\n" \
-                                      f"\t// Migrar valores\n" \
-                                      f"\t{tmp8} = 0; // i\n" \
+                                      f"\t \n" \
+                                      f"\t{tmp8} = 0; \n" \
                                       f"\t{lbl6}:\n" \
-                                      f"\tif ({tmp8} < {tmp3}) goto {lbl4}; // i < len anterior\n" \
+                                      f"\tif ({tmp8} < {tmp3}) goto {lbl4}; \n" \
                                       f"\tgoto {lbl5};\n" \
                                       f"\t{lbl4}:\n" \
-                                      f"\t{tmp9} = {tmpv} + 2; // Pivote de valores\n" \
-                                      f"\t{tmp10} = {tmp9} + {tmp8}; // Dir. valor\n" \
-                                      f"\t{tmp11} = HEAP[(int){tmp10}]; // valor\n" \
+                                      f"\t{tmp9} = {tmpv} + 2; \n" \
+                                      f"\t{tmp10} = {tmp9} + {tmp8}; \n" \
+                                      f"\t{tmp11} = HEAP[(int){tmp10}]; \n" \
                                       f"\tHEAP[(int)H] = {tmp11};\n" \
                                       f"\tH = H + 1;\n\n" \
-                                      f"\t{tmp8} = {tmp8} + 1; // i++\n" \
+                                      f"\t{tmp8} = {tmp8} + 1; \n" \
                                       f"\tgoto {lbl6};\n" \
                                       f"\t{lbl5}:\n\n"
                             # ! Verificar el tipo del dato
@@ -159,7 +159,7 @@ class NativaVector(Instruccion):
                                                            f"\tH = H + 1;\n" \
                                                            f"\t{lbl1}:\n\n"
                             # ! Generar código para cambio de referencia
-                            codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; // Cambio de referencia\n"
+                            codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; \n"
                             # ! Retornar código
                             if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
                                 # ! Obtener etiqueta de salida
@@ -196,9 +196,9 @@ class NativaVector(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* INSERT() */\n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                                                       f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n\n" \
-                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                        codigo = f"\t// INSERT \n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                                       f"\t{tmp2} = STACK[(int){tmp1}]; \n\n" \
+                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3
@@ -207,8 +207,8 @@ class NativaVector(Instruccion):
                                         tmp1 = generador.nuevoTemp()
                                         tmp2 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* INSERT() */\n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                                                       f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
+                                        codigo = f"\t// INSERT \n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                                       f"\t{tmp2} = STACK[(int){tmp1}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp1
                                         tmpv = tmp2
@@ -221,10 +221,10 @@ class NativaVector(Instruccion):
                                         tmp3 = generador.nuevoTemp()
                                         tmp4 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* INSERT() */\n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                                       f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                                                       f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
+                                        codigo = f"\t// INSERT \n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                                       f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
+                                                                                                       f"\t{tmp4} = STACK[(int){tmp3}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp3
                                         tmpv = tmp4
@@ -234,9 +234,9 @@ class NativaVector(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* INSERT() */\n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                                       f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                        codigo = f"\t// INSERT \n" + valor_1.codigo + aux_codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                                       f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                                       f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3
@@ -264,20 +264,20 @@ class NativaVector(Instruccion):
                                 lbl9 = generador.nuevoLabel()
                                 lbl10 = generador.nuevoLabel()
                                 # ! Generar código
-                                codigo += f"\t{tmp1} = H; // Nueva referencia\n\n" \
-                                          f"\t// Migrar len\n" \
-                                          f"\t{tmp2} = {tmpv} + 0; // Dir. len anterior\n" \
-                                          f"\t{tmp3} = HEAP[(int){tmp2}]; // len anterior\n" \
-                                          f"\t{tmp4} = {tmp3} + 1; // len anterior + 1\n" \
+                                codigo += f"\t{tmp1} = H; \n\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp2} = {tmpv} + 0; \n" \
+                                          f"\t{tmp3} = HEAP[(int){tmp2}]; \n" \
+                                          f"\t{tmp4} = {tmp3} + 1; \n" \
                                           f"\tHEAP[(int)H] = {tmp4};\n" \
                                           f"\tH = H + 1;\n\n" \
-                                          f"\t// Migrar capacity\n" \
-                                          f"\t{tmp5} = {tmpv} + 1; // Dir. capacity anterior\n" \
-                                          f"\t{tmp6} = HEAP[(int){tmp5}]; // capacity anterior\n" \
-                                          f"\tif ({tmp6} <= {tmp4}) goto {lbl1}; // capacity anterior <= len\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp5} = {tmpv} + 1; \n" \
+                                          f"\t{tmp6} = HEAP[(int){tmp5}]; \n" \
+                                          f"\tif ({tmp6} <= {tmp4}) goto {lbl1}; \n" \
                                           f"\tgoto {lbl2};\n" \
                                           f"\t{lbl1}:\n" \
-                                          f"\t{tmp7} = {tmp6} * 2; // capacity anterior * 2\n" \
+                                          f"\t{tmp7} = {tmp6} * 2; \n" \
                                           f"\tHEAP[(int)H] = {tmp7};\n" \
                                           f"\tH = H + 1;\n" \
                                           f"\tgoto {lbl3};\n" \
@@ -285,16 +285,16 @@ class NativaVector(Instruccion):
                                           f"\tHEAP[(int)H] = {tmp6};\n" \
                                           f"\tH = H + 1;\n" \
                                           f"\t{lbl3}:\n\n" \
-                                          f"\t// Migrar valores\n" \
-                                          f"\t{tmp8} = 0; // i\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp8} = 0; \n" \
                                           f"\t{lbl6}:\n" \
-                                          f"\tif ({tmp8} < {tmp3}) goto {lbl4}; // i < len anterior\n" \
+                                          f"\tif ({tmp8} < {tmp3}) goto {lbl4}; \n" \
                                           f"\tgoto {lbl5};\n" \
                                           f"\t{lbl4}:\n" \
-                                          f"\t{tmp9} = {tmpv} + 2; // Pivote de valores\n" \
-                                          f"\t{tmp10} = {tmp9} + {tmp8}; // Dir. valor\n" \
-                                          f"\t{tmp11} = HEAP[(int){tmp10}]; // valor\n\n" \
-                                          f"\tif ({tmp8} == {valor_1.reference}) goto {lbl7}; // i == indice insert\n" \
+                                          f"\t{tmp9} = {tmpv} + 2; \n" \
+                                          f"\t{tmp10} = {tmp9} + {tmp8}; \n" \
+                                          f"\t{tmp11} = HEAP[(int){tmp10}]; \n\n" \
+                                          f"\tif ({tmp8} == {valor_1.reference}) goto {lbl7}; \n" \
                                           f"\tgoto {lbl8};\n" \
                                           f"\t{lbl7}:\n"
                                 # ! Verificar el tipo del dato
@@ -318,10 +318,10 @@ class NativaVector(Instruccion):
                                 codigo += f"\t{lbl8}:\n\n" \
                                           f"\tHEAP[(int)H] = {tmp11};\n" \
                                           f"\tH = H + 1;\n\n" \
-                                          f"\t{tmp8} = {tmp8} + 1; // i++\n" \
+                                          f"\t{tmp8} = {tmp8} + 1; \n" \
                                           f"\tgoto {lbl6};\n" \
                                           f"\t{lbl5}:\n\n" \
-                                          f"\t// Verificar si era insert al final\n" \
+                                          f"\t \n" \
                                           f"\tif ({valor_1.reference} == {tmp3}) goto {lbl9};\n" \
                                           f"\tgoto {lbl10};\n" \
                                           f"\t{lbl9}:\n"
@@ -345,7 +345,7 @@ class NativaVector(Instruccion):
 
                                 codigo += f"\t{lbl10}:\n\n"
                                 # ! Generar código para cambio de referencia
-                                codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; // Cambio de referencia\n"
+                                codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; \n"
                                 # ! Retornar código
                                 if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
                                     # ! Obtener etiqueta de salida
@@ -381,9 +381,9 @@ class NativaVector(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                        codigo = f"\t// REMOVE \n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; \n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3
@@ -392,8 +392,8 @@ class NativaVector(Instruccion):
                                         tmp1 = generador.nuevoTemp()
                                         tmp2 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. vector\n\n"
+                                        codigo = f"\t// REMOVE \n" + valor_1.codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                                          f"\t{tmp2} = STACK[(int){tmp1}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp1
                                         tmpv = tmp2
@@ -406,10 +406,10 @@ class NativaVector(Instruccion):
                                         tmp3 = generador.nuevoTemp()
                                         tmp4 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                                          f"\t{tmp4} = STACK[(int){tmp3}]; // Dir. vector\n\n"
+                                        codigo = f"\t// REMOVE \n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
+                                                                                          f"\t{tmp4} = STACK[(int){tmp3}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp3
                                         tmpv = tmp4
@@ -419,9 +419,9 @@ class NativaVector(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         tmp3 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* REMOVE() */\n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. vector\n\n"
+                                        codigo = f"\t// REMOVE \n" + valor_1.codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                                          f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                                          f"\t{tmp3} = STACK[(int){tmp2}]; \n\n"
                                         # ! Temporales de dirección
                                         tmpd = tmp2
                                         tmpv = tmp3
@@ -443,38 +443,38 @@ class NativaVector(Instruccion):
                                 lbl4 = generador.nuevoLabel()
                                 lbl5 = generador.nuevoLabel()
                                 # ! Generar código
-                                codigo += f"\t{tmp1} = H; // Nueva referencia\n\n" \
-                                          f"\t// Migrar len\n" \
-                                          f"\t{tmp2} = {tmpv} + 0; // Dir. len anterior\n" \
-                                          f"\t{tmp3} = HEAP[(int){tmp2}]; // len anterior\n" \
-                                          f"\t{tmp4} = {tmp3} - 1; // len anterior - 1\n" \
+                                codigo += f"\t{tmp1} = H; \n\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp2} = {tmpv} + 0; \n" \
+                                          f"\t{tmp3} = HEAP[(int){tmp2}]; \n" \
+                                          f"\t{tmp4} = {tmp3} - 1; \n" \
                                           f"\tHEAP[(int)H] = {tmp4};\n" \
                                           f"\tH = H + 1;\n\n" \
-                                          f"\t// Migrar capacity\n" \
-                                          f"\t{tmp5} = {tmpv} + 1; // Dir. capacity anterior\n" \
-                                          f"\t{tmp6} = HEAP[(int){tmp5}]; // capacity anterior\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp5} = {tmpv} + 1; \n" \
+                                          f"\t{tmp6} = HEAP[(int){tmp5}]; \n" \
                                           f"\tHEAP[(int)H] = {tmp6};\n" \
                                           f"\tH = H + 1;\n\n" \
-                                          f"\t// Migrar valores\n" \
-                                          f"\t{tmp7} = 0; // i\n" \
+                                          f"\t \n" \
+                                          f"\t{tmp7} = 0; \n" \
                                           f"\t{lbl5}:\n" \
-                                          f"\tif ({tmp7} < {tmp3}) goto {lbl1}; // i < len anterior\n" \
+                                          f"\tif ({tmp7} < {tmp3}) goto {lbl1}; \n" \
                                           f"\tgoto {lbl2};\n" \
                                           f"\t{lbl1}:\n" \
-                                          f"\t{tmp8} = {tmpv} + 2; // Pivote de valores\n" \
-                                          f"\t{tmp9} = {tmp8} + {tmp7}; // Dir. valor\n" \
-                                          f"\t{tmp10} = HEAP[(int){tmp9}]; // valor\n\n" \
-                                          f"\tif ({tmp7} != {valor_1.reference}) goto {lbl3}; // i != indice remove\n" \
+                                          f"\t{tmp8} = {tmpv} + 2; \n" \
+                                          f"\t{tmp9} = {tmp8} + {tmp7}; \n" \
+                                          f"\t{tmp10} = HEAP[(int){tmp9}]; \n\n" \
+                                          f"\tif ({tmp7} != {valor_1.reference}) goto {lbl3}; \n" \
                                           f"\tgoto {lbl4};\n" \
                                           f"\t{lbl3}:\n" \
                                           f"\tHEAP[(int)H] = {tmp10};\n" \
                                           f"\tH = H + 1;\n" \
                                           f"\t{lbl4}:\n\n" \
-                                          f"\t{tmp7} = {tmp7} + 1; // i++\n" \
+                                          f"\t{tmp7} = {tmp7} + 1; \n" \
                                           f"\tgoto {lbl5};\n" \
                                           f"\t{lbl2}:\n\n"
                                 # ! Generar código para cambio de referencia
-                                codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; // Cambio de referencia\n"
+                                codigo += f"\tSTACK[(int){tmpd}] = {tmp1}; \n"
                                 # ! Retornar código
                                 if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
                                     # ! Obtener etiqueta de salida

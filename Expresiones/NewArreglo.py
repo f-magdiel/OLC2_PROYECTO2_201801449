@@ -36,43 +36,43 @@ class NewArreglo(Expresion):
                 lbl2 = generador.nuevoLabel()
                 lbl3 = generador.nuevoLabel()
                 # ! Se genera código
-                valor.codigo += f"\t// Generar arreglo\n" \
-                                f"\t{valor.reference} = H; // ref\n" \
+                valor.codigo += f"\t// CREAR ARREGLO\n" \
+                                f"\t{valor.reference} = H; \n" \
                                 f"\t{tmp1} = {val_der.reference} + 1;\n" \
-                                f"\tH = H + {tmp1}; // Reservar espacio\n" \
+                                f"\tH = H + {tmp1}; \n" \
                                 f"\t{tmp2} = {valor.reference} + 0;\n" \
-                                f"\tHEAP[(int){tmp2}] = {val_der.reference}; // len\n\n" \
-                                f"\t// Generar elementos\n" \
-                                f"\t{tmp3} = 0; // i\n" \
+                                f"\tHEAP[(int){tmp2}] = {val_der.reference}; \n\n" \
+                                f"\t \n" \
+                                f"\t{tmp3} = 0; \n" \
                                 f"\t{tmp4} = {valor.reference} + 0;\n" \
-                                f"\t{tmp5} = HEAP[(int){tmp4}]; // len\n\n" \
+                                f"\t{tmp5} = HEAP[(int){tmp4}]; \n\n" \
                                 f"\t{lbl3}:\n" \
-                                f"\tif ({tmp3} < {tmp5}) goto {lbl1}; // i < len\n" \
+                                f"\tif ({tmp3} < {tmp5}) goto {lbl1}; \n" \
                                 f"\tgoto {lbl2};\n" \
                                 f"\t{lbl1}:\n\n"
                 # ! Tipo de valor interno
                 if valor.tipo[0] != TipoPrimitivo.BOOL:
-                    valor.codigo += f"\t// Elemento\n" + val_izq.codigo + \
-                                    f"\t{tmp6} = {valor.reference} + 1; // Puntero valores\n" \
-                                    f"\t{tmp7} = {tmp6} + {tmp3}; // Dir. valor\n" \
-                                    f"\tHEAP[(int){tmp7}] = {val_izq.reference}; // Valor\n\n"
+                    valor.codigo += f"\t \n" + val_izq.codigo + \
+                                    f"\t{tmp6} = {valor.reference} + 1; \n" \
+                                    f"\t{tmp7} = {tmp6} + {tmp3}; \n" \
+                                    f"\tHEAP[(int){tmp7}] = {val_izq.reference}; \n\n"
                 else:
                     lbl1 = generador.nuevoLabel()
                     #  ! Se genera código
-                    valor.codigo += f"\t// Elemento\n" + val_izq.codigo + \
+                    valor.codigo += f"\t \n" + val_izq.codigo + \
                                     f"\t{val_izq.trueLabel}:\n" \
-                                    f"\t{tmp6} = {valor.reference} + 1; // Puntero valores\n" \
-                                    f"\t{tmp7} = {tmp6} + {tmp3}; // Dir. valor\n\n" \
-                                    f"\tHEAP[(int){tmp7}] = 1; // Valor\n" \
+                                    f"\t{tmp6} = {valor.reference} + 1; \n" \
+                                    f"\t{tmp7} = {tmp6} + {tmp3}; \n\n" \
+                                    f"\tHEAP[(int){tmp7}] = 1; \n" \
                                     f"\tgoto {lbl1};\n" \
                                     f"\t{val_izq.falseLabel}:\n" \
-                                    f"\t{tmp6} = {valor.reference} + 1; // Puntero valores\n" \
-                                    f"\t{tmp7} = {tmp6} + {tmp3}; // Dir. valor\n\n" \
+                                    f"\t{tmp6} = {valor.reference} + 1; \n" \
+                                    f"\t{tmp7} = {tmp6} + {tmp3}; \n\n" \
                                     f"\tHEAP[(int){tmp7}] = 0;\n" \
                                     f"\t{lbl1}:\n\n"
 
-                valor.codigo += f"\t{tmp3} = {tmp3} + 1; // i++\n" \
-                                f"\tgoto {lbl3}; // Sig. pos\n" \
+                valor.codigo += f"\t{tmp3} = {tmp3} + 1; \n" \
+                                f"\tgoto {lbl3}; \n" \
                                 f"\t{lbl2}:\n\n"
 
                 return valor

@@ -36,7 +36,7 @@ class Declaracion(Instruccion):
 
         if valor.tipo[0] != TipoPrimitivo.BOOL:
             tmp1 = generador.nuevoTemp()
-            codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {var.posicion};\n" \
+            codigo = f"\t// DECLARACION \n" + valor.codigo + f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = {valor.reference};\n"
 
             if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
@@ -51,7 +51,7 @@ class Declaracion(Instruccion):
             tmp1 = generador.nuevoTemp()
             lbl1 = generador.nuevoLabel()
             # ! Se genera código
-            codigo = f"\t/* DECLARACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
+            codigo = f"\t// DECLARACION \n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
                                                                f"\t{tmp1} = S + {var.posicion};\n" \
                                                                f"\tSTACK[(int){tmp1}] = 1;\n" \
                                                                f"\tgoto {lbl1};\n" \

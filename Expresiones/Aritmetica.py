@@ -136,9 +136,9 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl1}:\n" \
                                                                                f"\tif ({val_der.reference} != 1) goto {lbl6};\n" \
                                                                                f"\tgoto {lbl7};\n" \
-                                                                               f"\t{lbl6}: // for\n" \
-                                                                               f"\t{nuevo_valor.reference} = 1; // Valor inicial\n" \
-                                                                               f"\t{tmp1} = 0; // Contador\n" \
+                                                                               f"\t{lbl6}: \n" \
+                                                                               f"\t{nuevo_valor.reference} = 1; \n" \
+                                                                               f"\t{tmp1} = 0; \n" \
                                                                                f"\t{lbl5}:\n" \
                                                                                f"\tif ({tmp1} < {val_der.reference}) goto {lbl3};\n" \
                                                                                f"\tgoto {lbl4};\n" \
@@ -147,11 +147,11 @@ class Aritmetica(Expresion):
                                                                                f"\t{tmp1} = {tmp1} + 1;\n" \
                                                                                f"\tgoto {lbl5};\n" \
                                                                                f"\t{lbl4}:\n" \
-                                                                               f"\tgoto {lbl8}; // Fin\n" \
-                                                                               f"\t{lbl7}: // retornar el mismo\n" \
+                                                                               f"\tgoto {lbl8}; \n" \
+                                                                               f"\t{lbl7}: \n" \
                                                                                f"\t{nuevo_valor.reference} = {val_izq.reference};\n" \
-                                                                               f"\tgoto {lbl8}; // Fin\n" \
-                                                                               f"\t{lbl2}: // Retornar 1\n" \
+                                                                               f"\tgoto {lbl8}; \n" \
+                                                                               f"\t{lbl2}: \n" \
                                                                                f"\t{nuevo_valor.reference} = 1;\n" \
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor
@@ -181,9 +181,9 @@ class Aritmetica(Expresion):
                                                                                f"\t{lbl1}:\n" \
                                                                                f"\tif ({val_der.reference} != 1) goto {lbl6};\n" \
                                                                                f"\tgoto {lbl7};\n" \
-                                                                               f"\t{lbl6}: // for\n" \
-                                                                               f"\t{nuevo_valor.reference} = 1; // Valor inicial\n" \
-                                                                               f"\t{tmp1} = 0; // Contador\n" \
+                                                                               f"\t{lbl6}: \n" \
+                                                                               f"\t{nuevo_valor.reference} = 1; \n" \
+                                                                               f"\t{tmp1} = 0; \n" \
                                                                                f"\t{lbl5}:\n" \
                                                                                f"\tif ({tmp1} < {val_der.reference}) goto {lbl3};\n" \
                                                                                f"\tgoto {lbl4};\n" \
@@ -192,11 +192,11 @@ class Aritmetica(Expresion):
                                                                                f"\t{tmp1} = {tmp1} + 1;\n" \
                                                                                f"\tgoto {lbl5};\n" \
                                                                                f"\t{lbl4}:\n" \
-                                                                               f"\tgoto {lbl8}; // Fin\n" \
-                                                                               f"\t{lbl7}: // Retornar el mismo\n" \
+                                                                               f"\tgoto {lbl8}; \n" \
+                                                                               f"\t{lbl7}: \n" \
                                                                                f"\t{nuevo_valor.reference} = {val_izq.reference};\n" \
-                                                                               f"\tgoto {lbl8}; // Fin\n" \
-                                                                               f"\t{lbl2}: // Retornar 1\n" \
+                                                                               f"\tgoto {lbl8}; \n" \
+                                                                               f"\t{lbl2}: \n" \
                                                                                f"\t{nuevo_valor.reference} = 1;\n" \
                                                                                f"\t{lbl8}:\n"
                         return nuevo_valor

@@ -18,13 +18,13 @@ class Match(Instruccion):
         valor_p = self.expresion.convertir(generador, entorno)
         if valor_p:
             if valor_p.tipo[0] not in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
-                codigo = f"\t/* SENTENCIA MATCH */\n"
+                codigo = f"\t// MATCH \n"
                 if valor_p.tipo[0] != TipoPrimitivo.BOOL:
                     codigo += valor_p.codigo
                 else:
                     tmp1 = generador.nuevoTemp()
                     # ! Se genera código
-                    codigo += f"\t// Comparando booleanos\n" \
+                    codigo += f"\t \n" \
                               f"\t{tmp1} = 0;\n" + valor_p.codigo + \
                               f"\t{valor_p.trueLabel}:\n" \
                               f"\t{tmp1} = 1;\n" \
@@ -32,7 +32,7 @@ class Match(Instruccion):
 
                 # ! Ir por brazos
                 for br in self.brazos:
-                    codigo += f"\t// Brazo\n"
+                    codigo += f"\t \n"
                     ult_falseLabel = None
                     list_trueLabel = ""
                     cond = ""
@@ -104,32 +104,32 @@ class Match(Instruccion):
                                     trueLabel = generador.nuevoLabel()
                                     falseLabel = generador.nuevoLabel()
 
-                                    cond += f"\t// Comparando cadenas\n" \
+                                    cond += f"\t \n" \
                                             f"\t{tmp1} = {valor_p.reference};\n" \
                                             f"\t{tmp2} = {valor.reference};\n\n" \
-                                            f"\t{tmp3} = 0; // Bandera\n" \
-                                            f"\t{tmp4} = - 1; // Para comparar fin\n" \
+                                            f"\t{tmp3} = 0; \n" \
+                                            f"\t{tmp4} = - 1; \n" \
                                             f"\t{lbl7}:\n" \
-                                            f"\t{tmp5} = HEAP[(int){tmp1}]; // char1\n" \
-                                            f"\t{tmp6} = HEAP[(int){tmp2}]; // char2\n\n" \
+                                            f"\t{tmp5} = HEAP[(int){tmp1}]; \n" \
+                                            f"\t{tmp6} = HEAP[(int){tmp2}]; \n\n" \
                                             f"\tif ({tmp5} == {tmp6}) goto {lbl1};\n" \
                                             f"\tgoto {lbl2};\n" \
-                                            f"\t{lbl1}: // Cad1 llego a fin?\n" \
+                                            f"\t{lbl1}: \n" \
                                             f"\tif ({tmp5} == {tmp4}) goto {lbl3};\n" \
                                             f"\tgoto {lbl4};\n" \
-                                            f"\t{lbl3}: // Cad2 llego a fin?\n" \
+                                            f"\t{lbl3}: \n" \
                                             f"\tif ({tmp6} == {tmp4}) goto {lbl5};\n" \
                                             f"\tgoto {lbl6};\n" \
-                                            f"\t{lbl5}: // Son iguales \n" \
+                                            f"\t{lbl5}:  \n" \
                                             f"\t{tmp3} = 1;\n" \
                                             f"\tgoto {lbl8};\n" \
-                                            f"\t{lbl6}: // No son iguales\n" \
+                                            f"\t{lbl6}: \n" \
                                             f"\tgoto {lbl8};\n" \
-                                            f"\t{lbl4}: // Sig. char\n" \
+                                            f"\t{lbl4}: \n" \
                                             f"\t{tmp1} = {tmp1} + 1;\n" \
                                             f"\t{tmp2} = {tmp2} + 1;\n" \
                                             f"\tgoto {lbl7};\n" \
-                                            f"\t{lbl2}: // No son iguales\n" \
+                                            f"\t{lbl2}: \n" \
                                             f"\t{lbl8}:\n\n" \
                                             f"\tif ({tmp3}) goto {trueLabel};\n" \
                                             f"\tgoto {falseLabel};\n"
@@ -149,7 +149,7 @@ class Match(Instruccion):
                         env_match = Entorno(entorno, entorno.flag_bucle)
                     # ! Se agrega entorno a la lista de env general
                     Env_General.append(env_match)
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S + {entorno.size};\n\n"
 
                     for instruc in br['instrs']:
@@ -163,7 +163,7 @@ class Match(Instruccion):
                                 codigo += code + "\n"
 
                     # ! Generar código de cambio de ámbito
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S - {entorno.size};\n\n"
                     # ! Generar salto de salida
                     codigo += f"\tgoto ETIQUETA_MATCH;\n"

@@ -24,12 +24,12 @@ class While(Instruccion):
                 env_while = Entorno(entorno, flag_bucle=True)
                 Env_General.append(env_while)
 
-                codigo = f"\t// Condición\n" + nuevo_valor.codigo + \
+                codigo = f"\t \n" + nuevo_valor.codigo + \
                          f"\t{nuevo_valor.trueLabel}:\n"
                 # ! Temporal aux
                 tmp1 = generador.nuevoTemp()
                 # ! Se genera código para cambio entorno
-                codigo += f"\t// Cambio de ámbito\n" \
+                codigo += f"\t \n" \
                           f"\tS = S + {entorno.size};\n\n"
                 # ! Recorrer instrucciones
                 for instruc in self.instrucciones:
@@ -45,7 +45,7 @@ class While(Instruccion):
                             codigo += code + "\n"
 
                 # ! Generar código de cambio de entorno
-                codigo += f"\t// Cambio de ámbito\n" \
+                codigo += f"\t \n" \
                           f"\tS = S - {entorno.size};\n\n"
                 # ! Generar salto para repetir
                 codigo += f"\tgoto ETIQUETA_WHILE;\n"
@@ -56,7 +56,7 @@ class While(Instruccion):
                 # ! Remplazar etiquetas
                 codigo = codigo.replace("ETIQUETA_WHILE", lbl1)
                 # ! Agregar etiqueta de while al inicio
-                codigo = f"\t/* SENTENCIA WHILE */\n" \
+                codigo = f"\t// WHILE \n" \
                          f"\t{lbl1}:\n" + codigo
 
                 if codigo.count("ETIQUETA_CONTINUE") > 0:

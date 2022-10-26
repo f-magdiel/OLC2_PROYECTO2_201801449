@@ -15,7 +15,7 @@ class IfExpresion(Expresion):
         # ! Crear el valor a retornar
         valor = Valor(self.fila, None)
         # ! Generar código inicial del valor
-        valor.codigo = f"\t// Expresión IF\n"
+        valor.codigo = f"\t// IF\n"
         # ! Verificar si viene solo un if
         flag_unico = (len(self.sentencias) == 1) and (self.else_expres is None)
         # ! Bandera para encontrar el tipo del valor
@@ -51,19 +51,19 @@ class IfExpresion(Expresion):
                         # ! Verificar el tipo
                         if val_asig.tipo[0] != TipoPrimitivo.BOOL:
                             # ! Generar código
-                            valor.codigo += f"\t// Condición\n" + val_cond.codigo + \
+                            valor.codigo += f"\t \n" + val_cond.codigo + \
                                             f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
                                             f"\t{valor.reference} = {val_asig.reference};\n\n"
                             # ! Verificar si no viene solo un if
                             if not flag_unico:
-                                valor.codigo += f"\tgoto ETIQUETA_IF; // Salir del if\n"
+                                valor.codigo += f"\tgoto ETIQUETA_IF; \n"
                             # ! Colocar etiqueta falsa
                             valor.codigo += f"\t{val_cond.falseLabel}:\n\n"
                         else:
                             # ! Etiqueta auxiliar
                             lbl1 = generador.nuevoLabel()
                             # ! Generar código
-                            valor.codigo += f"\t// Condición\n" + val_cond.codigo + \
+                            valor.codigo += f"\t/ \n" + val_cond.codigo + \
                                             f"\t{val_cond.trueLabel}:\n" + val_asig.codigo + \
                                             f"\t{val_asig.trueLabel}:\n" \
                                             f"\t{tmpv} = 1;\n" \
@@ -73,7 +73,7 @@ class IfExpresion(Expresion):
                                             f"\t{lbl1}:\n\n"
                             # ! Verificar si no viene solo un if
                             if not flag_unico:
-                                valor.codigo += f"\tgoto ETIQUETA_IF; // Salir del if\n"
+                                valor.codigo += f"\tgoto ETIQUETA_IF; \n"
                             # ! Colocar etiqueta falsa
                             valor.codigo += f"\t{val_cond.falseLabel}:\n\n"
                     else:

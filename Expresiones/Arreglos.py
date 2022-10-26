@@ -17,11 +17,11 @@ class Arreglo(Expresion):
             valor.reference = generador.nuevoTemp()
             tmp1 = generador.nuevoTemp()
             # ! Se genera código
-            valor.codigo = f"\t// Arreglo\n" \
-                           f"\t{valor.reference} = H; // ref\n" \
-                           f"\tH = H + 1; // Reservar espacio\n" \
+            valor.codigo = f"\t \n" \
+                           f"\t{valor.reference} = H; \n" \
+                           f"\tH = H + 1; \n" \
                            f"\t{tmp1} = {valor.reference} + 0;" \
-                           f"\tHEAP[(int){tmp1}] = 0; // len\n\n"
+                           f"\tHEAP[(int){tmp1}] = 0; \n\n"
             return valor
         else:
             valores = []
@@ -55,18 +55,18 @@ class Arreglo(Expresion):
                     # ! Aux temp
                     tmp1 = generador.nuevoTemp()
                     # ! Se genera código
-                    valor.codigo += f"\t// Arreglo\n" \
-                                    f"\t{valor.reference} = H; // ref\n" \
-                                    f"\tH = H + {len(valores) + 1}; // Reservar espacio\n" \
+                    valor.codigo += f"\t \n" \
+                                    f"\t{valor.reference} = H; \n" \
+                                    f"\tH = H + {len(valores) + 1}; \n" \
                                     f"\t{tmp1} = {valor.reference} + 0;\n" \
-                                    f"\tHEAP[(int){tmp1}] = {len(valores)}; // len\n\n"
+                                    f"\tHEAP[(int){tmp1}] = {len(valores)}; \n\n"
 
                     for i in range(len(valores)):
                         if tipo[1] == TipoPrimitivo.BOOL:
                             tmp1 = generador.nuevoTemp()
                             lbl1 = generador.nuevoLabel()
 
-                            valor.codigo += f"\t// Elemento\n" + valores[i].codigo + \
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
                                             f"\t{valores[i].trueLabel}:\n" \
                                             f"\t{tmp1} = {valor.reference} + {i + 1};\n" \
                                             f"\tHEAP[(int){tmp1}] = 1;\n" \
@@ -77,7 +77,7 @@ class Arreglo(Expresion):
                                             f"\t{lbl1}:\n\n"
                         else:
                             tmp1 = generador.nuevoTemp()
-                            valor.codigo += f"\t// Elemento\n" + valores[i].codigo + \
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
                                             f"\t{tmp1} = {valor.reference} + {i + 1};\n" \
                                             f"\tHEAP[(int){tmp1}] = {valores[i].reference};\n\n"
 

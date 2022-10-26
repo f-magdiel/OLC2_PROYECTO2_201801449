@@ -29,8 +29,8 @@ class LlamadaFuncion(Expresion):
                     # ! Temporal de entorno pivote
                     tmp = generador.nuevoTemp()
                     # ! Crear código a retornar
-                    valor.codigo = f"\t// Llamada a función\n" \
-                                   f"\t{tmp} = S + {entorno.size}; // Entorno simulado\n\n"
+                    valor.codigo = f"\t// LLAMADA FUN\n" \
+                                   f"\t{tmp} = S + {entorno.size}; \n\n"
                     # ! Recorrer los datos de los argumentos
                     for i in range(len(valores)):
                         # ! Verificar el tipo
@@ -38,23 +38,23 @@ class LlamadaFuncion(Expresion):
                             # ! Temporales auxiliares
                             tmp1 = generador.nuevoTemp()
                             # ! Generar código
-                            valor.codigo += f"\t// Argumento\n" + valores[i].codigo + \
-                                            f"\t{tmp1} = {tmp} + {i + 1}; // Dir. param{i + 1}\n" \
-                                            f"\tSTACK[(int){tmp1}] = {valores[i].reference}; // Asignar valor\n\n"
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
+                                            f"\t{tmp1} = {tmp} + {i + 1}; \n" \
+                                            f"\tSTACK[(int){tmp1}] = {valores[i].reference}; \n\n"
                         else:
                             # ! Temporales auxiliares
                             tmp1 = generador.nuevoTemp()
                             # ! Etiquetas auxiliares
                             lbl1 = generador.nuevoLabel()
                             # ! Generar código
-                            valor.codigo += f"\t// Argumento\n" + valores[i].codigo + \
+                            valor.codigo += f"\t \n" + valores[i].codigo + \
                                             f"\t{valores[i].trueLabel}:\n" \
-                                            f"\t{tmp1} = {tmp} + {i + 1}; // Dir. param{i + 1}\n" \
-                                            f"\tSTACK[(int){tmp1}] = 1; // Asignar valor\n" \
+                                            f"\t{tmp1} = {tmp} + {i + 1}; \n" \
+                                            f"\tSTACK[(int){tmp1}] = 1; \n" \
                                             f"\tgoto {lbl1};\n" \
                                             f"\t{valores[i].falseLabel}:\n" \
-                                            f"\t{tmp1} = {tmp} + {i + 1}; // Dir. param{i + 1}\n" \
-                                            f"\tSTACK[(int){tmp1}] = 0; // Asignar valor\n" \
+                                            f"\t{tmp1} = {tmp} + {i + 1}; \n" \
+                                            f"\tSTACK[(int){tmp1}] = 0; \n" \
                                             f"\t{lbl1}:\n\n"
                     # ! Verificar el tipo del dato
                     if valor.tipo[0] != TipoPrimitivo.BOOL:
@@ -63,11 +63,11 @@ class LlamadaFuncion(Expresion):
                         # ! Generar temporal de referencia
                         valor.reference = generador.nuevoTemp()
                         # ! Generar código final
-                        valor.codigo += f"\tS = S + {entorno.size}; // Cambio de ámbito\n" \
-                                        f"\t{self.id}(); // Llamar función\n" \
-                                        f"\t{tmp1} = S + 0; // Dir. return\n" \
-                                        f"\t{valor.reference} = STACK[(int){tmp1}]; // Valor return\n" \
-                                        f"\tS = S - {entorno.size}; // Cambio de ámbito\n\n"
+                        valor.codigo += f"\tS = S + {entorno.size}; \n" \
+                                        f"\t{self.id}(); \n" \
+                                        f"\t{tmp1} = S + 0; \n" \
+                                        f"\t{valor.reference} = STACK[(int){tmp1}]; \n" \
+                                        f"\tS = S - {entorno.size}; \n\n"
                     else:
                         # ! Temporales auxiliares
                         tmp1 = generador.nuevoTemp()
@@ -76,11 +76,11 @@ class LlamadaFuncion(Expresion):
                         valor.trueLabel = generador.nuevoLabel()
                         valor.falseLabel = generador.nuevoLabel()
                         # ! Generar código final
-                        valor.codigo += f"\tS = S + {entorno.size}; // Cambio de ámbito\n" \
-                                        f"\t{self.id}(); // Llamar función\n" \
-                                        f"\t{tmp1} = S + 0; // Dir. return\n" \
-                                        f"\t{tmp2} = STACK[(int){tmp1}]; // Valor return\n" \
-                                        f"\tS = S - {entorno.size}; // Cambio de ámbito\n\n" \
+                        valor.codigo += f"\tS = S + {entorno.size}; \n" \
+                                        f"\t{self.id}(); \n" \
+                                        f"\t{tmp1} = S + 0; \n" \
+                                        f"\t{tmp2} = STACK[(int){tmp1}]; \n" \
+                                        f"\tS = S - {entorno.size}; \n\n" \
                                         f"\tif ({tmp2}) goto {valor.trueLabel};\n" \
                                         f"\tgoto {valor.falseLabel};\n"
                     # ! Retornar dato

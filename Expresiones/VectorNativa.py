@@ -23,7 +23,7 @@ class VectorNativa(Expresion):
                     valor = Valor(self.fila, [TipoPrimitivo.I64])
                     tmp1 = generador.nuevoTemp()
                     valor.reference = generador.nuevoTemp()
-                    valor.codigo = valor_arr.codigo + f"\t// len()\n" \
+                    valor.codigo = valor_arr.codigo + f"\t// LEN \n" \
                                                       f"\t{tmp1} = {valor_arr.reference} + 0;\n" \
                                                       f"\t{valor.reference} = HEAP[(int){tmp1}];\n\n"
                     return valor
@@ -49,19 +49,19 @@ class VectorNativa(Expresion):
                                     lbl2 = generador.nuevoLabel()
                                     lbl3 = generador.nuevoLabel()
 
-                                    valor.codigo = valor_arr.codigo + f"\t// contains()\n" \
-                                                                      f"\t{tmp1} = 0; // Bandera\n\n" \
-                                                                      f"\t// Recorrer vector\n" \
-                                                                      f"\t{tmp2} = 0; // i\n" \
+                                    valor.codigo = valor_arr.codigo + f"\t// CONTAINS \n" \
+                                                                      f"\t{tmp1} = 0; \n\n" \
+                                                                      f"\t \n" \
+                                                                      f"\t{tmp2} = 0; \n" \
                                                                       f"\t{tmp3} = {valor_arr.reference} + 0;\n" \
-                                                                      f"\t{tmp4} = HEAP[(int){tmp3}]; // len\n\n" \
+                                                                      f"\t{tmp4} = HEAP[(int){tmp3}]; \n\n" \
                                                                       f"\t{lbl3}:\n" \
-                                                                      f"\tif ({tmp2} < {tmp4}) goto {lbl1}; // i < len\n" \
+                                                                      f"\tif ({tmp2} < {tmp4}) goto {lbl1}; \n" \
                                                                       f"\tgoto {lbl2};\n" \
                                                                       f"\t{lbl1}:\n" \
-                                                                      f"\t{tmp5} = {valor_arr.reference} + 2; // Puntero valores\n" \
-                                                                      f"\t{tmp6} = {tmp5} + {tmp2}; // Dir. valor\n" \
-                                                                      f"\t{tmp7} = HEAP[(int){tmp6}]; // Valor\n\n"
+                                                                      f"\t{tmp5} = {valor_arr.reference} + 2; \n" \
+                                                                      f"\t{tmp6} = {tmp5} + {tmp2}; \n" \
+                                                                      f"\t{tmp7} = HEAP[(int){tmp6}]; \n\n"
                                     # ! Validar tipos
                                     if valor_arr.tipo[1] not in [TipoPrimitivo.STR, TipoPrimitivo.STRING, TipoPrimitivo.BOOL]:
 
@@ -108,44 +108,44 @@ class VectorNativa(Expresion):
                                         lbl10 = generador.nuevoLabel()
                                         lbl11 = generador.nuevoLabel()
 
-                                        valor.codigo += f"\t{tmp8} = {tmp7}; // i\n" \
-                                                        f"\t{tmp9} = {valor_cont.reference}; // j\n\n" \
-                                                        f"\t{tmp10} = - 1; // Para comparar fin\n" \
+                                        valor.codigo += f"\t{tmp8} = {tmp7}; \n" \
+                                                        f"\t{tmp9} = {valor_cont.reference}; \n\n" \
+                                                        f"\t{tmp10} = - 1; \n" \
                                                         f"\t{lbl10}:\n" \
-                                                        f"\t{tmp11} = HEAP[(int){tmp8}]; // char1\n" \
-                                                        f"\t{tmp12} = HEAP[(int){tmp9}]; // char2\n\n" \
+                                                        f"\t{tmp11} = HEAP[(int){tmp8}]; \n" \
+                                                        f"\t{tmp12} = HEAP[(int){tmp9}]; \n\n" \
                                                         f"\tif ({tmp11} == {tmp12}) goto {lbl4};\n" \
                                                         f"\tgoto {lbl5};\n" \
-                                                        f"\t{lbl4}: // Cad1 llego a fin?\n" \
+                                                        f"\t{lbl4}: \n" \
                                                         f"\tif ({tmp11} == {tmp10}) goto {lbl6};\n" \
                                                         f"\tgoto {lbl7};\n" \
-                                                        f"\t{lbl6}: // Cad2 llego a fin?\n" \
+                                                        f"\t{lbl6}: \n" \
                                                         f"\tif ({tmp12} == {tmp10}) goto {lbl8};\n" \
                                                         f"\tgoto {lbl9};\n" \
-                                                        f"\t{lbl8}: // Son iguales \n" \
+                                                        f"\t{lbl8}:  \n" \
                                                         f"\t{tmp1} = 1;\n" \
                                                         f"\tgoto {lbl11};\n" \
-                                                        f"\t{lbl9}: // No son iguales\n" \
+                                                        f"\t{lbl9}: \n" \
                                                         f"\tgoto {lbl11};\n" \
-                                                        f"\t{lbl7}: // Sig. char\n" \
-                                                        f"\t{tmp8} = {tmp8} + 1; // i++\n" \
-                                                        f"\t{tmp9} = {tmp9} + 1; // j++\n" \
+                                                        f"\t{lbl7}: \n" \
+                                                        f"\t{tmp8} = {tmp8} + 1; \n" \
+                                                        f"\t{tmp9} = {tmp9} + 1; \n" \
                                                         f"\tgoto {lbl10};\n" \
-                                                        f"\t{lbl5}: // No son iguales\n" \
+                                                        f"\t{lbl5}: \n" \
                                                         f"\t{lbl11}:\n\n"
 
                                         trueLabel = generador.nuevoLabel()
                                         falseLabel = generador.nuevoLabel()
 
-                                        valor.codigo += f"\t// Verificar bandera\n" \
+                                        valor.codigo += f"\t \n" \
                                                         f"\tif ({tmp1}) goto {trueLabel};\n" \
                                                         f"\tgoto {falseLabel};\n" \
                                                         f"\t{trueLabel}:\n" \
                                                         f"\tgoto {lbl2};\n" \
                                                         f"\t{falseLabel}:\n\n"
 
-                                        valor.codigo += f"\t{tmp2} = {tmp2} + 1; // i++\n" \
-                                                        f"\tgoto {lbl3}; // Sig. pos\n" \
+                                        valor.codigo += f"\t{tmp2} = {tmp2} + 1; \n" \
+                                                        f"\tgoto {lbl3}; \n" \
                                                         f"\t{lbl2}:\n\n"
 
                                         valor.trueLabel = generador.nuevoLabel()
@@ -173,7 +173,7 @@ class VectorNativa(Expresion):
                         tmp1 = generador.nuevoTemp()
                         valor.reference = generador.nuevoTemp()
                         # ! Se genera código
-                        valor.codigo = valor_arr.codigo + f"\t// len()\n" \
+                        valor.codigo = valor_arr.codigo + f"\t// LEN \n" \
                                                           f"\t{tmp1} = {valor_arr.reference} + 1;\n" \
                                                           f"\t{valor.reference} = HEAP[(int){tmp1}];\n\n"
                         return valor

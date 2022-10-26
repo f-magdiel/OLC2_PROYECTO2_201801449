@@ -30,7 +30,7 @@ class If(Instruccion):
             # ! QUe sean de tipo BOOL
             if flag_correcto:
                 # ! Se genera código
-                codigo = f"\t/* SENTENCIA IF */\n"
+                codigo = f"\t// IF \n"
                 # ! Solo un if viene
                 flag_uno = len(self.sentencias) == 1 and self.else_ins is None
                 # ! Recorrer la lista de sentencias
@@ -43,10 +43,10 @@ class If(Instruccion):
                     # ! Se obtiene el valor
                     valor = valores[i]
                     # ! Se genera código
-                    codigo += f"\t// Condición\n" + valor.codigo + \
+                    codigo += f"\t \n" + valor.codigo + \
                               f"\t{valor.trueLabel}:\n"
                     # ! Generar código de cambio de ámbito
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S + {entorno.size};\n\n"
                     # ! Se recorren las instrucciones
                     for instruc in self.sentencias[i]['instrs']:
@@ -61,7 +61,7 @@ class If(Instruccion):
                                 codigo += code + "\n"
 
                     # ! Código para cambio de entorno
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S - {entorno.size};\n\n"
 
                     if not flag_uno:
@@ -73,7 +73,7 @@ class If(Instruccion):
                     env_if = Entorno(entorno, entorno.flag_bucle)
                     Env_General.append(env_if)
                     # ! Se genera código
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S + {entorno.size};\n\n"
                     # ! Recorrer instrucciones
                     for instruc in self.else_ins:
@@ -88,7 +88,7 @@ class If(Instruccion):
                                 codigo += code + "\n"
 
                     # ! Código cambio de entorno
-                    codigo += f"\t// Cambio de ámbito\n" \
+                    codigo += f"\t \n" \
                               f"\tS = S - {entorno.size};\n"
 
                 if not flag_uno:

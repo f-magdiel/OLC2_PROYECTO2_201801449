@@ -21,19 +21,19 @@ class Generador:
         lbl3 = self.nuevoLabel()
 
         codigo = "void imprimir(){\n" \
-                 f"    // OBTENER DIRECCIÓN\n" \
+                 f"    \n" \
                  f"    {tmp1} = S + 0;\n" \
                  f"    {tmp2} = STACK[(int){tmp1}];\n" \
-                 f"    // WHILE\n" \
+                 f"    \n" \
                  f"    {lbl3}:\n" \
-                 f"        // EXPRESIONES DE LA CONDICIÓN\n" \
+                 f"        \n" \
                  f"        {tmp3} = HEAP[(int){tmp2}];\n" \
                  f"        {tmp4} = - 1;\n" \
-                 f"        // CONDICIÓN\n" \
+                 f"        \n" \
                  f"        if ({tmp3} != {tmp4}) goto {lbl1};\n" \
                  f"        goto {lbl2};\n" \
                  f"        {lbl1}:\n" \
-                 f"            // IMPRIMIR CARÁCTER\n" \
+                 f"            \n" \
                  f"            printf(\"%c\", (int){tmp3});\n" \
                  f"            {tmp2} = {tmp2} + 1;\n" \
                  f"        goto {lbl3};\n" \
@@ -61,42 +61,42 @@ class Generador:
         lbl6 = self.nuevoLabel()
 
         codigo = "void concatenar(){\n" \
-                 f"    // OBTENER DIRECCIONES\n" \
+                 f"    \n" \
                  f"    {tmp1} = S + 0;\n" \
                  f"    {tmp2} = STACK[(int){tmp1}];\n" \
                  f"    {tmp3} = S + 1;\n" \
                  f"    {tmp4} = STACK[(int){tmp3}];\n" \
-                 f"    // WHILE CAD_1\n" \
+                 f"    \n" \
                  f"    {lbl3}:\n" \
-                 f"        // EXPRESIONES DE LA CONDICIÓN\n" \
+                 f"        \n" \
                  f"        {tmp5} = HEAP[(int){tmp2}];\n" \
                  f"        {tmp6} = - 1;\n" \
-                 f"        // CONDICIÓN\n" \
+                 f"        \n" \
                  f"        if ({tmp5} != {tmp6}) goto {lbl1};\n" \
                  f"        goto {lbl2};\n" \
                  f"        {lbl1}:\n" \
-                 f"            // CONCATENAR EN HEAP\n" \
+                 f"            \n" \
                  f"            HEAP[(int)H] = {tmp5};\n" \
                  f"            H = H + 1;\n" \
                  f"            {tmp2} = {tmp2} + 1;\n" \
                  f"        goto {lbl3};\n" \
                  f"        {lbl2}:\n" \
-                 f"    // WHILE CAD_2\n" \
+                 f"    \n" \
                  f"    {lbl6}:\n" \
-                 f"        // EXPRESIONES DE LA CONDICIÓN\n" \
+                 f"        \n" \
                  f"        {tmp7} = HEAP[(int){tmp4}];\n" \
                  f"        {tmp8} = - 1;\n" \
-                 f"        // CONDICIÓN\n" \
+                 f"        \n" \
                  f"        if ({tmp7} != {tmp8}) goto {lbl4};\n" \
                  f"        goto {lbl5};\n" \
                  f"        {lbl4}:\n" \
-                 f"            // CONCATENAR EN HEAP\n" \
+                 f"            \n" \
                  f"            HEAP[(int)H] = {tmp7};\n" \
                  f"            H = H + 1;\n" \
                  f"            {tmp4} = {tmp4} + 1;\n" \
                  f"        goto {lbl6};\n" \
                  f"        {lbl5}:\n" \
-                 f"    // COLOCAR FIN DE CADENA\n" \
+                 f"    \n" \
                  f"    HEAP[(int)H] = - 1;\n" \
                  f"    H = H + 1;\n" \
                  f"    return;\n" \
@@ -108,7 +108,7 @@ class Generador:
         return ",".join(self.tempLista)
 
     def obtenerCodigo(self):
-        codigoTemp = "/* ENCABEZADO */\n" \
+        codigoTemp = " \n" \
                      "#include <stdio.h>\n" \
                      "#include <math.h>\n" \
                      "double HEAP[80000];\n" \
@@ -116,9 +116,9 @@ class Generador:
                      "double S;\n" \
                      "double H;\n\n"
 
-        codigoTemp += "/* TEMPORALES */\n" + "double " + ",".join(self.tempLista) + ";\n\n"
+        codigoTemp += "// TMP \n" + "double " + ",".join(self.tempLista) + ";\n\n"
 
-        codigoTemp += "/* FUNCIONES */\n" + "\n\n".join(self.funciones_predef) + "\n\n"
+        codigoTemp += "// FUN  \n" + "\n\n".join(self.funciones_predef) + "\n\n"
 
         codigoTemp += "void main(){\n" + "\n".join(self.codigo) + "\n\n\t return;\n}\n"
 
@@ -137,41 +137,4 @@ class Generador:
         self.label += 1
         return "L" + str(temp)
 
-    # def agregarLlamadaFuncion(self, nombre):
-    #     self.codigo.append(nombre + "();")
-    #
-    # def agregarLabel(self, label):
-    #     self.codigo.append(label + ":")
-    #
-    # def agregarExpresion(self, target, left, right, operador):
-    #     self.codigo.append(target + " = " + left + " " + operador + " " + right + ";")
-    #
-    # def agregarIf(self, left, right, operador, label):
-    #     self.codigo.append("if(" + left + " " + operador + " " + right + ") goto " + label + ";")
-    #
-    # def agregarGoto(self, label):
-    #     self.codigo.append("goto " + label + ";")
-    #
-    # def agregarPrintf(self, tipo, valor):
-    #     self.codigo.append("printf(\"%" + tipo + "\"," + valor + ");")
-    #
-    # def agregarSaltoLinea(self):
-    #     self.codigo.append("printf(\"%c\",10;")
-    #
-    # def sigHeap(self,):
-    #     self.codigo.append("P = P + 1 ;")
-    #
-    # def antHeap(self,):
-    #     self.codigo.append("P = P - 1 ;")
-    #
-    # def obtenerValorHeap(self, target, index):
-    #     self.codigo.append(target + "= HEAP[(int)" + index + "];")
-    #
-    # def agregarValorHeap(self, index, valor):
-    #     self.codigo.append("HEAP[(int)" + index + "] = " + valor + ";")
-    #
-    # def obtenerValorStack(self, target, index):
-    #     self.codigo.append(target + " = STACK[(int)" + index + "];")
-    #
-    # def agregarValorStack(self, index, valor):
-    #     self.codigo.append("STACK[(int)" + index + "] = " + valor + ";")
+

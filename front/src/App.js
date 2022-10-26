@@ -81,7 +81,7 @@ function App() {
                                        <div className="mb-md-5 mt-md-4 pb-5">
                                         {editor?<Editor/>
                                         :simbolo?<ReporteSimbolo/>
-                                        :error?<ReporteError/>:<h1>Bienvenido</h1> 
+                                        :error?<ReporteError/>:<h1>OLC2 PROYECTO 2 2022</h1> 
                                                                             
                                         }
                                                  

@@ -104,73 +104,73 @@ class Funcion(Instruccion):
                     lbl9 = generador.nuevoLabel()
                     # Generar código
                     codigo = f"void fibonacci() {{\n" \
-                             f"\t/* SENTENCIA MATCH */\n" \
-                             f"\t// Acceso variable\n" \
-                             f"\t{tmp1} = S + 1; // Dir. variable\n" \
-                             f"\t{tmp2} = STACK[(int){tmp1}]; // Valor\n\n" \
-                             f"\t// Brazo\n" \
+                             f"\t// MATCH \n" \
+                             f"\t \n" \
+                             f"\t{tmp1} = S + 1; \n" \
+                             f"\t{tmp2} = STACK[(int){tmp1}]; \n\n" \
+                             f"\t \n" \
                              f"\tif ({tmp2} == 0) goto {lbl1};\n" \
                              f"\tgoto {lbl2};\n" \
                              f"\t{lbl1}:\n" \
-                             f"\t/* RETURN */\n" \
-                             f"\t{tmp3} = S + 0; // Dir. return\n" \
-                             f"\tSTACK[(int){tmp3}] = 1; // Asignar return\n" \
-                             f"\tgoto {lbl8}; // Fin de la función\n\n" \
+                             f"\t// RETURN \n" \
+                             f"\t{tmp3} = S + 0; \n" \
+                             f"\tSTACK[(int){tmp3}] = 1; \n" \
+                             f"\tgoto {lbl8}; \n\n" \
                              f"\tgoto {lbl7};\n" \
                              f"\t{lbl2}:\n" \
-                             f"\t// Brazo\n" \
+                             f"\t \n" \
                              f"\tif ({tmp2} == 1) goto {lbl3};\n" \
                              f"\tgoto {lbl4};\n" \
                              f"\t{lbl3}:\n" \
-                             f"\t/* RETURN */\n" \
-                             f"\t{tmp4} = S + 0; // Dir. return\n" \
-                             f"\tSTACK[(int){tmp4}] = 1; // Asignar return\n" \
-                             f"\tgoto {lbl8}; // Fin de la función\n\n" \
+                             f"\t// RETURN\n" \
+                             f"\t{tmp4} = S + 0; \n" \
+                             f"\tSTACK[(int){tmp4}] = 1; \n" \
+                             f"\tgoto {lbl8}; \n\n" \
                              f"\tgoto {lbl7};\n" \
                              f"\t{lbl4}:\n" \
-                             f"\t// Brazo\n" \
+                             f"\t \n" \
                              f"\tif (1) goto {lbl5};\n" \
                              f"\tgoto {lbl6};\n" \
                              f"\t{lbl5}:\n" \
-                             f"\t/* RETURN */\n" \
-                             f"\t// Llamada a función\n" \
-                             f"\t{tmp5} = S + 3; // Entorno simulado\n\n" \
-                             f"\t// Argumento\n" \
-                             f"\t// Acceso variable\n" \
-                             f"\t{tmp6} = S + 1; // Dir. variable\n" \
-                             f"\t{tmp7} = STACK[(int){tmp6}]; // Valor\n\n" \
+                             f"\t// RETURN \n" \
+                             f"\t \n" \
+                             f"\t{tmp5} = S + 3; \n\n" \
+                             f"\t \n" \
+                             f"\t \n" \
+                             f"\t{tmp6} = S + 1; \n" \
+                             f"\t{tmp7} = STACK[(int){tmp6}]; \n\n" \
                              f"\t{tmp8} = {tmp7} - 1;\n" \
-                             f"\t{tmp9} = {tmp5} + 1; // Dir. param1\n" \
-                             f"\tSTACK[(int){tmp9}] = {tmp8}; // Asignar valor\n\n" \
-                             f"\tS = S + 3; // Cambio de ámbito\n" \
-                             f"\tfibonacci(); // Llamar función\n" \
-                             f"\t{tmp10} = S + 0; // Dir. return\n" \
-                             f"\t{tmp11} = STACK[(int){tmp10}]; // Valor return\n" \
-                             f"\tS = S - 3; // Cambio de ámbito\n\n" \
-                             f"\t// Llamada a función\n" \
-                             f"\t{tmp12} = SP + 3; // Entorno simulado\n\n" \
-                             f"\t// Argumento\n" \
-                             f"\t// Acceso variable\n" \
-                             f"\t{tmp13} = S + 1; // Dir. variable\n" \
-                             f"\t{tmp14} = STACK[(int){tmp13}]; // Valor\n\n" \
+                             f"\t{tmp9} = {tmp5} + 1; \n" \
+                             f"\tSTACK[(int){tmp9}] = {tmp8}; \n\n" \
+                             f"\tS = S + 3; \n" \
+                             f"\tfibonacci(); \n" \
+                             f"\t{tmp10} = S + 0; \n" \
+                             f"\t{tmp11} = STACK[(int){tmp10}]; \n" \
+                             f"\tS = S - 3; \n\n" \
+                             f"\t \n" \
+                             f"\t{tmp12} = S + 3; \n\n" \
+                             f"\t \n" \
+                             f"\t \n" \
+                             f"\t{tmp13} = S + 1; \n" \
+                             f"\t{tmp14} = STACK[(int){tmp13}]; \n\n" \
                              f"\t{tmp15} = {tmp14} - 2;\n" \
-                             f"\t{tmp16} = {tmp12} + 1; // Dir. param1\n" \
-                             f"\tSTACK[(int){tmp16}] = {tmp15}; // Asignar valor\n\n" \
-                             f"\t// Guardar registro\n" \
-                             f"\t{tmp17} = S + 2; // Dir. registro\n" \
-                             f"\tSTACK[(int){tmp17}] = {tmp11}; // Asignar registro\n\n" \
-                             f"\tS = S + 3; // Cambio de ámbito\n" \
-                             f"\tfibonacci(); // Llamar función\n" \
-                             f"\t{tmp18} = S + 0; // Dir. return\n" \
-                             f"\t{tmp19} = STACK[(int){tmp18}]; // Valor return\n" \
-                             f"\tS = S - 3; // Cambio de ámbito\n\n" \
-                             f"\t// Obtener registro\n" \
-                             f"\t{tmp20} = S + 2; // Dir. registro\n" \
-                             f"\t{tmp11} = STACK[(int){tmp20}]; // Valor registro\n\n" \
+                             f"\t{tmp16} = {tmp12} + 1; \n" \
+                             f"\tSTACK[(int){tmp16}] = {tmp15}; \n\n" \
+                             f"\t \n" \
+                             f"\t{tmp17} = S + 2; \n" \
+                             f"\tSTACK[(int){tmp17}] = {tmp11}; \n\n" \
+                             f"\tS = S + 3; \n" \
+                             f"\tfibonacci(); \n" \
+                             f"\t{tmp18} = S + 0; \n" \
+                             f"\t{tmp19} = STACK[(int){tmp18}]; \n" \
+                             f"\tS = S - 3; \n\n" \
+                             f"\t \n" \
+                             f"\t{tmp20} = S + 2; \n" \
+                             f"\t{tmp11} = STACK[(int){tmp20}]; \n\n" \
                              f"\t{tmp21} = {tmp11} + {tmp19};\n" \
-                             f"\t{tmp22} = S + 0; // Dir. return\n" \
-                             f"\tSTACK[(int){tmp22}] = {tmp21}; // Asignar return\n" \
-                             f"\tgoto {lbl8}; // Fin de la función\n\n" \
+                             f"\t{tmp22} = S + 0; \n" \
+                             f"\tSTACK[(int){tmp22}] = {tmp21}; \n" \
+                             f"\tgoto {lbl8}; \n\n" \
                              f"\tgoto {lbl7};\n" \
                              f"\t{lbl6}:\n" \
                              f"\t{lbl7}:\n" \
@@ -182,7 +182,7 @@ class Funcion(Instruccion):
                 else:
                     # ! Crear código de las instrucciones y temporal
                     tmp1 = generador.nuevoTemp()
-                    codigo = f"\t// Auxiliar para restaurar ámbito\n" \
+                    codigo = f"\t \n" \
                              f"\t{tmp1} = S;\n\n"
                     # ! Recorrer las instrucciones
                     for instruccion in self.instrucciones:

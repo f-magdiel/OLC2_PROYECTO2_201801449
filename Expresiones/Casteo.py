@@ -26,7 +26,7 @@ class Casteo(Expresion):
                     if valor.tipo[0] == TipoPrimitivo.BOOL:
                         lbl1 = generador.nuevoLabel()
                         # ! Se genera codigo
-                        nuevo_valor.codigo = valor.codigo + f"\t/* CASTEO */\n" \
+                        nuevo_valor.codigo = valor.codigo + f"\t// CASTEO \n" \
                                                             f"\t{valor.trueLabel}:\n" \
                                                             f"\t{nuevo_valor.reference} = 1;\n" \
                                                             f"\tgoto {lbl1};\n" \
@@ -35,7 +35,7 @@ class Casteo(Expresion):
                                                             f"\t{lbl1}:\n"
                     else:
                         # ! Se genera códig
-                        nuevo_valor.codigo = valor.codigo + f"\t/* CASTEO */\n" \
+                        nuevo_valor.codigo = valor.codigo + f"\t// CASTEO \n" \
                                                             f"\t{nuevo_valor.reference} = (int){valor.reference};\n"
 
                     return nuevo_valor
@@ -50,7 +50,7 @@ class Casteo(Expresion):
                     nuevo_valor = Valor(self.fila, [self.tipo])
                     nuevo_valor.reference = generador.nuevoTemp()
                     # ! Se genera código
-                    nuevo_valor.codigo = valor.codigo + f"\t/* CASTEO */\n" \
+                    nuevo_valor.codigo = valor.codigo + f"\t// CASTEO \n" \
                                                         f"\t{nuevo_valor.reference} = (float){valor.reference};\n"
 
                     return nuevo_valor

@@ -56,18 +56,18 @@ class Forin(Instruccion):
                         lbl2 = generador.nuevoLabel()
                         lbl3 = generador.nuevoLabel()
 
-                        codigo = f"\t/* SENTENCIA FOR IN */\n" + valor1.codigo + valor2.codigo + \
-                                 f"\t// Auxiliar para restaurar ámbito\n" \
+                        codigo = f"\t// FORIN \n" + valor1.codigo + valor2.codigo + \
+                                 f"\t \n" \
                                  f"\t{tmp0} = S;\n" \
-                                 f"\t// Cambio de ámbito\n" \
+                                 f"\t \n" \
                                  f"\tS = S + {entorno.size};\n\n" \
-                                 f"\t// Inicializar i\n" \
-                                 f"\t{tmp1} = S + {indice.posicion}; // Dir. i\n" \
-                                 f"\tSTACK[(int){tmp1}] = {valor1.reference}; // i = ?\n\n" \
+                                 f"\t \n" \
+                                 f"\t{tmp1} = S + {indice.posicion}; \n" \
+                                 f"\tSTACK[(int){tmp1}] = {valor1.reference}; \n\n" \
                                  f"\t{lbl3}:\n" \
-                                 f"\t// Condición\n" \
-                                 f"\t{tmp2} = S + {indice.posicion}; // Dir. i\n" \
-                                 f"\t{tmp3} = STACK[(int){tmp2}]; // i\n" \
+                                 f"\t \n" \
+                                 f"\t{tmp2} = S + {indice.posicion}; \n" \
+                                 f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
                                  f"\tif ({tmp3} < {valor2.reference}) goto {lbl1};\n" \
                                  f"\tgoto {lbl2};\n" \
                                  f"\t{lbl1}:\n\n" + codigo
@@ -80,16 +80,16 @@ class Forin(Instruccion):
                             # ! Generar código
                             codigo += f"\t{lbl4}:\n"
 
-                        codigo += f"\t// Incrementar i\n" \
-                                  f"\t{tmp4} = S + {indice.posicion}; // Dir. i\n" \
-                                  f"\t{tmp5} = STACK[(int){tmp4}]; // i\n" \
-                                  f"\t{tmp6} = {tmp5} + 1; // i++\n" \
-                                  f"\t{tmp7} = S + {indice.posicion}; // Dir. i\n" \
-                                  f"\tSTACK[(int){tmp7}] = {tmp6}; // i = ?\n\n" \
-                                  f"\t// Siguiente iteración\n" \
+                        codigo += f"\t \n" \
+                                  f"\t{tmp4} = S + {indice.posicion}; \n" \
+                                  f"\t{tmp5} = STACK[(int){tmp4}]; \n" \
+                                  f"\t{tmp6} = {tmp5} + 1; \n" \
+                                  f"\t{tmp7} = S + {indice.posicion}; \n" \
+                                  f"\tSTACK[(int){tmp7}] = {tmp6}; \n\n" \
+                                  f"\t \n" \
                                   f"\tgoto {lbl3};\n\n" \
                                   f"\t{lbl2}:\n" \
-                                  f"\t// Cambio de ámbito\n" \
+                                  f"\t \n" \
                                   f"\tS = S - {entorno.size};\n"
 
                         if codigo.count("ETIQUETA_BREAK") > 0:
@@ -158,27 +158,27 @@ class Forin(Instruccion):
                         lbl2 = generador.nuevoLabel()
                         lbl3 = generador.nuevoLabel()
 
-                        codigo = f"\t/* SENTENCIA FOR IN */\n" + valor1.codigo + \
-                                 f"\t// Auxiliar para restaurar ámbito\n" \
+                        codigo = f"\t// FORIN \n" + valor1.codigo + \
+                                 f"\t \n" \
                                  f"\t{tmp1} = S;\n" \
-                                 f"\t// Cambio de ámbito\n" \
+                                 f"\t \n" \
                                  f"\tS = S + {entorno.size};\n\n" \
-                                 f"\t// Inicializar i\n" \
-                                 f"\t{tmp2} = 0; // i\n\n" \
+                                 f"\t \n" \
+                                 f"\t{tmp2} = 0; \n\n" \
                                  f"\t{lbl3}:\n" \
-                                 f"\t// Condición\n" \
-                                 f"\t{tmp3} = {valor1.reference} + 0; // Dir. len\n" \
-                                 f"\t{tmp4} = HEAP[(int){tmp3}]; // len\n" \
-                                 f"\tif ({tmp2} < {tmp4}) goto {lbl1}; // i < len\n" \
+                                 f"\t \n" \
+                                 f"\t{tmp3} = {valor1.reference} + 0; \n" \
+                                 f"\t{tmp4} = HEAP[(int){tmp3}]; \n" \
+                                 f"\tif ({tmp2} < {tmp4}) goto {lbl1}; \n" \
                                  f"\tgoto {lbl2};\n" \
                                  f"\t{lbl1}:\n" \
-                                 f"\t// Obtener valor\n" \
-                                 f"\t{tmp5} = {valor1.reference} + {v}; // Pivote de valores\n" \
-                                 f"\t{tmp6} = {tmp5} + {tmp2}; // Dir. valor\n" \
-                                 f"\t{tmp7} = HEAP[(int){tmp6}]; // Valor\n\n" \
-                                 f"\t// Asignar valor\n" \
-                                 f"\t{tmp8} = S + {dato.posicion}; // Dir. elemento\n" \
-                                 f"\tSTACK[(int){tmp8}] = {tmp7}; // elemento = ?\n\n" + codigo
+                                 f"\t \n" \
+                                 f"\t{tmp5} = {valor1.reference} + {v}; \n" \
+                                 f"\t{tmp6} = {tmp5} + {tmp2}; \n" \
+                                 f"\t{tmp7} = HEAP[(int){tmp6}]; \n\n" \
+                                 f"\t \n" \
+                                 f"\t{tmp8} = S + {dato.posicion}; \n" \
+                                 f"\tSTACK[(int){tmp8}] = {tmp7}; \n\n" + codigo
 
                         if codigo.count("ETIQUETA_CONTINUE") > 0:
                             lbl4 = generador.nuevoLabel()
@@ -188,12 +188,12 @@ class Forin(Instruccion):
                             # ! Generar código
                             codigo += f"\t{lbl4}:\n"
 
-                        codigo += f"\t// Incrementar i\n" \
-                                  f"\t{tmp2} = {tmp2} + 1; // i++\n\n" \
-                                  f"\t// Siguiente iteración\n" \
+                        codigo += f"\t \n" \
+                                  f"\t{tmp2} = {tmp2} + 1; \n\n" \
+                                  f"\t \n" \
                                   f"\tgoto {lbl3};\n\n" \
                                   f"\t{lbl2}:\n" \
-                                  f"\t// Cambio de ámbito\n" \
+                                  f"\t \n" \
                                   f"\tS = S - {entorno.size};\n"
 
                         if codigo.count("ETIQUETA_BREAK") > 0:

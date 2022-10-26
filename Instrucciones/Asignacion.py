@@ -50,9 +50,9 @@ class Asignacion(Instruccion):
                                         tmp1 = generador.nuevoTemp()
                                         tmp2 = generador.nuevoTemp()
                                         # ! Crear código a retornar
-                                        codigo = f"\t/* ASIGNACIÓN */\n" \
-                                                 f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                 f"\t{tmp2} = STACK[(int){tmp1}]; // Acceso 1\n"
+                                        codigo = f"\t// ASIGNACION \n" \
+                                                 f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                 f"\t{tmp2} = STACK[(int){tmp1}]; \n"
                                         # ! Temporal auxiliarmp
                                         tmpn = tmp2
                                     else:
@@ -61,10 +61,10 @@ class Asignacion(Instruccion):
                                         tmp2 = generador.nuevoTemp()
                                         tmp3 = generador.nuevoTemp()
                                         # Crear código a retornar
-                                        codigo = f"\t/* ASIGNACIÓN */\n" \
-                                                 f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                 f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                 f"\t{tmp3} = STACK[(int){tmp2}]; // Acceso 1\n"
+                                        codigo = f"\t// ASIGNACION \n" \
+                                                 f"\t{tmp1} = S - {depth}; \n" \
+                                                 f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                 f"\t{tmp3} = STACK[(int){tmp2}]; \n"
                                         # ! Temporal auxilimpar
                                         tmpn = tmp3
                                     # ! Verificar si es referencia
@@ -72,7 +72,7 @@ class Asignacion(Instruccion):
                                         # ! Temporales auxiliares
                                         tmp1 = generador.nuevoTemp()
                                         # ! Generar código
-                                        codigo += f"\t{tmp1} = STACK[(int){tmpn}]; // Acceso 2\n"
+                                        codigo += f"\t{tmp1} = STACK[(int){tmpn}]; \n"
                                         # ! Temporal auxiliar
                                         tmpn = tmp1
                                     # ! Recorrer los valores obtenidos de los indices
@@ -86,9 +86,9 @@ class Asignacion(Instruccion):
                                         tmp1 = generador.nuevoTemp()
                                         tmp2 = generador.nuevoTemp()
                                         # ! Generar códigomp
-                                        codigo += f"\n\t// Indice\n" + valores[i].codigo + \
-                                                  f"\t{tmp1} = {tmpn} + {v}; // Pivote valores\n" \
-                                                  f"\t{tmp2} = {tmp1} + {valores[i].reference}; // Indice en C3D\n\n"
+                                        codigo += f"\n\t \n" + valores[i].codigo + \
+                                                  f"\t{tmp1} = {tmpn} + {v}; \n" \
+                                                  f"\t{tmp2} = {tmp1} + {valores[i].reference}; \n\n"
                                         # ! Verificar si es el ultimo acceso
                                         if i == (len(valores) - 1):
                                             # ! Generar código
@@ -99,7 +99,7 @@ class Asignacion(Instruccion):
                                             # ! Temporales auxiliares
                                             tmp1 = generador.nuevoTemp()
                                             # ! Generar código
-                                            codigo += f"\n\t{tmp1} = HEAP[(int){tmp2}]; // Nuevo acceso\n"
+                                            codigo += f"\n\t{tmp1} = HEAP[(int){tmp2}]; \n"
                                             # ! Temporal auxiliar
                                             tmpn = tmp1
                                     # ! Asignar el valor en el array y retornar el código generado
@@ -136,15 +136,15 @@ class Asignacion(Instruccion):
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     # ! Generar código
-                    codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; // Ref.\n" \
-                                                                      f"\t{tmp2} = STACK[(int){tmp1}]; // Dir. variable\n" \
-                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
+                    codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                      f"\t{tmp2} = STACK[(int){tmp1}]; \n" \
+                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; \n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
                     # ! Generar código
-                    codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                      f"\tSTACK[(int){tmp1}] = {valor.reference}; // Asignar\n"
+                    codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                      f"\tSTACK[(int){tmp1}] = {valor.reference}; \n"
             else:
                 # ! Verificar si es referencia
                 if variable.flag_reference:
@@ -153,18 +153,18 @@ class Asignacion(Instruccion):
                     tmp2 = generador.nuevoTemp()
                     tmp3 = generador.nuevoTemp()
                     # ! Generar código
-                    codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; // Ref.\n" \
-                                                                      f"\t{tmp3} = STACK[(int){tmp2}]; // Dir. variable\n" \
-                                                                      f"\tSTACK[(int){tmp3}] = {valor.reference}; // Asignar\n"
+                    codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                      f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
+                                                                      f"\tSTACK[(int){tmp3}] = {valor.reference}; \n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     # Generar código
-                    codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar\n"
+                    codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                      f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                                      f"\tSTACK[(int){tmp2}] = {valor.reference}; \n"
         else:
             # ! Verificar depth
             if depth == 0:
@@ -173,13 +173,13 @@ class Asignacion(Instruccion):
                 # ! Labels auxiliares
                 lbl1 = generador.nuevoLabel()
                 # ! Generar código
-                codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                  f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                  f"\tSTACK[(int){tmp1}] = 1; // Asignar\n" \
+                codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
+                                                                  f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 1; \n" \
                                                                   f"\tgoto {lbl1};\n" \
                                                                   f"\t{valor.falseLabel}:\n" \
-                                                                  f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                  f"\tSTACK[(int){tmp1}] = 0; // Asignar\n" \
+                                                                  f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 0; \n" \
                                                                   f"\t{lbl1}:\n"
             else:
                 # ! Temporales auxiliares
@@ -188,15 +188,15 @@ class Asignacion(Instruccion):
                 # ! Labels auxiliares
                 lbl1 = generador.nuevoLabel()
                 # ! Generar código
-                codigo = f"\t/* ASIGNACIÓN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                  f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                  f"\tSTACK[(int){tmp2}] = 1; // Asignar\n" \
+                codigo = f"\t// ASIGNACION \n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
+                                                                  f"\t{tmp1} = S - {depth}; \n" \
+                                                                  f"\t{tmp2} = S + {variable.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 1; \n" \
                                                                   f"\tgoto {lbl1};\n" \
                                                                   f"\t{valor.falseLabel}:\n" \
-                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                  f"\t{tmp2} = S + {variable.posicion}; // Dir. variable\n" \
-                                                                  f"\tSTACK[(int){tmp2}] = 0; // Asignar\n" \
+                                                                  f"\t{tmp1} = S - {depth}; \n" \
+                                                                  f"\t{tmp2} = S + {variable.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 0; \n" \
                                                                   f"\t{lbl1}:\n"
         if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
             # ! Obtener etiqueta de salida
@@ -212,16 +212,16 @@ class Asignacion(Instruccion):
         # ! Validar si no es booleano
         if valor.tipo[0] != TipoPrimitivo.BOOL:
             # ! Generar código
-            codigo += valor.codigo + f"\tHEAP[(int){direccion}] = {valor.reference}; // Asignar\n"
+            codigo += valor.codigo + f"\tHEAP[(int){direccion}] = {valor.reference}; \n"
         else:
             # ! Labels auxiliares
             lbl1 = generador.nuevoTemp()
             # ! Generar código
             codigo += valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                     f"\tHEAP[(int){direccion}] = 1; // Asignar\n" \
+                                     f"\tHEAP[(int){direccion}] = 1; \n" \
                                      f"\tgoto {lbl1};\n" \
                                      f"\t{valor.falseLabel}:\n" \
-                                     f"\tHEAP[(int){direccion}] = 0; // Asignar\n" \
+                                     f"\tHEAP[(int){direccion}] = 0; \n" \
                                      f"\t{lbl1}:\n"
         # ! Retornar código
         if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:

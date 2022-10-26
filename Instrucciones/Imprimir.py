@@ -11,7 +11,7 @@ class Imprimir(Instruccion):
 
     def convertir(self, generador, entorno):
         if not self.expresiones:
-            codigo = f"\t/* IMPRIMIR */\n" \
+            codigo = f"\t \n" \
                      f"\tprintf(\"%c\", 10);\n"
             return codigo
         else:
@@ -19,7 +19,7 @@ class Imprimir(Instruccion):
             if valor_str:
                 if valor_str.tipo[0] == TipoPrimitivo.STR:
                     if len(self.expresiones) - 1 == valor_str.listTemp.count(-1):
-                        codigo = f"\t/* IMPRIMIR */\n" + valor_str.codigo
+                        codigo = f"\t// IMPRIMIR \n" + valor_str.codigo
                         flag_error = False
                         valores = []
                         for i in range(1, len(self.expresiones)):
@@ -38,7 +38,7 @@ class Imprimir(Instruccion):
                                         tmp1 = generador.nuevoTemp()
                                         tmp2 = generador.nuevoTemp()
                                         # ! Se genera código
-                                        codigo += f"\t/* IMPRIMIR SUBCADENA */\n" \
+                                        codigo += f"\t// IMPRIMIR \n" \
                                                   f"\t{tmp1} = S + {entorno.size};\n" \
                                                   f"\t{tmp2} = {tmp1} + 0;\n" \
                                                   f"\tSTACK[(int){tmp2}] = {ele};\n\n" \
@@ -50,31 +50,31 @@ class Imprimir(Instruccion):
                                         # ! Validar el tipo de dato a formatear
                                         if valor.tipo[0] == TipoPrimitivo.I64:
                                             codigo += f"\t// EXPRESION\n" + valor.codigo + \
-                                                      f"\t// IMPRIMIR EXPRESION\n" \
+                                                      f"\t// IMPRIMIR \n" \
                                                       f"\tprintf(\"%d\", (int){valor.reference});\n\n"
 
                                         elif valor.tipo[0] == TipoPrimitivo.F64:
-                                            codigo += f"\t// Expresión\n" + valor.codigo + \
-                                                      f"\t// Imprimir expresión\n" \
+                                            codigo += f"\t// EXPRESION \n" + valor.codigo + \
+                                                      f"\t// IMPRIMIR \n" \
                                                       f"\tprintf(\"%f\", {valor.reference});\n\n"
 
                                         elif valor.tipo[0] == TipoPrimitivo.CHAR:
-                                            codigo += f"\t// Expresión\n" + valor.codigo + \
-                                                      f"\t// Imprimir expresión\n" \
+                                            codigo += f"\t// EXPRESION \n" + valor.codigo + \
+                                                      f"\t// IMPRIMIR\n" \
                                                       f"\tprintf(\"%c\", (int){valor.reference});\n\n"
 
                                         elif valor.tipo[0] == TipoPrimitivo.BOOL:
                                             lbl1 = generador.nuevoLabel()
-                                            codigo += f"\t// Expresión\n" + valor.codigo + \
+                                            codigo += f"\t \n" + valor.codigo + \
                                                       f"\t{valor.trueLabel}:\n" \
-                                                      f"\t// Imprimir expresión\n" \
+                                                      f"\t \n" \
                                                       f"\tprintf(\"%c\", 116);\n" \
                                                       f"\tprintf(\"%c\", 114);\n" \
                                                       f"\tprintf(\"%c\", 117);\n" \
                                                       f"\tprintf(\"%c\", 101);\n" \
                                                       f"\tgoto {lbl1};\n" \
                                                       f"\t{valor.falseLabel}:\n" \
-                                                      f"\t// Imprimir expresión\n" \
+                                                      f"\t \n" \
                                                       f"\tprintf(\"%c\", 102);\n" \
                                                       f"\tprintf(\"%c\", 97);\n" \
                                                       f"\tprintf(\"%c\", 108);\n" \
@@ -86,7 +86,7 @@ class Imprimir(Instruccion):
                                             tmp1 = generador.nuevoTemp()
                                             tmp2 = generador.nuevoTemp()
                                             # ! Se genera código
-                                            codigo += f"\t/* IMPRIMIR EXPRESION */\n" + valor.codigo + \
+                                            codigo += f"\t// IMPRIMIR EXPRESION \n" + valor.codigo + \
                                                       f"\t{tmp1} = S + {entorno.size};\n" \
                                                       f"\t{tmp2} = {tmp1} + 0;\n" \
                                                       f"\tSTACK[(int){tmp2}] = {valor.reference};\n\n" \
@@ -96,15 +96,15 @@ class Imprimir(Instruccion):
 
                                         else:
                                             # Generar código
-                                            codigo += f"\t// Expresión\n" + valor.codigo + \
-                                                      f"\t// Imprimir expresión\n"
+                                            codigo += f"\t// EXPRESION \n" + valor.codigo + \
+                                                      f"\t// IMPRIMIR \n"
                                             # Generar código de impresión de array
                                             codigo = self.imprimir_arreglo_vector(generador, entorno, codigo, valor.reference, valor.tipo)
                             else:
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
                                 # ! Se genera código
-                                codigo += f"\t/* IMPRIMIR CADENA */\n" \
+                                codigo += f"\t// IMPRIMIR CADENA \n" \
                                           f"\t{tmp1} = S + {entorno.size};\n" \
                                           f"\t{tmp2} = {tmp1} + 0;\n" \
                                           f"\tSTACK[(int){tmp2}] = {valor_str.reference};\n\n" \
@@ -175,7 +175,7 @@ class Imprimir(Instruccion):
             code += f"\t{tmp1} = S + {env.size};\n" \
                     f"\t{tmp2} = {tmp1} + 0;\n" \
                     f"\tSTACK[(int){tmp2}] = {tmp};\n\n" \
-                    f"\t// Imprimir expresión\n" \
+                    f"\t \n" \
                     f"\tS = S + {env.size};\n" \
                     f"\timprimir();\n" \
                     f"\tS = S - {env.size};\n\n"
@@ -203,34 +203,34 @@ class Imprimir(Instruccion):
             lbl5 = generador.nuevoLabel()
 
             # ! Se genera code
-            code += f"\t{tmp1} = 0; // i\n" \
+            code += f"\t{tmp1} = 0; \n" \
                     f"\t{tmp2} = {tmp} + 0;\n" \
-                    f"\t{tmp3} = HEAP[(int){tmp2}]; // len\n\n" \
-                    f"\tprintf(\"%c\", 91); // [\n" \
+                    f"\t{tmp3} = HEAP[(int){tmp2}]; \n\n" \
+                    f"\tprintf(\"%c\", 91); \n" \
                     f"\t{lbl3}:\n" \
-                    f"\tif ({tmp1} < {tmp3}) goto {lbl1}; // i < len\n" \
+                    f"\tif ({tmp1} < {tmp3}) goto {lbl1}; \n" \
                     f"\tgoto {lbl2};\n" \
                     f"\t{lbl1}:\n" \
-                    f"\t{tmp4} = {tmp} + {pointer}; // Puntero valores\n" \
-                    f"\t{tmp5} = {tmp4} + {tmp1}; // Dir. valor\n" \
-                    f"\t{tmp6} = HEAP[(int){tmp5}]; // Valor\n\n"
+                    f"\t{tmp4} = {tmp} + {pointer}; \n" \
+                    f"\t{tmp5} = {tmp4} + {tmp1}; \n" \
+                    f"\t{tmp6} = HEAP[(int){tmp5}]; \n\n"
 
             # ! Code interno
             if tipo[1:]:
                 code = self.imprimir_arreglo_vector(generador, env, code, tmp6, tipo[1:])
 
             # ! Se genera code final
-            code += f"\t// Verificar → \", \"\n" \
-                    f"\t{tmp7} = {tmp3} - 1; // len - 1\n" \
-                    f"\tif ({tmp1} < {tmp7}) goto {lbl4}; // i < (len - 1)\n" \
+            code += f"\t \n" \
+                    f"\t{tmp7} = {tmp3} - 1; \n" \
+                    f"\tif ({tmp1} < {tmp7}) goto {lbl4}; \n" \
                     f"\tgoto {lbl5};\n" \
                     f"\t{lbl4}:\n" \
-                    f"\tprintf(\"%c\", 44); // ,\n" \
-                    f"\tprintf(\"%c\", 32); // \" \"\n" \
+                    f"\tprintf(\"%c\", 44); \n" \
+                    f"\tprintf(\"%c\", 32); \n" \
                     f"\t{lbl5}:\n\n" \
-                    f"\t{tmp1} = {tmp1} + 1; // i++\n" \
-                    f"\tgoto {lbl3}; // Sig. pos\n" \
+                    f"\t{tmp1} = {tmp1} + 1; \n" \
+                    f"\tgoto {lbl3}; \n" \
                     f"\t{lbl2}:\n" \
-                    f"\tprintf(\"%c\", 93); // ]\n\n"
+                    f"\tprintf(\"%c\", 93); \n\n"
 
         return code

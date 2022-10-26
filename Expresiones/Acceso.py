@@ -29,15 +29,15 @@ class Acceso(Expresion):
                             tmp1 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera código
-                            valor.codigo = f"\t// Acceso array (es_ref/argumento) \n" \
-                                           f"\t{tmp1} = S + {variable.posicion}; // Dir. array\n" \
-                                           f"\t{valor.reference} = STACK[(int){tmp1}]; // Ref.\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                           f"\t{valor.reference} = STACK[(int){tmp1}]; \n\n"
                         else:
                             # ! Se genera temporal de referencia
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera código
-                            valor.codigo = f"\t// Acceso array (argumento) \n" \
-                                           f"\t{valor.reference} = S + {variable.posicion}; // Dir. array\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{valor.reference} = S + {variable.posicion}; \n\n"
                     else:
                         # ! Validar si es referencia
                         if variable.flag_reference:
@@ -46,10 +46,10 @@ class Acceso(Expresion):
                             tmp2 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera código
-                            valor.codigo = f"\t// Acceso array (es_ref) \n" \
-                                           f"\t{tmp1} = S + {variable.posicion}; // Dir. array\n" \
-                                           f"\t{tmp2} = STACK[(int){tmp1}]; // Ref.\n" \
-                                           f"\t{valor.reference} = STACK[(int){tmp2}]; // Valor\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                           f"\t{tmp2} = STACK[(int){tmp1}]; \n" \
+                                           f"\t{valor.reference} = STACK[(int){tmp2}]; \n\n"
 
                         else:
                             # ! Validar el tipo
@@ -58,9 +58,9 @@ class Acceso(Expresion):
                                 tmp1 = generador.nuevoTemp()
                                 valor.reference = generador.nuevoTemp()
                                 # ! Se genera código
-                                valor.codigo = f"\t// Acceso variable\n" \
-                                               f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                               f"\t{valor.reference} = STACK[(int){tmp1}]; // Valor\n\n"
+                                valor.codigo = f"\t \n" \
+                                               f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                               f"\t{valor.reference} = STACK[(int){tmp1}]; \n\n"
 
                             elif variable.tipo[0] == TipoPrimitivo.BOOL:
                                 # ! Temporales y label false, true
@@ -69,9 +69,9 @@ class Acceso(Expresion):
                                 valor.trueLabel = generador.nuevoLabel()
                                 valor.falseLabel = generador.nuevoLabel()
 
-                                valor.codigo = f"\t// Acceso variable\n" \
-                                               f"\t{tmp1} = S + {variable.posicion}; // Dir. variable\n" \
-                                               f"\t{tmp2} = STACK[(int){tmp1}]; // Valor\n\n" \
+                                valor.codigo = f"\t \n" \
+                                               f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                               f"\t{tmp2} = STACK[(int){tmp1}]; \n\n" \
                                                f"\tif ({tmp2}) goto {valor.trueLabel};\n" \
                                                f"\tgoto {valor.falseLabel};\n"
                             else:
@@ -80,9 +80,9 @@ class Acceso(Expresion):
                                 # ! Generar nuevo temporal de referencia
                                 valor.reference = generador.nuevoTemp()
                                 # ! Generar código
-                                valor.codigo = f"\t// Acceso array (es_ref) \n" \
-                                               f"\t{tmp1} = S + {variable.posicion}; // Dir. array\n" \
-                                               f"\t{valor.reference} = STACK[(int){tmp1}]; // Valor\n\n"
+                                valor.codigo = f"\t \n" \
+                                               f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                               f"\t{valor.reference} = STACK[(int){tmp1}]; \n\n"
                 else:
                     # ! Validar si es argumento
                     if self.flag_argumento:
@@ -93,18 +93,18 @@ class Acceso(Expresion):
                             tmp2 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera código
-                            valor.codigo = f"\t// Acceso array (es_ref/argumento) \n" \
-                                           f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                           f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n" \
-                                           f"\t{valor.reference} = STACK[(int){tmp2}]; // Ref.\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{tmp1} = S - {depth}; \n" \
+                                           f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                           f"\t{valor.reference} = STACK[(int){tmp2}]; \n\n"
                         else:
                             # ! Temporales y valor referencia
                             tmp1 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera códgio
-                            valor.codigo = f"\t// Acceso array (argumento) \n" \
-                                           f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                           f"\t{valor.reference} = {tmp1} + {variable.posicion}; // Dir. array\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{tmp1} = S - {depth}; \n" \
+                                           f"\t{valor.reference} = {tmp1} + {variable.posicion}; \n\n"
 
                     else:
                         # ! Validar referencia
@@ -115,11 +115,11 @@ class Acceso(Expresion):
                             tmp3 = generador.nuevoTemp()
                             valor.reference = generador.nuevoTemp()
                             # ! Se genera código
-                            valor.codigo = f"\t// Acceso array (es_ref) \n" \
-                                           f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                           f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n" \
-                                           f"\t{tmp3} = STACK[(int){tmp2}]; // Ref.\n" \
-                                           f"\t{valor.reference} = STACK[(int){tmp3}]; // Valor\n\n"
+                            valor.codigo = f"\t \n" \
+                                           f"\t{tmp1} = S - {depth}; \n" \
+                                           f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                           f"\t{tmp3} = STACK[(int){tmp2}]; \n" \
+                                           f"\t{valor.reference} = STACK[(int){tmp3}]; \n\n"
                         else:
                             # ! Validar el tipo
                             if variable.tipo[0] not in [TipoPrimitivo.BOOL, TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
@@ -128,10 +128,10 @@ class Acceso(Expresion):
                                 tmp2 = generador.nuevoTemp()
                                 valor.reference = generador.nuevoTemp()
                                 # ! Se generá código
-                                valor.codigo = f"\t// Acceso variable\n" \
-                                               f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                               f"\t{valor.reference} = STACK[(int){tmp2}]; // Valor\n\n"
+                                valor.codigo = f"\t \n" \
+                                               f"\t{tmp1} = S - {depth}; \n" \
+                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                               f"\t{valor.reference} = STACK[(int){tmp2}]; \n\n"
 
                             elif variable.tipo[0] == TipoPrimitivo.BOOL:
                                 # ! Temporales y valor referencia
@@ -141,10 +141,10 @@ class Acceso(Expresion):
                                 valor.trueLabel = generador.nuevoLabel()
                                 valor.falseLabel = generador.nuevoLabel()
                                 # ! Se genera código
-                                valor.codigo = f"\t// Acceso variable\n" \
-                                               f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. variable\n" \
-                                               f"\t{tmp3} = STACK[(int){tmp2}]; // Valor\n\n" \
+                                valor.codigo = f"\t\n" \
+                                               f"\t{tmp1} = S - {depth}; \n" \
+                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                               f"\t{tmp3} = STACK[(int){tmp2}]; \n\n" \
                                                f"\tif ({tmp3}) goto {valor.trueLabel};\n" \
                                                f"\tgoto {valor.falseLabel};\n"
                             else:
@@ -153,10 +153,10 @@ class Acceso(Expresion):
                                 tmp2 = generador.nuevoTemp()
                                 valor.reference = generador.nuevoTemp()
 
-                                valor.codigo = f"\t// Acceso array \n" \
-                                               f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n" \
-                                               f"\t{valor.reference} = STACK[(int){tmp2}]; // Valor\n\n"
+                                valor.codigo = f"\t \n" \
+                                               f"\t{tmp1} = S - {depth}; \n" \
+                                               f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                               f"\t{valor.reference} = STACK[(int){tmp2}]; \n\n"
                 return valor
             else:
                 # ! Validar si var es tipo array
@@ -176,14 +176,14 @@ class Acceso(Expresion):
                         # ! Validar bandera
                         if flag_correcto:
                             valor = Valor(self.fila, variable.tipo[len(self.indices):])
-                            valor.codigo = f"\t// Acceso array (indices)\n"
+                            valor.codigo = f"\t \n"
 
                             if depth == 0:
                                 tmp1 = generador.nuevoTemp()
                                 tmp2 = generador.nuevoTemp()
                                 # ! Se genera código
-                                valor.codigo += f"\t{tmp1} = S + {variable.posicion}; // Dir. array\n" \
-                                                f"\t{tmp2} = STACK[(int){tmp1}]; // Acceso 1\n"
+                                valor.codigo += f"\t{tmp1} = S + {variable.posicion}; \n" \
+                                                f"\t{tmp2} = STACK[(int){tmp1}]; \n"
                                 tmp = tmp2
                             else:
                                 # ! Temporales y valor referencia
@@ -191,14 +191,14 @@ class Acceso(Expresion):
                                 tmp2 = generador.nuevoTemp()
                                 tmp3 = generador.nuevoTemp()
                                 # ! Se genera código
-                                valor.codigo += f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; // Dir. array\n" \
-                                                f"\t{tmp3} = STACK[(int){tmp2}]; // Acceso 1\n"
+                                valor.codigo += f"\t{tmp1} = S - {depth}; \n" \
+                                                f"\t{tmp2} = {tmp1} + {variable.posicion}; \n" \
+                                                f"\t{tmp3} = STACK[(int){tmp2}]; \n"
                                 tmp = tmp3
                             # ! Validar si es referencia
                             if variable.flag_reference:
                                 tmp1 = generador.nuevoTemp()
-                                valor.codigo += f"\t{tmp1} = STACK[(int){tmp}]; // Acceso 2\n"
+                                valor.codigo += f"\t{tmp1} = STACK[(int){tmp}]; \n"
                                 tmp = tmp1
 
                             for i in range(len(valores)):
@@ -230,15 +230,15 @@ class Acceso(Expresion):
                                 lbl6 = generador.nuevoLabel()
 
                                 # Generar código
-                                valor.codigo += f"\n\t// Indice\n" + valores[i].codigo + \
-                                                f"\t{tmp1} = {tmp} + {v}; // Pivote valores\n" \
-                                                f"\t{tmp2} = {tmp1} + {valores[i].reference}; // Indice en C3D\n\n" \
-                                                f"\t{tmp3} = {tmp} + 0; // Dir. len\n" \
-                                                f"\t{tmp4} = HEAP[(int){tmp3}]; // len\n" \
-                                                f"\tif ({valores[i].reference} < 0) goto {lbl1}; // indice < 0\n" \
+                                valor.codigo += f"\n\t \n" + valores[i].codigo + \
+                                                f"\t{tmp1} = {tmp} + {v}; \n" \
+                                                f"\t{tmp2} = {tmp1} + {valores[i].reference}; \n\n" \
+                                                f"\t{tmp3} = {tmp} + 0; \n" \
+                                                f"\t{tmp4} = HEAP[(int){tmp3}]; \n" \
+                                                f"\tif ({valores[i].reference} < 0) goto {lbl1}; \n" \
                                                 f"\tgoto {lbl2};\n" \
                                                 f"\t{lbl2}:\n" \
-                                                f"\tif ({valores[i].reference} >= {tmp4}) goto {lbl3}; // indice >= len\n" \
+                                                f"\tif ({valores[i].reference} >= {tmp4}) goto {lbl3}; \n" \
                                                 f"\tgoto {lbl4};\n" \
                                                 f"\t{lbl1}:\n" \
                                                 f"\t{lbl3}:\n" \
@@ -264,7 +264,7 @@ class Acceso(Expresion):
 
                                 else:
                                     tmp1 = generador.nuevoTemp()
-                                    valor.codigo += f"\n\t{tmp1} = HEAP[(int){tmp2}]; // Nuevo acceso\n\n"
+                                    valor.codigo += f"\n\t{tmp1} = HEAP[(int){tmp2}]; \n\n"
                                     tmp = tmp1
                             # ! Validar el tipo a retornar
                             if valor.tipo[0] in [TipoPrimitivo.ARREGLO, TipoPrimitivo.VECTOR]:
@@ -272,21 +272,21 @@ class Acceso(Expresion):
                                     valor.reference = tmp
                                 else:
                                     valor.reference = generador.nuevoTemp()
-                                    valor.codigo += f"\t// Acceso item array\n" \
-                                                    f"\t{valor.reference} = HEAP[(int){tmp}]; // Valor\n\n"
+                                    valor.codigo += f"\t \n" \
+                                                    f"\t{valor.reference} = HEAP[(int){tmp}]; \n\n"
                             else:
                                 # ! Validar el tipo
                                 if valor.tipo[0] != TipoPrimitivo.BOOL:
                                     valor.reference = generador.nuevoTemp()
-                                    valor.codigo += f"\t// Acceso item array\n" \
-                                                    f"\t{valor.reference} = HEAP[(int){tmp}]; // Valor\n\n"
+                                    valor.codigo += f"\t \n" \
+                                                    f"\t{valor.reference} = HEAP[(int){tmp}]; \n\n"
                                 else:
                                     # ! Temporales
                                     tmp1 = generador.nuevoTemp()
                                     valor.trueLabel = generador.nuevoLabel()
                                     valor.falseLabel = generador.nuevoLabel()
-                                    valor.codigo = f"\t// Acceso item array\n" \
-                                                   f"\t{tmp1} = HEAP[(int){tmp}]; // Valor\n\n" \
+                                    valor.codigo = f"\t \n" \
+                                                   f"\t{tmp1} = HEAP[(int){tmp}]; \n\n" \
                                                    f"\tif ({tmp1}) goto {valor.trueLabel};\n" \
                                                    f"\tgoto {valor.falseLabel};\n"
                             return valor

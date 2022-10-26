@@ -25,23 +25,23 @@ class Return(Instruccion):
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     # ! Generar código
-                    codigo = f"\t/* RETURN */\n" + valor.codigo + f"\t{tmp1} = S + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp1}] = {valor.reference}; // Asignar return\n\n" \
+                    codigo = f"\t// RETURN \n" + valor.codigo + f"\t{tmp1} = S + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp1}] = {valor.reference}; \n\n" \
                                                                   f"\t{tmp2} = S - TEMPORAL_RETURN;\n" \
                                                                   f"\tS = S - {tmp2};\n" \
-                                                                  f"\tgoto ETIQUETA_RETURN; // Fin de la función\n"
+                                                                  f"\tgoto ETIQUETA_RETURN; \n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
                     tmp2 = generador.nuevoTemp()
                     tmp3 = generador.nuevoTemp()
                     # ! Generar código
-                    codigo = f"\t/* RETURN */\n" + valor.codigo + f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                  f"\t{tmp2} = {tmp1} + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp2}] = {valor.reference}; // Asignar return\n\n" \
+                    codigo = f"\t// RETURN \n" + valor.codigo + f"\t{tmp1} = S - {depth}; \n" \
+                                                                  f"\t{tmp2} = {tmp1} + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp2}] = {valor.reference}; \n\n" \
                                                                   f"\t{tmp3} = S - TEMPORAL_RETURN;\n" \
                                                                   f"\tS = S - {tmp3};\n" \
-                                                                  f"\tgoto ETIQUETA_RETURN; // Fin de la función\n"
+                                                                  f"\tgoto ETIQUETA_RETURN; \n"
             else:
                 # ! Verificar depth
                 if depth == 0:
@@ -51,17 +51,17 @@ class Return(Instruccion):
                     # ! Labels auxiliares
                     lbl1 = generador.nuevoLabel()
                     # ! Generar código
-                    codigo = f"\t/* RETURN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                  f"\t{tmp1} = S + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp1}] = 1; // Asignar return\n" \
+                    codigo = f"\t// RETURN \n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
+                                                                  f"\t{tmp1} = S + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 1; \n" \
                                                                   f"\tgoto {lbl1};\n" \
                                                                   f"\t{valor.falseLabel}:\n" \
-                                                                  f"\t{tmp1} = S + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp1}] = 0; // Asignar return\n" \
+                                                                  f"\t{tmp1} = S + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp1}] = 0; \n" \
                                                                   f"\t{lbl1}:\n\n" \
                                                                   f"\t{tmp2} = S - TEMPORAL_RETURN;\n" \
                                                                   f"\tS = S - {tmp2};\n" \
-                                                                  f"\tgoto ETIQUETA_RETURN; // Fin de la función\n"
+                                                                  f"\tgoto ETIQUETA_RETURN; \n"
                 else:
                     # ! Temporales auxiliares
                     tmp1 = generador.nuevoTemp()
@@ -70,19 +70,19 @@ class Return(Instruccion):
                     # ! Labels auxiliares
                     lbl1 = generador.nuevoLabel()
                     # ! Generar código
-                    codigo = f"\t/* RETURN */\n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
-                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                  f"\t{tmp2} = S + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp2}] = 1; // Asignar\n" \
+                    codigo = f"\t// RETURN \n" + valor.codigo + f"\t{valor.trueLabel}:\n" \
+                                                                  f"\t{tmp1} = S - {depth}; \n" \
+                                                                  f"\t{tmp2} = S + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 1; \n" \
                                                                   f"\tgoto {lbl1};\n" \
                                                                   f"\t{valor.falseLabel}:\n" \
-                                                                  f"\t{tmp1} = S - {depth}; // Entorno pivote\n" \
-                                                                  f"\t{tmp2} = S + {var_ret.posicion}; // Dir. return\n" \
-                                                                  f"\tSTACK[(int){tmp2}] = 0; // Asignar return\n" \
+                                                                  f"\t{tmp1} = S - {depth}; \n" \
+                                                                  f"\t{tmp2} = S + {var_ret.posicion}; \n" \
+                                                                  f"\tSTACK[(int){tmp2}] = 0; \n" \
                                                                   f"\t{lbl1}:\n\n" \
                                                                   f"\t{tmp3} = S - TEMPORAL_RETURN;\n" \
                                                                   f"\tS = S - {tmp3};\n" \
-                                                                  f"\tgoto ETIQUETA_RETURN; // Fin de la función\n"
+                                                                  f"\tgoto ETIQUETA_RETURN; \n"
             # ! Retornar código
             if codigo.count("ETIQUETA_FUERA_LIMITE") > 0:
                 # ! Obtener etiqueta de salida
