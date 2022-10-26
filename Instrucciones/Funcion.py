@@ -114,7 +114,7 @@ class Funcion(Instruccion):
                              f"\t{lbl1}:\n" \
                              f"\t// RETURN \n" \
                              f"\t{tmp3} = S + 0; \n" \
-                             f"\tSTACK[(int){tmp3}] = 1; \n" \
+                             f"\tSTACK[(int){tmp3}] = 0; \n" \
                              f"\tgoto {lbl8}; \n\n" \
                              f"\tgoto {lbl7};\n" \
                              f"\t{lbl2}:\n" \
